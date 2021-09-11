@@ -1,0 +1,15 @@
+.wrapper {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  display: inline-block;
+  height: 44px;
+  padding: 10px;
+  transition: color 0.2s ease-out;
+  width: 44px;
+}
+.wrapper:hover {
+  color: #000;
+}
