@@ -50,6 +50,7 @@
     opacity: 1;
     transform: none;
     position: static;
+    pointer-events: all;
   }
 
   .navToolbar {
