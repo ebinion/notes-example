@@ -1,0 +1,58 @@
+.wrapper {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.nav {
+  background-color: rgba(242, 242, 242, 0.7);
+  backdrop-filter: blur(4px);
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  overflow: scroll;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: translateX(-33%);
+  transition: all 0.2s ease-out;
+  width: 100%;
+}
+.navIsOpen {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.navContent {
+  padding: var(--pad);
+}
+
+.navToolbar {
+  bottom: 0;
+  box-sizing: border-box;
+  padding: var(--pad);
+  position: absolute;
+  width: 100%;
+}
+
+.content {
+  padding: var(--pad);
+}
+
+@media (min-width: 600px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: minmax(260px, 33%) 66%;
+  }
+
+  .nav {
+    opacity: 1;
+    transform: none;
+    position: static;
+  }
+
+  .navToolbar {
+    position: static;
+  }
+}
