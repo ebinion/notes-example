@@ -5,14 +5,15 @@ import Toolbar from './Toolbar'
 import { ReactComponent as PlusIcon } from './icons/plus-solid.svg'
 
 import { AppContext } from './AppContext'
+import Note from './Note'
 import styles from './App.module.css'
 
 const App = () => {
   return (
     <AppContext.Consumer>
-      {({ navIsOpen, toggleIsNavOpen }) => (
+      {({ isNavOpen, toggleIsNavOpen }) => (
         <main className={styles.wrapper}>
-          <nav className={`${styles.nav} ${navIsOpen && styles.navIsOpen}`}>
+          <nav className={`${styles.nav} ${isNavOpen && styles.navIsOpen}`}>
             <div className={styles.navToolbar}>
               <Toolbar
                 trailingChildren={
@@ -27,7 +28,9 @@ const App = () => {
               <p>Sidebar</p>
             </div>
           </nav>
-          <section className={styles.content}>Content</section>
+          <section className={styles.content}>
+            <Note />
+          </section>
         </main>
       )}
     </AppContext.Consumer>

@@ -13,3 +13,8 @@
 .wrapper:hover {
   color: #000;
 }
+
+.wrapper > * {
+  height: 24px;
+  width: 24px;
+}
