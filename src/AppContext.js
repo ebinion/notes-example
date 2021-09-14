@@ -11,21 +11,46 @@ const AppContext = createContext({
   toggleIsNavOpen: () => {},
 })
 
-const getNowUTCString = () => new Date().toUTCString()
-
 const AppContextProvider = props => {
-  const firstNote = {
-    id: uid(),
-    createdDate: getNowUTCString(),
-    lastModifiedDate: getNowUTCString(),
-    title: 'Empty Note Title',
-    body: 'Empty Note Body',
+  const generateEmptyNote = () => {
+    return {
+      id: uid(),
+      createdDate: new Date(),
+      lastModifiedDate: new Date(),
+      title: '',
+      body: '',
+    }
   }
+
+  const firstNote = generateEmptyNote()
   const [notes, setNotes] = useState([firstNote])
   const [currentNoteID, setCurrentNoteID] = useState(firstNote.id)
   const [isNavOpen, setIsNavOpen] = useState(false)
 
   // Managing Notes
+  const createNewNote = () => {
+    const newNote = generateEmptyNote()
+
+    const newNotes = notes.concat([newNote])
+    setNotes(newNotes)
+
+    return newNote
+  }
+
+  const handleNewNote = event => {
+    event.preventDefault()
+    setIsNavOpen(false)
+
+    const newNote = createNewNote()
+    setCurrentNote(newNote)
+  }
+
+  const handleSetCurrentNote = (note, event) => {
+    event.preventDefault()
+    setCurrentNote(note)
+    setIsNavOpen(false)
+  }
+
   const generateNoteBody = (body = '', oldNote = {}) => {
     if (typeof body !== 'string') {
       throw new Error(
@@ -42,7 +67,8 @@ const AppContextProvider = props => {
         "We‘ve encountered an error. Note title must be a 'string'."
       )
     } else {
-      return Object.assign({}, oldNote, { title })
+      const newTitle = title === '' ? 'Untitled Note' : title
+      return Object.assign({}, oldNote, { title: newTitle })
     }
   }
 
@@ -66,10 +92,29 @@ const AppContextProvider = props => {
     }
   }
 
+  const selectNotes = () => {
+    return [].concat(notes).sort((firstNote, secondNote) => {
+      const firstNoteTime = firstNote.lastModifiedDate.getTime()
+      const secondNoteTime = secondNote.lastModifiedDate.getTime()
+
+      if (firstNoteTime < secondNoteTime) {
+        return 1
+      } else if (firstNoteTime > secondNoteTime) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+  }
+
+  const setCurrentNote = note => {
+    setCurrentNoteID(note.id)
+  }
+
   const updateNote = note => {
     try {
       let newNote = Object.assign({}, note, {
-        lastModifiedDate: getNowUTCString(),
+        lastModifiedDate: new Date(),
       })
       newNote = generateNoteTitle(note.title, newNote)
       newNote = generateNoteBody(note.body, newNote)
@@ -94,8 +139,8 @@ const AppContextProvider = props => {
     if (notes.length === 0) {
       const newNote = {
         id: uid(),
-        createdDate: getNowUTCString(),
-        lastModifiedDate: getNowUTCString(),
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
         title: 'Empty Note Title',
         body: 'Empty Note Body',
       }
@@ -112,7 +157,10 @@ const AppContextProvider = props => {
         notes,
         currentNoteID,
         isNavOpen,
+        handleSetCurrentNote,
+        handleNewNote,
         selectNote,
+        selectNotes,
         toggleIsNavOpen,
         updateNote,
       }}

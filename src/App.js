@@ -11,13 +11,13 @@ import styles from './App.module.css'
 const App = () => {
   return (
     <AppContext.Consumer>
-      {({ isNavOpen, toggleIsNavOpen }) => (
+      {({ handleSetCurrentNote, handleNewNote, isNavOpen, selectNotes }) => (
         <main className={styles.wrapper}>
           <nav className={`${styles.nav} ${isNavOpen && styles.navIsOpen}`}>
             <div className={styles.navToolbar}>
               <Toolbar
                 trailingChildren={
-                  <IconedButton icon={<PlusIcon />} onClick={toggleIsNavOpen} />
+                  <IconedButton icon={<PlusIcon />} onClick={handleNewNote} />
                 }
               />
             </div>
@@ -25,7 +25,20 @@ const App = () => {
               <header role="banner">
                 <h1>Notes</h1>
               </header>
-              <p>Sidebar</p>
+              <ol>
+                {selectNotes().map(note => {
+                  return (
+                    <li key={note.id}>
+                      <button
+                        onClick={event => handleSetCurrentNote(note, event)}
+                      >
+                        <h4>{note.title}</h4>
+                        <div>{note.lastModifiedDate.toString()}</div>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ol>
             </div>
           </nav>
           <section className={styles.content}>
