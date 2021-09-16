@@ -1,5 +1,6 @@
 :root {
   --pad: 20px;
+  --pad-tight: 10px;
   --c-text: rgba(0, 0, 0, 0.8);
   --c-text-bold: #000;
   --c-text-light: rgba(0, 0, 0, 0.5);
@@ -49,7 +50,7 @@ h3,
 h4,
 .h4 {
   color: var(--c-text);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 24px;
 }
@@ -59,7 +60,7 @@ h5,
   color: var(--c-text-light);
   font-size: 16px;
   font-weight: 700;
-  line-height: 20px;
+  line-height: 24px;
 }
 
 h6,
@@ -111,4 +112,11 @@ h6:last-child,
 
 .text--light {
   color: var(--c-text-light);
+}
+
+.text--truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
 }
