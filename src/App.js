@@ -6,12 +6,19 @@ import { ReactComponent as PlusIcon } from './icons/plus-solid.svg'
 
 import { AppContext } from './AppContext'
 import Note from './Note'
+import Teaser from './Teaser'
 import styles from './App.module.css'
 
 const App = () => {
   return (
     <AppContext.Consumer>
-      {({ handleSetCurrentNote, handleNewNote, isNavOpen, selectNotes }) => (
+      {({
+        currentNoteID,
+        handleSetCurrentNote,
+        handleNewNote,
+        isNavOpen,
+        selectNotes,
+      }) => (
         <main className={styles.wrapper}>
           <nav className={`${styles.nav} ${isNavOpen && styles.navIsOpen}`}>
             <div className={styles.navToolbar}>
@@ -29,12 +36,12 @@ const App = () => {
                 {selectNotes().map(note => {
                   return (
                     <li key={note.id}>
-                      <button
+                      <Teaser
+                        isActive={note.id === currentNoteID}
+                        title={note.title}
+                        date={note.lastModifiedDate}
                         onClick={event => handleSetCurrentNote(note, event)}
-                      >
-                        <h4>{note.title}</h4>
-                        <div>{note.lastModifiedDate.toString()}</div>
-                      </button>
+                      />
                     </li>
                   )
                 })}

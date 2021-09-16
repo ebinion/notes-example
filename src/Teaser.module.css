@@ -1,0 +1,23 @@
+.wrapper {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+}
+.wrapperIsActive {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.date {
+}
