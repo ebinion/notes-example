@@ -23,7 +23,7 @@ const useTimeAgo = date => {
     },
     {
       elapsedTime: convertSecondsToMilliseconds(45),
-      string: 'secs ago',
+      string: 'a few secs ago',
       updateInterval: convertSecondsToMilliseconds(40),
     },
     {
@@ -51,26 +51,35 @@ const useTimeAgo = date => {
     )
   )
 
-  useEffect(() => {
-    const nextInterval = getNextInterval(
-      Date.now() - Date.parse(date),
-      updateIntervals.current
-    )
+  useEffect(
+    didUpdate => {
+      const nextInterval = getNextInterval(
+        Date.now() - Date.parse(date),
+        updateIntervals.current
+      )
 
-    if (nextInterval) {
-      const timeoutID = setTimeout(() => {
-        setTimeString(
-          getTimeAgo(
-            Date.now() - Date.parse(date),
-            updateIntervals.current,
-            defaultTimeString
-          )
+      const newTimeString = () => {
+        return getTimeAgo(
+          Date.now() - Date.parse(date),
+          updateIntervals.current,
+          defaultTimeString
         )
-      }, nextInterval)
+      }
 
-      return () => clearTimeout(timeoutID)
-    }
-  }, [date, defaultTimeString, updateIntervals, timeString])
+      if (!didUpdate && newTimeString() !== timeString) {
+        setTimeString(newTimeString())
+      }
+
+      if (nextInterval) {
+        const timeoutID = setTimeout(() => {
+          setTimeString(newTimeString())
+        }, nextInterval)
+
+        return () => clearTimeout(timeoutID)
+      }
+    },
+    [date, defaultTimeString, updateIntervals, timeString]
+  )
 
   return timeString
 }
