@@ -123,8 +123,6 @@ const AppContextProvider = props => {
       newNotes[findNoteIndex(newNote.id, newNotes)] = newNote
 
       setNotes(newNotes)
-
-      console.log(newNotes)
     } catch (error) {
       console.error(error)
     }
