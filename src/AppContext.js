@@ -67,7 +67,7 @@ const AppContextProvider = props => {
         "We‘ve encountered an error. Note title must be a 'string'."
       )
     } else {
-      const newTitle = title === '' ? 'Untitled Note' : title
+      const newTitle = title
       return Object.assign({}, oldNote, { title: newTitle })
     }
   }

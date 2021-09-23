@@ -1,13 +1,51 @@
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pad);
+  min-height: 100vh;
 }
 
 .toolbar {
+  position: sticky;
+  flex: 0 0 auto;
 }
 
-.title {
+.header {
+  position: relative;
+  flex: 0 0 auto;
 }
-.title:focus {
+.headerHeading:focus {
+  outline: 0;
+}
+
+.headerPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 .body {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.bodyPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.bodyContent {
+  height: 100%;
+}
+.bodyContent:focus {
+  outline: 0;
+}
+
+@media (min-width: 600px) {
+  .backButton {
+    display: none;
+  }
 }

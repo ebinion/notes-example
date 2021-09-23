@@ -1,13 +1,17 @@
 .wrapper {
+  align-items: center;
   display: flex;
   justify-content: space-between;
+  min-height: 44px;
 }
 
 .leading {
+  align-items: center;
   display: flex;
 }
 
 .trailing {
+  align-items: center;
   display: flex;
   justify-content: right;
 }

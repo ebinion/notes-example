@@ -1,37 +1,10 @@
 import React from 'react' // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types'
 
+import Time from './Time'
 import styles from './Teaser.module.css'
 
-const addLeadingZero = num => {
-  const numString = num.toString()
-
-  if (numString.length === 1) {
-    return `0${numString}`
-  } else {
-    return numString
-  }
-}
-
-const createZuluDateString = dateObj => {
-  const year = dateObj.getUTCFullYear()
-  const month = addLeadingZero(dateObj.getUTCMonth() + 1)
-  const date = addLeadingZero(dateObj.getUTCDate())
-
-  const hours = addLeadingZero(dateObj.getUTCHours())
-  const minutes = addLeadingZero(dateObj.getUTCMinutes())
-  const seconds = addLeadingZero(dateObj.getUTCSeconds())
-
-  return `${year}-${month}-${date}T${hours}:${minutes}:${seconds}Z`
-}
-
 const Card = props => {
-  const date = props.date
-
-  const dateString = `${
-    date.getMonth() + 1
-  }/${date.getDate()}/${date.getFullYear()}`
-
   return (
     <button
       onClick={props.onClick}
@@ -44,7 +17,7 @@ const Card = props => {
         className="h4 text--truncated text--noMargin"
       />
       <div className="text--light">
-        <time dateTime={createZuluDateString(date)}>{dateString}</time>
+        <Time date={props.date} />
       </div>
     </button>
   )
