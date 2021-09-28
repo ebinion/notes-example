@@ -1,12 +1,8 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import React, { useState } from 'react' // eslint-disable-line no-unused-vars
+import NotesScene from './scenes/NotesScene'
 
 const App = props => {
-  return <div></div>
+  return <NotesScene />
 }
-
-App.propTypes = {}
-
-App.defaultProps = {}
 
 export default App

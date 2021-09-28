@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from 'react' // eslint-disable-line no-unused-vars
 
-import { AppContext } from './AppContext'
-import { ReactComponent as ChevronIcon } from './icons/chevron-left-solid.svg'
+import { AppContext } from '../AppContext'
+import { ReactComponent as ChevronIcon } from '../icons/chevron-left-solid.svg'
 import IconedButton from './IconedButton'
-import styles from './Note.module.css'
 import Time from './Time'
 import Toolbar from './Toolbar'
+
+import styles from './Note.module.css'
 
 const Note = props => {
   const [isEditing, setIsEditing] = useState(false)

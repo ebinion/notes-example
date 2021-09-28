@@ -10,7 +10,7 @@ import {
   getNextInterval,
   getTimeAgo,
   getZuluDate,
-} from './helpers'
+} from '../helpers'
 
 const useTimeAgo = date => {
   const defaultTimeString = getDateTimeString(date)
