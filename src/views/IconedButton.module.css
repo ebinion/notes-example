@@ -1,20 +1,21 @@
 .wrapper {
   -webkit-appearance: none;
   background: transparent;
+  box-sizing: border-box;
   border: 0;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--c-tertiary);
   cursor: pointer;
   display: inline-block;
   height: 44px;
-  padding: 10px;
+  padding: calc(44px - 28px);
   transition: color 0.2s ease-out;
   width: 44px;
 }
 .wrapper:hover {
-  color: #000;
+  color: var(--c-primary);
 }
 
-.wrapper > * {
-  height: 24px;
-  width: 24px;
+.wrapper > svg {
+  height: 16px;
+  width: 16px;
 }
