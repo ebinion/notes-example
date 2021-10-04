@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react' // eslint-disable-line no-unused-vars
 
 import { AppContext } from '../AppContext'
-import { ReactComponent as ChevronIcon } from '../icons/chevron-left-solid.svg'
+import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
 import IconedButton from './IconedButton'
 import Time from './Time'
 import Toolbar from './Toolbar'
@@ -87,7 +87,7 @@ const Note = props => {
                   <>
                     <i className={styles.backButton}>
                       <IconedButton
-                        icon={<ChevronIcon />}
+                        icon={<BarsIcon />}
                         onClick={toggleIsNavOpen}
                       />
                     </i>
