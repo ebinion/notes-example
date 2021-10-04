@@ -27,7 +27,7 @@
 }
 
 .navContent {
-  padding: var(--pad) var(--pad-tight);
+  padding: var(--pad) var(--pad-s);
 }
 .navHeader {
   padding: 0 var(--pad);

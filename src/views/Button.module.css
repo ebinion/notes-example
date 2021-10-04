@@ -1,6 +1,6 @@
 .button {
   appearance: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   border: 0;
   cursor: pointer;
   transition: var(--transition);
@@ -8,11 +8,11 @@
 }
 
 .buttonM {
-  padding: 16px;
+  padding: var(--pad);
 }
 
 .buttonS {
-  padding: 4px 16px;
+  padding: var(--pad-xs) var(--pad);
 }
 
 .buttonPrimary {

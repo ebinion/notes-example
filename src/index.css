@@ -28,12 +28,15 @@
 
 /* Shared UI Properties */
 :root {
-  --pad: 20px;
-  --pad-tight: 10px;
+  --backdrop-blur: blur(3px);
   --c-text: var(--c-secondary);
   --c-text-bold: var(--c-primary);
   --c-text-light: var(--c-tertiary);
-  --backdrop-blur: blur(3px);
+  --gutter: 40px;
+  --pad: 16px;
+  --pad-s: 8px;
+  --pad-xs: 4px;
+  --radius: 6px;
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
 }
 
