@@ -37,6 +37,7 @@ const NotesScene = () => {
               <header role="banner" className={styles.navHeader}>
                 <h1>Notes</h1>
               </header>
+
               <div className={styles.navContent}>
                 <List>
                   {selectNotes().map(note => {

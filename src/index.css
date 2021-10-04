@@ -1,13 +1,16 @@
 /* Color Properties */
 :root {
   --c-blue: #1598dc;
+  --c-blue-secondary: #1598dccc;
   --c-green: #54bf2f;
   --c-red: #dc1919;
+  --c-red-secondary: #dc1919cc;
   --c-bg: #fff;
   --c-bg-secondary: rgba(255, 255, 255, 0.85);
   --c-on-color: #fff;
+  --c-on-color-secondary: #fffa;
   --c-primary: #000;
-  --c-secodary: rgba(0, 0, 0, 0.8);
+  --c-secondary: rgba(0, 0, 0, 0.8);
   --c-tertiary: rgba(0, 0, 0, 0.44);
   --c-quatenary: rgba(0, 0, 0, 0.05);
 }
@@ -17,7 +20,7 @@
     --c-bg: #333;
     --c-bg-secondary: rgba(0, 0, 0, 0.9);
     --c-primary: #fff;
-    --c-secodary: rgba(255, 255, 255 0.8);
+    --c-secondary: rgba(255, 255, 255 0.8);
     --c-tertiary: rgba(255, 255, 255 0.44);
     --c-quatenary: rgba(255, 255, 255 0.05);
   }
