@@ -13,7 +13,7 @@ const AppLayout = props => {
   }, [props.isNavOpen])
 
   return (
-    <div className={styles.wrapper}>
+    <main className={styles.wrapper}>
       <nav
         className={`${styles.nav} ${props.isNavOpen && styles.navIsOpen}`}
         ref={navRef}
@@ -22,7 +22,7 @@ const AppLayout = props => {
         {props.navChildren}
       </nav>
       <section className={styles.content}>{props.children}</section>
-    </div>
+    </main>
   )
 }
 
