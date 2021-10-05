@@ -5,11 +5,11 @@ import { AppContext } from '../AppContext'
 import AppLayout from '../views/AppLayout'
 import Avatar from '../views/Avatar'
 import IconedButton from '../views/IconedButton'
-import List from '../views/List'
 import Note from '../views/Note'
 import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
 import Teaser from '../views/Teaser'
 import Toolbar from '../views/Toolbar'
+import VStack from '../views/VStack'
 
 import styles from './NotesScene.module.css'
 
@@ -39,7 +39,7 @@ const NotesScene = () => {
               </header>
 
               <div className={styles.navContent}>
-                <List>
+                <VStack gap="xs">
                   {selectNotes().map(note => {
                     return (
                       <Teaser
@@ -51,7 +51,7 @@ const NotesScene = () => {
                       />
                     )
                   })}
-                </List>
+                </VStack>
               </div>
             </>
           }

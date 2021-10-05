@@ -1,0 +1,12 @@
+.wrapper {
+  display: grid;
+  gap: var(--pad);
+}
+
+.gapS {
+  gap: var(--pad-s);
+}
+
+.gapXs {
+  gap: var(--pad-xs);
+}
