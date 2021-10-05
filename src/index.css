@@ -38,6 +38,7 @@
   --pad-s: 8px;
   --pad-xs: 4px;
   --radius: 6px;
+  --touch-target: 44px;
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
 }
 
@@ -49,7 +50,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  font-size: 100%;
+  font-size: 16px;
   line-height: 24px;
   margin: 0;
 }
@@ -159,6 +160,6 @@ h6:last-child,
 
 strong,
 b,
-.bold {
+.text--bold {
   font-weight: var(--bold);
 }

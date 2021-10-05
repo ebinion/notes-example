@@ -1,0 +1,29 @@
+.wrapper {
+  display: block;
+}
+
+.input {
+  appearance: none;
+  background: var(--c-quatenary);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  box-sizing: border-box;
+  color: var(--c-primary);
+  font-size: 100%;
+  line-height: 1;
+  height: var(--touch-target);
+  margin-top: var(--pad-xs);
+  padding: 0 var(--pad);
+  transition: var(--transition);
+  transition-property: background-color, border-color;
+  width: 100%;
+}
+.input:focus {
+  background: var(--bg);
+  border-color: var(--c-secondary);
+  outline: 0;
+}
+.input::placeholder {
+  color: var(--c-tertiary);
+  opacity: 1;
+}

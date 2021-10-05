@@ -34,7 +34,7 @@ const NotesScene = () => {
                     <IconedButton icon={<PlusIcon />} onClick={handleNewNote} />
                   }
                 >
-                  <h1 className="h3 text--light">Notes</h1>
+                  <h1 className="h4 text--light">Notes</h1>
                 </Toolbar>
               </header>
 
