@@ -18,7 +18,7 @@
 .buttonPrimary {
   background: var(--c-blue);
   color: var(--c-on-color);
-  font-weight: bold;
+  font-weight: var(--bold);
 }
 .buttonPrimary:hover {
   background: var(--c-blue-secondary);
@@ -27,7 +27,7 @@
 .buttonDanger {
   background: var(--c-red);
   color: var(--c-on-color);
-  font-weight: bold;
+  font-weight: var(--bold);
 }
 .buttonDanger:hover {
   background: var(--c-red-secondary);
@@ -37,7 +37,7 @@
   cursor: not-allowed;
   background: var(--c-tertiary);
   color: var(--c-on-color-secondary);
-  font-weight: bold;
+  font-weight: var(--bold);
 }
 
 .buttonSecondary {

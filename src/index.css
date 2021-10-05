@@ -29,6 +29,7 @@
 /* Shared UI Properties */
 :root {
   --backdrop-blur: blur(3px);
+  --bold: 700;
   --c-text: var(--c-secondary);
   --c-text-bold: var(--c-primary);
   --c-text-light: var(--c-tertiary);
@@ -62,7 +63,7 @@ h1,
 .h1 {
   color: var(--c-text);
   font-size: 32px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 36px;
 }
 
@@ -70,7 +71,7 @@ h2,
 .h2 {
   color: var(--c-text);
   font-size: 24px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 32px;
 }
 
@@ -78,7 +79,7 @@ h3,
 .h3 {
   color: var(--c-text);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 24px;
 }
 
@@ -86,7 +87,7 @@ h4,
 .h4 {
   color: var(--c-text);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 24px;
 }
 
@@ -94,7 +95,7 @@ h5,
 .h5 {
   color: var(--c-text-light);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 24px;
 }
 
@@ -102,7 +103,7 @@ h6,
 .h6 {
   color: var(--c-text-light);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--bold);
   line-height: 16px;
 }
 
@@ -154,4 +155,10 @@ h6:last-child,
   text-overflow: ellipsis;
   width: 100%;
   white-space: nowrap;
+}
+
+strong,
+b,
+.bold {
+  font-weight: var(--bold);
 }
