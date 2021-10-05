@@ -6,9 +6,8 @@ import styles from './Toolbar.module.css'
 const Toolbar = props => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.leading}>
-        {props.children || props.leadingChildren}
-      </div>
+      <div className={styles.leading}>{props.leadingChildren}</div>
+      <div className={styles.center}>{props.children}</div>
       <div className={styles.trailing}>{props.trailingChildren}</div>
     </div>
   )

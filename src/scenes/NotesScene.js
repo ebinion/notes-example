@@ -3,6 +3,7 @@
 import { AppContext } from '../AppContext'
 
 import AppLayout from '../views/AppLayout'
+import Avatar from '../views/Avatar'
 import IconedButton from '../views/IconedButton'
 import List from '../views/List'
 import Note from '../views/Note'
@@ -26,16 +27,15 @@ const NotesScene = () => {
           isNavOpen={isNavOpen}
           navChildren={
             <>
-              <div className={styles.navToolbar}>
+              <header role="banner">
                 <Toolbar
+                  leadingChildren={<Avatar name="Placeholder" />}
                   trailingChildren={
                     <IconedButton icon={<PlusIcon />} onClick={handleNewNote} />
                   }
-                />
-              </div>
-
-              <header role="banner" className={styles.navHeader}>
-                <h1>Notes</h1>
+                >
+                  <h1 className="h3 text--light">Notes</h1>
+                </Toolbar>
               </header>
 
               <div className={styles.navContent}>
