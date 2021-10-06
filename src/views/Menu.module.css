@@ -1,0 +1,37 @@
+.wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.menu {
+  backdrop-filter: blur(var(--backdrop-blur));
+  background: var(--c-bg-secondary);
+  border-radius: var(--radius);
+  box-shadow: var(--drop-shadow);
+  min-width: 200px;
+  opacity: 0;
+  padding: var(--pad-s);
+  pointer-events: none;
+  position: absolute;
+  transform: translate(0, -50px) scaleY(0.8);
+  transition: var(--transition);
+  transition-property: opacity, transform;
+  z-index: 999;
+}
+.menuLeadingAnchor {
+  left: 0;
+}
+.menuTrailingAnchor {
+  right: 0;
+}
+.menuOpen {
+  opacity: 1;
+  pointer-events: all;
+  transform: translate(0, 0);
+}
+
+@media (prefers-reduced-motion) {
+  .menu {
+    transition-property: opacity;
+  }
+}
