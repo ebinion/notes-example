@@ -17,12 +17,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --c-bg: #333;
+    --c-bg: #222;
     --c-bg-secondary: rgba(0, 0, 0, 0.9);
     --c-primary: #fff;
-    --c-secondary: rgba(255, 255, 255 0.8);
-    --c-tertiary: rgba(255, 255, 255 0.44);
-    --c-quatenary: rgba(255, 255, 255 0.05);
+    --c-secondary: rgba(255, 255, 255, 0.8);
+    --c-tertiary: rgba(255, 255, 255, 0.44);
+    --c-quatenary: rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -33,6 +33,7 @@
   --c-text: var(--c-secondary);
   --c-text-bold: var(--c-primary);
   --c-text-light: var(--c-tertiary);
+  --drop-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
   --gutter: 40px;
   --pad: 16px;
   --pad-s: 8px;
@@ -40,6 +41,11 @@
   --radius: 6px;
   --touch-target: 44px;
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
+}
+
+* {
+  font: inherit;
+  color: inherit;
 }
 
 body {
@@ -62,7 +68,7 @@ code {
 
 h1,
 .h1 {
-  color: var(--c-text);
+  color: var(--c-text-bold);
   font-size: 32px;
   font-weight: var(--bold);
   line-height: 36px;
@@ -70,7 +76,7 @@ h1,
 
 h2,
 .h2 {
-  color: var(--c-text);
+  color: var(--c-text-bold);
   font-size: 24px;
   font-weight: var(--bold);
   line-height: 32px;
@@ -78,7 +84,7 @@ h2,
 
 h3,
 .h3 {
-  color: var(--c-text);
+  color: var(--c-text-bold);
   font-size: 18px;
   font-weight: var(--bold);
   line-height: 24px;
@@ -86,7 +92,7 @@ h3,
 
 h4,
 .h4 {
-  color: var(--c-text);
+  color: var(--c-text-bold);
   font-size: 16px;
   font-weight: var(--bold);
   line-height: 24px;
@@ -94,7 +100,7 @@ h4,
 
 h5,
 .h5 {
-  color: var(--c-text-light);
+  color: var(--c-text);
   font-size: 16px;
   font-weight: var(--bold);
   line-height: 24px;
@@ -102,7 +108,7 @@ h5,
 
 h6,
 .h6 {
-  color: var(--c-text-light);
+  color: var(--c-text);
   font-size: 13px;
   font-weight: var(--bold);
   line-height: 16px;
@@ -162,4 +168,10 @@ strong,
 b,
 .text--bold {
   font-weight: var(--bold);
+}
+
+.text,
+p {
+  font-size: 16px;
+  color: var(--c-text);
 }
