@@ -2,18 +2,19 @@
   -webkit-appearance: none;
   background: transparent;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--radius);
   cursor: pointer;
-  padding: var(--pad-tight);
+  padding: var(--pad-s) var(--pad);
   text-align: left;
-  transition: all 0.2s ease-out;
+  transition: var(--transition);
+  transition-property: background-color;
   width: 100%;
 }
 .wrapper:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--c-quatenary);
 }
 .wrapperIsActive {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--c-quatenary);
 }
 
 .title {
@@ -21,7 +22,4 @@
   text-overflow: ellipsis;
   width: 100%;
   white-space: nowrap;
-}
-
-.date {
 }

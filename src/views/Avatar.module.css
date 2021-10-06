@@ -1,0 +1,44 @@
+.wrapper {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  gap: var(--pad-xs);
+  padding: 0;
+  -webkit-tap-highlight-color: var(--c-quatenary);
+}
+
+.avatar {
+  --size: 32px;
+
+  background: var(--c-quatenary);
+  border-radius: var(--radius);
+  color: var(--c-tertiary);
+  display: block;
+  font-weight: var(--bold);
+  height: var(--size);
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: var(--transition);
+  transition-property: color;
+  width: var(--size);
+}
+.wrapper:hover .avatar {
+  color: var(--c-primary);
+}
+
+.avatarLetter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon {
+  color: var(--c-tertiary);
+  display: block;
+  width: 8px;
+}

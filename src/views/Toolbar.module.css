@@ -1,17 +1,23 @@
 .wrapper {
   align-items: center;
   display: flex;
+  gap: var(--pad-s);
   justify-content: space-between;
   min-height: 44px;
 }
 
+.trailing,
+.center,
 .leading {
   align-items: center;
   display: flex;
+  min-height: 44px;
+}
+
+.center {
+  justify-content: center;
 }
 
 .trailing {
-  align-items: center;
-  display: flex;
   justify-content: right;
 }

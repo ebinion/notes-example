@@ -16,7 +16,7 @@ const Card = props => {
         dangerouslySetInnerHTML={{ __html: props.title || 'Untitled Note' }}
         className="h4 text--truncated text--noMargin"
       />
-      <div className="text--light">
+      <div className="text--s text--light">
         <Time date={props.date} />
       </div>
     </button>

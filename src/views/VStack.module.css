@@ -1,0 +1,16 @@
+.wrapper {
+  display: grid;
+  gap: var(--pad);
+}
+
+.gapS {
+  gap: var(--pad-s);
+}
+
+.gapXs {
+  gap: var(--pad-xs);
+}
+
+.outterGutter {
+  padding: 0 calc(var(--gutter) / 2);
+}
