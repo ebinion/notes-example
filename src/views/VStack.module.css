@@ -10,3 +10,7 @@
 .gapXs {
   gap: var(--pad-xs);
 }
+
+.outterGutter {
+  padding: 0 calc(var(--gutter) / 2);
+}

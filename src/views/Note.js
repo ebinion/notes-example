@@ -2,9 +2,12 @@ import { useEffect, useState, useRef } from 'react' // eslint-disable-line no-un
 
 import { AppContext } from '../AppContext'
 import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
+import Button from './Button'
+import Header from './Header'
 import IconedButton from './IconedButton'
 import Time from './Time'
 import Toolbar from './Toolbar'
+import VStack from './VStack'
 
 import styles from './Note.module.css'
 
@@ -81,7 +84,7 @@ const Note = props => {
 
         return (
           <article className={styles.wrapper}>
-            <div className={styles.toolbar}>
+            <Header>
               <Toolbar
                 leadingChildren={
                   <>
@@ -99,44 +102,47 @@ const Note = props => {
                 }
                 trailingChildren={
                   isEditing && (
-                    <button
+                    <Button
                       onClick={event => handleSave(event, note, updateNote)}
+                      size="s"
                     >
                       Save
-                    </button>
+                    </Button>
                   )
                 }
               />
-            </div>
-            <header className={styles.header}>
-              <h1
-                className={`${styles.headerHeading} text--noMargin`}
-                contentEditable
-                onClick={handleEdit}
-                ref={titleEleRef}
-                dangerouslySetInnerHTML={{ __html: note && note.title }}
-              />
-              <div className={styles.headerPlaceholder}>
-                <div className="h1 text--light">
-                  {titleHasContent ? '' : 'Untitled Note'}
+            </Header>
+            <VStack hasOutterGutter>
+              <div className={styles.header}>
+                <h1
+                  className={`${styles.headerHeading} text--noMargin`}
+                  contentEditable
+                  onClick={handleEdit}
+                  ref={titleEleRef}
+                  dangerouslySetInnerHTML={{ __html: note && note.title }}
+                />
+                <div className={styles.headerPlaceholder}>
+                  <div className="h1 text--light">
+                    {titleHasContent ? '' : 'Untitled Note'}
+                  </div>
                 </div>
               </div>
-            </header>
 
-            <div className={styles.body} onClick={handleBodyClick}>
-              <div
-                className={styles.bodyContent}
-                contentEditable
-                onClick={handleEdit}
-                ref={bodyEleRef}
-                dangerouslySetInnerHTML={{ __html: note && note.body }}
-              />
-              <div className={styles.bodyPlaceholder}>
-                <div className="text--light">
-                  {bodyHasContent ? '' : 'Write here'}
+              <div className={styles.body} onClick={handleBodyClick}>
+                <div
+                  className={styles.bodyContent}
+                  contentEditable
+                  onClick={handleEdit}
+                  ref={bodyEleRef}
+                  dangerouslySetInnerHTML={{ __html: note && note.body }}
+                />
+                <div className={styles.bodyPlaceholder}>
+                  <div className="text--light">
+                    {bodyHasContent ? '' : 'Write here'}
+                  </div>
                 </div>
               </div>
-            </div>
+            </VStack>
           </article>
         )
       }}

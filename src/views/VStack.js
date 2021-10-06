@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import styles from './VStack.module.css'
 
-const VStack = ({ children, gap }) => {
+const VStack = ({ children, gap, hasOutterGutter }) => {
   const getClassNames = gapSize => {
     let classNames = [styles.wrapper]
 
@@ -18,6 +18,8 @@ const VStack = ({ children, gap }) => {
         break
     }
 
+    if (hasOutterGutter) classNames.push(styles.outterGutter)
+
     return classNames.join(' ')
   }
 
@@ -27,6 +29,7 @@ const VStack = ({ children, gap }) => {
 VStack.propTypes = {
   children: PropTypes.node,
   gap: PropTypes.oneOf(['xs', 's', 'm']),
+  hasOutterGutter: PropTypes.bool,
 }
 
 VStack.defaultProps = {

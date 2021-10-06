@@ -4,6 +4,7 @@ import { AppContext } from '../AppContext'
 
 import AppLayout from '../views/AppLayout'
 import Avatar from '../views/Avatar'
+import Header from '../views/Header'
 import IconedButton from '../views/IconedButton'
 import Note from '../views/Note'
 import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
@@ -27,7 +28,7 @@ const NotesScene = () => {
           isNavOpen={isNavOpen}
           navChildren={
             <>
-              <header role="banner">
+              <Header isSticky role="banner">
                 <Toolbar
                   leadingChildren={<Avatar name="Placeholder" />}
                   trailingChildren={
@@ -36,23 +37,21 @@ const NotesScene = () => {
                 >
                   <h1 className="h4 text--light">Notes</h1>
                 </Toolbar>
-              </header>
+              </Header>
 
-              <div className={styles.navContent}>
-                <VStack gap="xs">
-                  {selectNotes().map(note => {
-                    return (
-                      <Teaser
-                        isActive={note.id === currentNoteID}
-                        title={note.title}
-                        date={note.lastModifiedDate}
-                        onClick={event => handleSetCurrentNote(note, event)}
-                        key={note.id}
-                      />
-                    )
-                  })}
-                </VStack>
-              </div>
+              <VStack gap="xs" hasOutterGutter>
+                {selectNotes().map(note => {
+                  return (
+                    <Teaser
+                      isActive={note.id === currentNoteID}
+                      title={note.title}
+                      date={note.lastModifiedDate}
+                      onClick={event => handleSetCurrentNote(note, event)}
+                      key={note.id}
+                    />
+                  )
+                })}
+              </VStack>
             </>
           }
         >
