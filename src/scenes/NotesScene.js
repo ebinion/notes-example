@@ -12,8 +12,6 @@ import Teaser from '../views/Teaser'
 import Toolbar from '../views/Toolbar'
 import VStack from '../views/VStack'
 
-import styles from './NotesScene.module.css'
-
 const NotesScene = () => {
   return (
     <AppContext.Consumer>
