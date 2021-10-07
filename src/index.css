@@ -18,7 +18,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --c-bg: #222;
-    --c-bg-secondary: rgba(0, 0, 0, 0.9);
+    --c-bg-secondary: #222e;
     --c-primary: #fff;
     --c-secondary: rgba(255, 255, 255, 0.8);
     --c-tertiary: rgba(255, 255, 255, 0.44);

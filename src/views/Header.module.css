@@ -8,8 +8,10 @@
   top: 0;
 }
 @supports (backdrop-filter: var(--backdrop-blur)) {
-  background: var(--c-bg-secondary);
-  backdrop-filter: var(--backdrop-blur);
+  .wrapperIsSticky {
+    background: var(--c-bg-secondary);
+    backdrop-filter: var(--backdrop-blur);
+  }
 }
 
 @media (min-width: 600px) {
