@@ -21,6 +21,9 @@ const NotesScene = () => {
         handleNewNote,
         isNavOpen,
         selectNotes,
+        selectNote,
+        toggleIsNavOpen,
+        updateNote,
       }) => (
         <AppLayout
           isNavOpen={isNavOpen}
@@ -53,7 +56,11 @@ const NotesScene = () => {
             </>
           }
         >
-          <Note />
+          <Note
+            data={selectNote()}
+            updateNote={updateNote}
+            toggleIsNavOpen={toggleIsNavOpen}
+          />
         </AppLayout>
       )}
     </AppContext.Consumer>
