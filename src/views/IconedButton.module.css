@@ -6,16 +6,20 @@
   color: var(--c-tertiary);
   cursor: pointer;
   display: inline-block;
-  height: 44px;
-  padding: calc(44px - 28px);
+  height: var(--touch-target);
   transition: color 0.2s ease-out;
-  width: 44px;
+  position: relative;
+  width: var(--touch-target);
 }
 .wrapper:hover {
   color: var(--c-primary);
 }
 
 .wrapper > svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   height: 16px;
   width: 16px;
+  transform: translate(-50%, -50%);
 }
