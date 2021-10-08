@@ -3,6 +3,10 @@
   gap: var(--pad);
 }
 
+.gapL {
+  gap: var(--pad-l);
+}
+
 .gapS {
   gap: var(--pad-s);
 }

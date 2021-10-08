@@ -8,11 +8,14 @@ const VStack = ({ children, gap, hasOutterGutter }) => {
     let classNames = [styles.wrapper]
 
     switch (gapSize) {
-      case 'xs':
-        classNames.push(styles.gapXs)
+      case 'l':
+        classNames.push(styles.gapL)
         break
       case 's':
         classNames.push(styles.gapS)
+        break
+      case 'xs':
+        classNames.push(styles.gapXs)
         break
       default:
         break
@@ -28,7 +31,7 @@ const VStack = ({ children, gap, hasOutterGutter }) => {
 
 VStack.propTypes = {
   children: PropTypes.node,
-  gap: PropTypes.oneOf(['xs', 's', 'm']),
+  gap: PropTypes.oneOf(['xs', 's', 'm', 'l']),
   hasOutterGutter: PropTypes.bool,
 }
 

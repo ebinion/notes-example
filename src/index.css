@@ -5,6 +5,7 @@
   --c-green: #54bf2f;
   --c-red: #dc1919;
   --c-red-secondary: #dc1919cc;
+  --c-red-tertiary: #dc191955;
   --c-bg: #fff;
   --c-bg-secondary: rgba(255, 255, 255, 0.85);
   --c-on-color: #fff;
@@ -36,6 +37,7 @@
   --drop-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
   --gutter: 40px;
   --pad: 16px;
+  --pad-l: 24px;
   --pad-s: 8px;
   --pad-xs: 4px;
   --radius: 6px;

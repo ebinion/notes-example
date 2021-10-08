@@ -1,5 +1,5 @@
 .column {
   margin: 0 auto;
   max-width: 375px;
-  padding: 0 calc(var(--gutter) / 2);
+  padding: var(--gutter) calc(var(--gutter) / 2);
 }

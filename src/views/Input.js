@@ -3,7 +3,16 @@ import PropTypes from 'prop-types'
 
 import styles from './Input.module.css'
 
-const Input = ({ isRequired, label, onChange, placeholder, value }) => {
+const Input = ({
+  autoComplete,
+  isRequired,
+  label,
+  minLength,
+  onChange,
+  placeholder,
+  type,
+  value,
+}) => {
   const inputEle = useRef()
 
   const handleChange = event => {
@@ -16,11 +25,14 @@ const Input = ({ isRequired, label, onChange, placeholder, value }) => {
     <label className={styles.wrapper}>
       <div className="text--s text--bold">{label}</div>
       <input
+        autoComplete={autoComplete}
         className={styles.input}
+        minLength={minLength}
         onChange={handleChange}
         placeholder={placeholder}
         ref={inputEle}
         required={isRequired}
+        type={type}
         value={value}
       />
     </label>
@@ -28,11 +40,19 @@ const Input = ({ isRequired, label, onChange, placeholder, value }) => {
 }
 
 Input.propTypes = {
+  autoComplete: PropTypes.string,
   isRequired: PropTypes.bool,
   label: PropTypes.node,
+  minLength: PropTypes.number,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  type: PropTypes.oneOf(['text', 'email', 'password']),
   value: PropTypes.string,
+}
+
+Input.defaultProps = {
+  autocomplete: 'on',
+  type: 'text',
 }
 
 export default Input

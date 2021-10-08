@@ -8,6 +8,49 @@ export const addLeadingZero = num => {
   }
 }
 
+export const getAuthErrorMessage = errorCode => {
+  const errorMap = {
+    CREDENTIAL_TOO_OLD_LOGIN_AGAIN: {
+      code: 'auth/requires-recent-login',
+      message: 'The credential expired. Please login again.',
+    },
+    EMAIL_CHANGE_NEEDS_VERIFICATION: {
+      code: 'auth/email-change-needs-verification',
+      message: 'Check your email to verify your change of address.',
+    },
+    EMAIL_EXISTS: {
+      code: 'auth/email-already-in-use',
+      message: 'The email you provided is in use, please sign in instead.',
+    },
+    INVALID_EMAIL: {
+      code: 'auth/invalid-email',
+      message: 'The email you provided is invalid. Please check the format.',
+    },
+    INVALID_PASSWORD: {
+      code: 'auth/wrong-password',
+      message: 'The password you provided was wrong. Please try again.',
+    },
+    UNVERIFIED_EMAIL: {
+      code: 'auth/unverified-email',
+      message: 'Your email address is unverified. Please check your email.',
+    },
+    USER_SIGNED_OUT: {
+      code: 'auth/user-signed-out',
+      message: 'You’ve been signed out.',
+    },
+    WEAK_PASSWORD: {
+      code: 'auth/weak-password',
+      message:
+        'The password was weak. Please try adding more characters, numbers, and symbols.',
+    },
+  }
+
+  return (
+    Object.values(errorMap).find(error => error.code === errorCode).message ||
+    'Sorry, there was an error. Please reload the page and try again.'
+  )
+}
+
 export const convertHoursToMilliseconds = hours => {
   return hours * 3600000
 }

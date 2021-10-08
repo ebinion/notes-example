@@ -1,7 +1,8 @@
 import NotesScene from './scenes/NotesScene'
+import SessionScene from './scenes/SessionScene'
 
 const App = props => {
-  return <NotesScene />
+  return <SessionScene />
 }
 
 export default App
