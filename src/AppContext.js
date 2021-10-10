@@ -1,14 +1,32 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState, createContext } from 'react'
 import ShortUniqueID from 'short-unique-id'
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+} from '@firebase/auth'
+
+import { auth } from './database'
+import { getAuthErrorMessage } from './helpers'
 
 const uid = new ShortUniqueID({ length: 16 })
 
 const AppContext = createContext({
+  errorMessage: '',
+  setErrorMessage: message => {},
+  currentUser: {},
+  createUser: ({ email, name, password }) => {},
+  setCurrentUser: () => {},
   notes: [],
   currentNoteID: '',
   isNavOpen: false,
+  handleSetCurrentNote: note => {},
+  handleNewNote: () => {},
+  selectNote: () => {},
+  selectNotes: () => {},
   toggleIsNavOpen: () => {},
+  updateNote: note => {},
 })
 
 const AppContextProvider = props => {
@@ -26,6 +44,40 @@ const AppContextProvider = props => {
   const [notes, setNotes] = useState([firstNote])
   const [currentNoteID, setCurrentNoteID] = useState(firstNote.id)
   const [isNavOpen, setIsNavOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState()
+  const [currentUser, _setCurrentUser] = useState(null)
+
+  // User
+  const createUser = ({ email, name, password }) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        updateProfile(userCredential.user, {
+          displayName: name,
+        }).then(() => {
+          setCurrentUser(auth.currentUser)
+        })
+      })
+      .catch(error => {
+        setErrorMessage(getAuthErrorMessage(error.code))
+      })
+  }
+
+  const setCurrentUser = user => {
+    if (user) {
+      _setCurrentUser(
+        Object.assign(
+          {},
+          {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+          }
+        )
+      )
+    } else {
+      _setCurrentUser(null)
+    }
+  }
 
   // Managing Notes
   const createNewNote = () => {
@@ -88,7 +140,7 @@ const AppContextProvider = props => {
     try {
       return notes[findNoteIndex(noteID, notes)]
     } catch (error) {
-      console.error(error)
+      setErrorMessage(error)
     }
   }
 
@@ -124,7 +176,7 @@ const AppContextProvider = props => {
 
       setNotes(newNotes)
     } catch (error) {
-      console.error(error)
+      setErrorMessage(error)
     }
   }
 
@@ -149,9 +201,22 @@ const AppContextProvider = props => {
     }
   }, [notes.length])
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setCurrentUser(user)
+    })
+
+    return unsubscribe
+  }, [])
+
   return (
     <AppContext.Provider
       value={{
+        errorMessage,
+        setErrorMessage,
+        createUser,
+        currentUser,
+        setCurrentUser,
         notes,
         currentNoteID,
         isNavOpen,

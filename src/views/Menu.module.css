@@ -1,11 +1,11 @@
 .wrapper {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   position: relative;
 }
 
 .menu {
-  backdrop-filter: blur(var(--backdrop-blur));
-  background: var(--c-bg-secondary);
+  background: var(--c-bg);
   border-radius: var(--radius);
   box-shadow: var(--drop-shadow);
   min-width: 200px;
@@ -17,6 +17,13 @@
   transition: var(--transition);
   transition-property: opacity, transform;
   z-index: 999;
+  top: 100%;
+}
+@supports (backdrop-filter: blur(var(--backdrop-blur))) {
+  .menu {
+    backdrop-filter: blur(var(--backdrop-blur));
+    background: var(--c-bg-secondary);
+  }
 }
 .menuLeadingAnchor {
   left: 0;
@@ -27,7 +34,7 @@
 .menuOpen {
   opacity: 1;
   pointer-events: all;
-  transform: translate(0, 0);
+  transform: translate(0, var(--pad-xs));
 }
 
 @media (prefers-reduced-motion) {

@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 
 import styles from './Button.module.css'
 
-const Button = ({ children, size, type, ...props }) => {
+const Button = ({
+  children,
+  isAlignedLeading,
+  isFullWidth,
+  size,
+  type,
+  ...props
+}) => {
   const getClassNames = (size, type) => {
     let classList = [styles.button]
 
@@ -30,6 +37,10 @@ const Button = ({ children, size, type, ...props }) => {
         classList.push(styles.buttonPrimary)
     }
 
+    if (isFullWidth) classList.push(styles.buttonFullWidth)
+
+    if (isAlignedLeading) classList.push(styles.buttonAlignLeading)
+
     return classList.join(' ')
   }
 
@@ -46,6 +57,8 @@ const Button = ({ children, size, type, ...props }) => {
 
 Button.propTypes = {
   children: PropTypes.node,
+  isFullWidth: PropTypes.bool,
+  isAlignedLeading: PropTypes.bool,
   size: PropTypes.oneOf(['s', 'm']).isRequired,
   type: PropTypes.oneOf(['danger', 'disabled', 'primary', 'secondary'])
     .isRequired,

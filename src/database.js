@@ -3,8 +3,8 @@ import { initializeApp } from 'firebase/app'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getFirestore } from 'firebase/firestore/lite'
-import { getAuth } from 'firebase/auth/'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore/lite'
+import { connectAuthEmulator, getAuth } from 'firebase/auth/'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,8 +17,15 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
 // Export Services
-export const firestore = getFirestore(app)
-export const auth = getAuth(app)
+const firestore = getFirestore(app)
+const auth = getAuth(app)
+
+if (window.location.hostname === 'localhost') {
+  connectFirestoreEmulator(firestore, 'localhost', 8080)
+  connectAuthEmulator(auth, 'http://localhost:9099')
+}
+
+export { auth, app, firestore }

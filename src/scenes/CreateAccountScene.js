@@ -1,42 +1,19 @@
-import { useState } from 'react'
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  updateProfile,
-} from '@firebase/auth'
+import { useContext, useState } from 'react'
 
-import { auth } from '../database'
-
-import { getAuthErrorMessage } from '../helpers'
+import { AppContext } from '../AppContext'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
 import Input from '../views/Input'
 import Form from '../views/Form'
 import VStack from '../views/VStack'
 
-const SessionScene = props => {
+const CreateAccountScene = props => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState()
   const [isFormValid, setIsFormValid] = useState(false)
 
-  const handleSubmit = event => {
-    event.preventDefault()
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        updateProfile(userCredential.user, {
-          displayName: name,
-        })
-      })
-      .catch(error => {
-        setErrorMessage(getAuthErrorMessage(error.code))
-      })
-  }
-
-  onAuthStateChanged(auth, user => {
-    // console.log('currentUser', auth.currentUser)
-  })
+  const { createUser, errorMessage, setErrorMessage } = useContext(AppContext)
 
   return (
     <ColumnLayout>
@@ -48,7 +25,11 @@ const SessionScene = props => {
       <Form
         checkForValidityOn={[name, email, password]}
         errorMessage={errorMessage}
-        onSubmit={handleSubmit}
+        onSubmit={event => {
+          event.preventDefault()
+          setErrorMessage(null)
+          createUser({ name, email, password })
+        }}
         validityCallback={setIsFormValid}
       >
         <VStack gap="l">
@@ -92,4 +73,4 @@ const SessionScene = props => {
   )
 }
 
-export default SessionScene
+export default CreateAccountScene

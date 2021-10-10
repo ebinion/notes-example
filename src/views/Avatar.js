@@ -5,7 +5,7 @@ import { ReactComponent as Chevron } from '../icons/chevron-down-solid.svg'
 import styles from './Avatar.module.css'
 
 const Avatar = ({ name, ...props }) => {
-  const letter = name.charAt(0)
+  const letter = name ? name.charAt(0) : ''
 
   return (
     <button className={styles.wrapper} {...props}>
@@ -24,7 +24,7 @@ const Avatar = ({ name, ...props }) => {
 }
 
 Avatar.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
 }
 
 Avatar.defaultProps = {}
