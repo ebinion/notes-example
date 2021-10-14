@@ -1,9 +1,21 @@
-import { useRef } from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, ReactNode, ReactEventHandler, useRef } from 'react' // eslint-disable-line no-unused-vars
 
 import styles from './Input.module.css'
 
-const Input = ({
+type Type = 'text' | 'email' | 'password'
+
+interface InputProps {
+  autoComplete?: string
+  isRequired?: boolean
+  label?: ReactNode
+  minLength?: number
+  onChange?: Function
+  placeholder?: string
+  type?: Type
+  value?: string
+}
+
+const Input: FC<InputProps> = ({
   autoComplete,
   isRequired,
   label,
@@ -13,10 +25,10 @@ const Input = ({
   type,
   value,
 }) => {
-  const inputEle = useRef()
+  const inputEle = useRef<HTMLInputElement>(null)
 
-  const handleChange = event => {
-    if (typeof onChange === 'function') {
+  const handleChange: ReactEventHandler = (event) => {
+    if (typeof onChange === 'function' && inputEle.current) {
       onChange(inputEle.current.value, event)
     }
   }
@@ -39,19 +51,8 @@ const Input = ({
   )
 }
 
-Input.propTypes = {
-  autoComplete: PropTypes.string,
-  isRequired: PropTypes.bool,
-  label: PropTypes.node,
-  minLength: PropTypes.number,
-  onChange: PropTypes.func,
-  placeholder: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'email', 'password']),
-  value: PropTypes.string,
-}
-
 Input.defaultProps = {
-  autocomplete: 'on',
+  autoComplete: 'on',
   type: 'text',
 }
 

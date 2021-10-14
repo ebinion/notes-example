@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { FC, useContext, useState } from 'react'
 
 import { AppContext } from '../AppContext'
 import Button from '../views/Button'
@@ -7,7 +7,7 @@ import Input from '../views/Input'
 import Form from '../views/Form'
 import VStack from '../views/VStack'
 
-const CreateAccountScene = props => {
+const CreateAccountScene: FC = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,7 +25,7 @@ const CreateAccountScene = props => {
       <Form
         checkForValidityOn={[name, email, password]}
         errorMessage={errorMessage}
-        onSubmit={event => {
+        onSubmit={(event) => {
           event.preventDefault()
           setErrorMessage(null)
           createUser({ name, email, password })

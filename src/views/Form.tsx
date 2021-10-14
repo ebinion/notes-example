@@ -1,20 +1,27 @@
-import { useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
+import { FC, ReactNode, ReactEventHandler, useEffect, useRef } from 'react'
 
 import Notice from './Notice'
 import VStack from './VStack'
 
-const Form = ({
+interface FormProps {
+  children: ReactNode
+  checkForValidityOn: Object[]
+  errorMessage: ReactNode
+  onSubmit: ReactEventHandler
+  validityCallback: Function
+}
+
+const Form: FC<FormProps> = ({
   children,
   checkForValidityOn,
   errorMessage,
   onSubmit,
   validityCallback,
 }) => {
-  const formRef = useRef()
+  const formRef = useRef<HTMLFormElement>(null)
 
   const checkFormValidity = () => {
-    if (typeof validityCallback === 'function')
+    if (typeof validityCallback === 'function' && formRef.current)
       validityCallback(formRef.current.checkValidity())
   }
 
@@ -30,14 +37,6 @@ const Form = ({
       </VStack>
     </form>
   )
-}
-
-Form.propTypes = {
-  children: PropTypes.node,
-  checkForValidityOn: PropTypes.array.isRequired,
-  errorMessage: PropTypes.node,
-  onSubmit: PropTypes.func,
-  validityCallback: PropTypes.func,
 }
 
 Form.defaultProps = {

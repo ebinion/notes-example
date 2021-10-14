@@ -1,10 +1,14 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, ReactEventHandler } from 'react'
 
 import { ReactComponent as Chevron } from '../icons/chevron-down-solid.svg'
 import styles from './Avatar.module.css'
 
-const Avatar = ({ name, ...props }) => {
+interface AvatarProps {
+  name?: string
+  onClick?: ReactEventHandler
+}
+
+const Avatar: FC<AvatarProps> = ({ name, ...props }) => {
   const letter = name ? name.charAt(0) : ''
 
   return (
@@ -22,11 +26,5 @@ const Avatar = ({ name, ...props }) => {
     </button>
   )
 }
-
-Avatar.propTypes = {
-  name: PropTypes.string,
-}
-
-Avatar.defaultProps = {}
 
 export default Avatar

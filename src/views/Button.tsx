@@ -1,9 +1,20 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import {FC, ReactNode, ReactEventHandler} from 'react'
 
 import styles from './Button.module.css'
 
-const Button = ({
+type Size = 's' | 'm'
+type Type = 'danger' | 'disabled' | 'primary' | 'secondary'
+
+interface ButtonProps {
+  children: ReactNode
+  isFullWidth?: boolean
+  isAlignedLeading?: boolean
+  onClick?: ReactEventHandler
+  size?: Size
+  type?: Type
+}
+
+const Button: FC<ButtonProps> = ({
   children,
   isAlignedLeading,
   isFullWidth,
@@ -11,7 +22,7 @@ const Button = ({
   type,
   ...props
 }) => {
-  const getClassNames = (size, type) => {
+  const getClassNames = (size: Size, type: Type) => {
     let classList = [styles.button]
 
     switch (size) {
@@ -46,22 +57,13 @@ const Button = ({
 
   return (
     <button
-      className={getClassNames(size, type)}
+      className={size && type && getClassNames(size, type)}
       disabled={type === 'disabled'}
       {...props}
     >
       {children}
     </button>
   )
-}
-
-Button.propTypes = {
-  children: PropTypes.node,
-  isFullWidth: PropTypes.bool,
-  isAlignedLeading: PropTypes.bool,
-  size: PropTypes.oneOf(['s', 'm']).isRequired,
-  type: PropTypes.oneOf(['danger', 'disabled', 'primary', 'secondary'])
-    .isRequired,
 }
 
 Button.defaultProps = {

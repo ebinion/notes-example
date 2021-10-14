@@ -1,5 +1,11 @@
-import { useEffect, useState, useRef } from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import {
+  FC,
+  ReactEventHandler,
+  SyntheticEvent,
+  useEffect,
+  useState,
+  useRef,
+} from 'react' // eslint-disable-line no-unused-vars
 
 import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
 import Button from './Button'
@@ -8,18 +14,36 @@ import IconedButton from './IconedButton'
 import Time from './Time'
 import Toolbar from './Toolbar'
 import VStack from './VStack'
+import { NoteType } from '../AppContext'
 
 import styles from './Note.module.css'
 
-const Note = ({ data, toggleIsNavOpen, updateNote }) => {
+type NoteData = {
+  lastModifiedDate: Date
+  id: string
+  createdDate: Date
+  title: string
+  body: string
+}
+
+interface NoteProps {
+  data?: NoteData
+  toggleIsNavOpen: ReactEventHandler
+  updateNote: Function
+}
+
+const Note: FC<NoteProps> = ({ data, toggleIsNavOpen, updateNote }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [titleHasContent, setTitleHasContent] = useState(false)
   const [bodyHasContent, setBodyHasContent] = useState(false)
-  const titleEleRef = useRef()
-  const bodyEleRef = useRef()
+  const titleEleRef = useRef<HTMLHeadingElement>(null)
+  const bodyEleRef = useRef<HTMLDivElement>(null)
 
-  const addFieldChangeListener = (element, callback) => {
-    const handleChange = (mutatuionsList, observer) => {
+  const addFieldChangeListener = (element: HTMLElement, callback: Function) => {
+    const handleChange: MutationCallback = (
+      mutatuionsList: MutationRecord[],
+      observer: MutationObserver
+    ) => {
       callback(mutatuionsList, observer)
     }
 
@@ -38,17 +62,21 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
     }
   }
 
-  const handleEdit = event => {
+  const handleEdit: ReactEventHandler = (event) => {
     event.preventDefault()
     setIsEditing(true)
   }
 
-  const handleSave = (event, note, updateNote) => {
+  const handleSave = (
+    event: SyntheticEvent,
+    note: NoteType,
+    updateNote: Function
+  ) => {
     event.preventDefault()
 
     const newNote = Object.assign({}, note, {
-      body: bodyEleRef.current.innerHTML,
-      title: titleEleRef.current.innerHTML,
+      body: bodyEleRef.current && bodyEleRef.current.innerHTML,
+      title: titleEleRef.current && titleEleRef.current.innerHTML,
     })
 
     updateNote(newNote)
@@ -56,23 +84,36 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
   }
 
   const handleBodyClick = () => {
-    bodyEleRef.current.focus()
+    bodyEleRef.current && bodyEleRef.current.focus()
   }
 
   useEffect(() => {
-    const disconnect = addFieldChangeListener(titleEleRef.current, () => {
-      setTitleHasContent(titleEleRef.current.innerHTML !== '')
-    })
+    if (titleEleRef.current !== null) {
+      const disconnect = addFieldChangeListener(titleEleRef.current, () => {
+        if (
+          titleEleRef.current &&
+          titleEleRef.current.innerHTML !== '<br>' &&
+          titleEleRef.current.innerHTML
+        ) {
+          setTitleHasContent(true)
+        } else {
+          setTitleHasContent(false)
+        }
+      })
 
-    return disconnect
-  }, [titleEleRef])
+      return disconnect
+    }
+  }, [])
 
   useEffect(() => {
-    const disconnect = addFieldChangeListener(bodyEleRef.current, () => {
-      setBodyHasContent(bodyEleRef.current.innerHTML !== '')
-    })
+    if (bodyEleRef.current) {
+      const disconnect = addFieldChangeListener(bodyEleRef.current, () => {
+        bodyEleRef.current &&
+          setBodyHasContent(bodyEleRef.current.innerHTML !== '')
+      })
 
-    return disconnect
+      return disconnect
+    }
   }, [bodyEleRef])
 
   return (
@@ -81,17 +122,23 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
         <Toolbar
           leadingChildren={
             <>
-              <IconedButton icon={<BarsIcon />} onClick={toggleIsNavOpen} />
+              <IconedButton onClick={toggleIsNavOpen}>
+                <BarsIcon />
+              </IconedButton>
 
-              <div className="text--light text--s">
-                Last edited <Time date={data.lastModifiedDate} />
-              </div>
+              {data && (
+                <div className="text--light text--s">
+                  Last edited <Time date={data.lastModifiedDate} />
+                </div>
+              )}
             </>
           }
           trailingChildren={
             isEditing && (
               <Button
-                onClick={event => handleSave(event, data, updateNote)}
+                onClick={(event) =>
+                  data && updateNote && handleSave(event, data, updateNote)
+                }
                 size="s"
               >
                 Save
@@ -107,7 +154,7 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
             contentEditable
             onClick={handleEdit}
             ref={titleEleRef}
-            dangerouslySetInnerHTML={{ __html: data && data.title }}
+            dangerouslySetInnerHTML={{ __html: data ? data.title : '' }}
           />
           <div className={styles.headerPlaceholder}>
             <div className="h1 text--light">
@@ -122,7 +169,7 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
             contentEditable
             onClick={handleEdit}
             ref={bodyEleRef}
-            dangerouslySetInnerHTML={{ __html: data && data.body }}
+            dangerouslySetInnerHTML={data && { __html: data.body }}
           />
           <div className={styles.bodyPlaceholder}>
             <div className="text--light">
@@ -134,13 +181,5 @@ const Note = ({ data, toggleIsNavOpen, updateNote }) => {
     </article>
   )
 }
-
-Note.propTypes = {
-  data: PropTypes.object,
-  toggleIsNavOpen: PropTypes.func,
-  updateNote: PropTypes.func,
-}
-
-Note.defaultProps = {}
 
 export default Note

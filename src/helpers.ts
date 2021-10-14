@@ -1,4 +1,4 @@
-export const addLeadingZero = num => {
+export const addLeadingZero = (num: number): string => {
   const numString = num.toString()
 
   if (numString.length === 1) {
@@ -8,7 +8,7 @@ export const addLeadingZero = num => {
   }
 }
 
-export const getAuthErrorMessage = errorCode => {
+export const getAuthErrorMessage = (errorCode: string): string => {
   const errorMap = {
     CREDENTIAL_TOO_OLD_LOGIN_AGAIN: {
       code: 'auth/requires-recent-login',
@@ -45,43 +45,48 @@ export const getAuthErrorMessage = errorCode => {
     },
   }
 
-  return (
-    Object.values(errorMap).find(error => error.code === errorCode).message ||
-    'Sorry, there was an error. Please reload the page and try again.'
-  )
+  const currentError = Object.values(errorMap).find(error => error.code === errorCode)
+  const defaultMessage = 'Sorry, there was an error. Please reload the page and try again.'
+
+  return currentError ? currentError.message : defaultMessage
 }
 
-export const convertHoursToMilliseconds = hours => {
+export const convertHoursToMilliseconds = (hours: number): number => {
   return hours * 3600000
 }
 
-export const convertMillisecondsToMinutes = ms => {
+export const convertMillisecondsToMinutes = (ms: number): number => {
   return Math.floor(ms / 60000)
 }
 
-export const convertMillisecondsToHours = ms => {
+export const convertMillisecondsToHours = (ms: number): number => {
   return Math.floor(ms / 3600000)
 }
 
-export const convertSecondsToHours = seconds => {
+export const convertSecondsToHours = (seconds: number): number => {
   return Math.floor(seconds / 3600)
 }
 
-export const convertSecondsToMinutes = seconds => {
+export const convertSecondsToMinutes = (seconds: number): number => {
   return Math.floor(seconds / 60)
 }
 
-export const convertSecondsToMilliseconds = seconds => {
+export const convertSecondsToMilliseconds = (seconds: number): number => {
   return seconds * 1000
 }
 
-export const getDateString = dateObj => {
+export const getDateString = (date: Date): string => {
   return `${
-    dateObj.getMonth() + 1
-  }/${dateObj.getDate()}/${dateObj.getFullYear()}`
+    date.getMonth() + 1
+  }/${date.getDate()}/${date.getFullYear()}`
 }
 
-export const getNextInterval = (elapsedTime, intervalsArray) => {
+interface Interval {
+  elapsedTime: number,
+  updateInterval: number,
+}
+
+export const getNextInterval = (elapsedTime: number, intervalsArray: Interval[]): number | false => {
   if (intervalsArray[0].elapsedTime > elapsedTime) {
     return intervalsArray[0].updateInterval
   } else if (intervalsArray.length === 1) {
@@ -91,7 +96,12 @@ export const getNextInterval = (elapsedTime, intervalsArray) => {
   }
 }
 
-export const getTimeAgo = (elapsedTime, timeAgos, defaultString = '') => {
+interface TimeAgo {
+  elapsedTime: number,
+  string: string | Function,
+}
+
+export const getTimeAgo = (elapsedTime: number, timeAgos: TimeAgo[], defaultString = ''): string => {
   if (elapsedTime < timeAgos[0].elapsedTime) {
     return typeof timeAgos[0].string === 'function'
       ? timeAgos[0].string(elapsedTime)
@@ -103,9 +113,9 @@ export const getTimeAgo = (elapsedTime, timeAgos, defaultString = '') => {
   }
 }
 
-export const getTimeString = dateObj => {
+export const getTimeString = (date: Date): string => {
   const getHours = () => {
-    const hours = dateObj.getHours()
+    const hours = date.getHours()
 
     if (hours === 0) {
       return 12
@@ -115,23 +125,23 @@ export const getTimeString = dateObj => {
       return hours
     }
   }
-  const meridiem = dateObj.getHours() < 11 ? 'am' : 'pm'
-  const minutes = addLeadingZero(dateObj.getMinutes())
+  const meridiem = date.getHours() < 11 ? 'am' : 'pm'
+  const minutes = addLeadingZero(date.getMinutes())
 
   return `${getHours()}:${minutes}${meridiem}`
 }
 
-export const getZuluDate = dateObj => {
-  const year = dateObj.getUTCFullYear()
-  const month = addLeadingZero(dateObj.getUTCMonth() + 1)
-  const date = addLeadingZero(dateObj.getUTCDate())
+export const getZuluDate = (date: Date): string => {
+  const year = date.getUTCFullYear()
+  const month = addLeadingZero(date.getUTCMonth() + 1)
+  const dateUTC = addLeadingZero(date.getUTCDate())
 
-  const hours = addLeadingZero(dateObj.getUTCHours())
-  const minutes = addLeadingZero(dateObj.getUTCMinutes())
-  const seconds = addLeadingZero(dateObj.getUTCSeconds())
+  const hours = addLeadingZero(date.getUTCHours())
+  const minutes = addLeadingZero(date.getUTCMinutes())
+  const seconds = addLeadingZero(date.getUTCSeconds())
 
-  return `${year}-${month}-${date}T${hours}:${minutes}:${seconds}Z`
+  return `${year}-${month}-${dateUTC}T${hours}:${minutes}:${seconds}Z`
 }
 
-export const getDateTimeString = dateObj =>
-  `${getDateString(dateObj)} at ${getTimeString(dateObj)}`
+export const getDateTimeString = (date: Date): string =>
+  `${getDateString(date)} at ${getTimeString(date)}`

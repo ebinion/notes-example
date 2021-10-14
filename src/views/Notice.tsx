@@ -1,10 +1,13 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import {FC, ReactNode} from 'react'
 
 import styles from './Notice.module.css'
 import { ReactComponent as ExclamationIcon } from '../icons/exclamation-circle-solid.svg'
 
-const Notice = ({ children }) => {
+interface NoticeProps {
+  children: ReactNode
+}
+
+const Notice: FC<NoticeProps> = ({ children }) => {
   return (
     <div className={styles.wrapper} role="alert">
       <div className={styles.icon}>
@@ -14,11 +17,5 @@ const Notice = ({ children }) => {
     </div>
   )
 }
-
-Notice.propTypes = {
-  children: PropTypes.node,
-}
-
-Notice.defaultProps = {}
 
 export default Notice

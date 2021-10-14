@@ -92,8 +92,8 @@ describe('getTimeAgo', () => {
   it('returns default string when no matches occurred', () => {
     const millisecondsElapsed = 20000
     const timeAgos = [
-      { duration: 1000, string: 'now' },
-      { duration: 5000, string: '5 seconds ago' },
+      { elapsedTime: 1000, string: 'now' },
+      { elapsedTime: 5000, string: '5 seconds ago' },
     ]
     const defaultString = 'default string'
 

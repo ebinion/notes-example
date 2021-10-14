@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { EffectCallback, FC, useEffect, useRef, useState } from 'react' // eslint-disable-line no-unused-vars
 
 import {
   convertHoursToMilliseconds,
@@ -12,7 +11,7 @@ import {
   getZuluDate,
 } from '../helpers'
 
-const useTimeAgo = date => {
+const useTimeAgo = (date: Date) => {
   const defaultTimeString = getDateTimeString(date)
 
   const updateIntervals = useRef([
@@ -33,40 +32,41 @@ const useTimeAgo = date => {
     },
     {
       elapsedTime: convertHoursToMilliseconds(1),
-      string: num => `${convertMillisecondsToMinutes(num)} mins ago`,
+      string: (num: number) => `${convertMillisecondsToMinutes(num)} mins ago`,
       updateInterval: convertSecondsToMilliseconds(60),
     },
     {
       elapsedTime: convertHoursToMilliseconds(24),
-      string: num => `${convertMillisecondsToHours(num)} hours ago`,
+      string: (num: number) => `${convertMillisecondsToHours(num)} hours ago`,
       updateInterval: convertHoursToMilliseconds(1),
     },
   ])
 
   const [timeString, setTimeString] = useState(
     getTimeAgo(
-      Date.now() - Date.parse(date),
+      Date.now() - Date.parse(date.toISOString()),
       updateIntervals.current,
       defaultTimeString
     )
   )
 
-  useEffect(
-    didUpdate => {
+  const updateText: EffectCallback = () => {
+    const dateString = date.toISOString()
+
       const nextInterval = getNextInterval(
-        Date.now() - Date.parse(date),
+        Date.now() - Date.parse(dateString),
         updateIntervals.current
       )
 
       const newTimeString = () => {
         return getTimeAgo(
-          Date.now() - Date.parse(date),
+          Date.now() - Date.parse(dateString),
           updateIntervals.current,
           defaultTimeString
         )
       }
 
-      if (!didUpdate && newTimeString() !== timeString) {
+      if (newTimeString() !== timeString) {
         setTimeString(newTimeString())
       }
 
@@ -77,26 +77,29 @@ const useTimeAgo = date => {
 
         return () => clearTimeout(timeoutID)
       }
-    },
+  }
+
+  useEffect(
+    updateText,
     [date, defaultTimeString, updateIntervals, timeString]
   )
 
   return timeString
 }
 
-const Time = props => {
-  const timeString = useTimeAgo(props.date)
+interface TimeProps {
+  className?: string
+  date: Date,
+}
+
+const Time:FC<TimeProps> = ({className, date}) => {
+  const timeString = useTimeAgo(date)
 
   return (
-    <time dateTime={getZuluDate(props.date)} className={props.className}>
+    <time dateTime={getZuluDate(date)} className={className}>
       {timeString}
     </time>
   )
-}
-
-Time.propTypes = {
-  className: PropTypes.string,
-  date: PropTypes.instanceOf(Date).isRequired,
 }
 
 export default Time

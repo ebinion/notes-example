@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import { signOut } from '@firebase/auth'
 
 import { AppContext } from '../AppContext'
@@ -16,7 +16,7 @@ import Teaser from '../views/Teaser'
 import Toolbar from '../views/Toolbar'
 import VStack from '../views/VStack'
 
-const NotesScene = () => {
+const NotesScene: FC = () => {
   const {
     currentUser,
     currentNoteID,
@@ -37,10 +37,20 @@ const NotesScene = () => {
           <Header isSticky role="banner">
             <Toolbar
               leadingChildren={
-                <Menu trigger={<Avatar name={currentUser.displayName} />}>
+                <Menu
+                  trigger={
+                    <Avatar
+                      name={
+                        currentUser && currentUser.displayName
+                          ? currentUser.displayName
+                          : undefined
+                      }
+                    />
+                  }
+                >
                   <VStack>
                     <div className="text--s text--light">
-                      {currentUser.displayName &&
+                      {currentUser?.displayName &&
                         `Hi, ${currentUser.displayName}`}
                     </div>
                     <Button
@@ -56,7 +66,9 @@ const NotesScene = () => {
                 </Menu>
               }
               trailingChildren={
-                <IconedButton icon={<PlusIcon />} onClick={handleNewNote} />
+                <IconedButton onClick={handleNewNote}>
+                  <PlusIcon />
+                </IconedButton>
               }
             >
               <h1 className="h4 text--light">Notes</h1>
@@ -64,13 +76,13 @@ const NotesScene = () => {
           </Header>
 
           <VStack gap="xs" hasOutterGutter>
-            {selectNotes().map(note => {
+            {selectNotes().map((note) => {
               return (
                 <Teaser
                   isActive={note.id === currentNoteID}
                   title={note.title}
                   date={note.lastModifiedDate}
-                  onClick={event => handleSetCurrentNote(note, event)}
+                  onClick={(event) => handleSetCurrentNote(note, event)}
                   key={note.id}
                 />
               )

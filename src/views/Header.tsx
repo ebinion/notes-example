@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types'
+import { AriaRole, FC, ReactNode } from 'react'
 
 import styles from './Header.module.css'
 
-const Header = ({ children, isSticky, role }) => {
+interface HeaderProps {
+  children: ReactNode
+  isSticky?: boolean
+  role?: AriaRole
+}
+
+const Header: FC<HeaderProps> = ({ children, isSticky, role }) => {
   return (
     <header
       role={role}
@@ -12,13 +18,5 @@ const Header = ({ children, isSticky, role }) => {
     </header>
   )
 }
-
-Header.propTypes = {
-  children: PropTypes.node,
-  isSticky: PropTypes.bool,
-  role: PropTypes.string,
-}
-
-Header.defaultProps = {}
 
 export default Header

@@ -1,13 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
+import {
+  cloneElement,
+  FC,
+  ReactElement,
+  ReactNode,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import styles from './Menu.module.css'
 
-const Menu = ({ anchor, children, trigger }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const menuRef = useRef()
+type Anchor = 'leading' | 'trailing'
 
-  const getClassNames = (anchor, isMenuOpen) => {
+interface MenuProps {
+  anchor?: Anchor
+  children: ReactNode
+  trigger: ReactElement
+}
+
+const Menu: FC<MenuProps> = ({ anchor, children, trigger }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  const getClassNames = (anchor: Anchor, isMenuOpen: boolean) => {
     let classNames = [styles.menu]
 
     if (anchor === 'trailing') {
@@ -23,33 +39,33 @@ const Menu = ({ anchor, children, trigger }) => {
     return classNames.join(' ')
   }
 
-  const handleTriggerClick = event => {
+  const handleTriggerClick = (event: SyntheticEvent) => {
     event.preventDefault()
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const handleMenuClick = event => {
+  const handleMenuClick = (event: SyntheticEvent) => {
     event.defaultPrevented && isMenuOpen && event.stopPropagation()
   }
 
   useEffect(() => {
-    const handleDocClick = event => {
+    const handleDocClick = (event: Event) => {
       isMenuOpen && setIsMenuOpen(false)
     }
     document.addEventListener('click', handleDocClick)
 
-    isMenuOpen && menuRef.current.focus()
+    isMenuOpen && menuRef?.current?.focus()
 
     return () => document.removeEventListener('click', handleDocClick)
   }, [isMenuOpen])
 
   return (
     <i className={styles.wrapper}>
-      {React.cloneElement(trigger, { onClick: handleTriggerClick })}
+      {cloneElement(trigger, { onClick: handleTriggerClick })}
       <div
-        className={getClassNames(anchor, isMenuOpen)}
+        className={anchor && getClassNames(anchor, isMenuOpen)}
         aria-hidden={!isMenuOpen && 'true'}
-        tabIndex="-1"
+        tabIndex={-1}
         onClick={handleMenuClick}
         ref={menuRef}
         role="menu"
@@ -58,12 +74,6 @@ const Menu = ({ anchor, children, trigger }) => {
       </div>
     </i>
   )
-}
-
-Menu.propTypes = {
-  anchor: PropTypes.oneOf(['leading', 'trailing']),
-  children: PropTypes.node,
-  trigger: PropTypes.element,
 }
 
 Menu.defaultProps = {

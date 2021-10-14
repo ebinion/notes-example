@@ -1,10 +1,16 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
-
+import { FC, ReactNode } from 'react'
 import styles from './VStack.module.css'
 
-const VStack = ({ children, gap, hasOutterGutter }) => {
-  const getClassNames = gapSize => {
+type Gap = 'xs' | 's' | 'm' | 'l'
+
+interface VStackProps {
+  children: ReactNode
+  gap?: Gap
+  hasOutterGutter?: boolean
+}
+
+const VStack: FC<VStackProps> = ({ children, gap, hasOutterGutter }) => {
+  const getClassNames = (gapSize: Gap) => {
     let classNames = [styles.wrapper]
 
     switch (gapSize) {
@@ -26,17 +32,7 @@ const VStack = ({ children, gap, hasOutterGutter }) => {
     return classNames.join(' ')
   }
 
-  return <div className={getClassNames(gap)}>{children}</div>
-}
-
-VStack.propTypes = {
-  children: PropTypes.node,
-  gap: PropTypes.oneOf(['xs', 's', 'm', 'l']),
-  hasOutterGutter: PropTypes.bool,
-}
-
-VStack.defaultProps = {
-  gap: 'm',
+  return <div className={getClassNames(gap || 'm')}>{children}</div>
 }
 
 export default VStack
