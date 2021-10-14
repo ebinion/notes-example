@@ -1,33 +1,30 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, MouseEventHandler } from 'react'
 
 import Time from './Time'
 import styles from './Teaser.module.css'
 
-const Card = props => {
+interface CardProps {
+  date: Date
+  isActive?: boolean
+  onClick: MouseEventHandler
+  title?: string
+}
+
+const Card: FC<CardProps> = ({ date, isActive, onClick, title }) => {
   return (
     <button
-      onClick={props.onClick}
-      className={`${styles.wrapper} ${
-        props.isActive ? styles.wrapperIsActive : ''
-      }`}
+      onClick={onClick}
+      className={`${styles.wrapper} ${isActive ? styles.wrapperIsActive : ''}`}
     >
       <h3
-        dangerouslySetInnerHTML={{ __html: props.title || 'Untitled Note' }}
+        dangerouslySetInnerHTML={{ __html: title || 'Untitled Note' }}
         className="h4 text--truncated text--noMargin"
       />
       <div className="text--s text--light">
-        <Time date={props.date} />
+        <Time date={date} />
       </div>
     </button>
   )
-}
-
-Card.propTypes = {
-  isActive: PropTypes.bool,
-  title: PropTypes.string,
-  date: PropTypes.instanceOf(Date).isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 Card.defaultProps = {}

@@ -1,22 +1,25 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, ReactNode } from 'react'
 
 import styles from './Toolbar.module.css'
 
-const Toolbar = props => {
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.leading}>{props.leadingChildren}</div>
-      <div className={styles.center}>{props.children}</div>
-      <div className={styles.trailing}>{props.trailingChildren}</div>
-    </div>
-  )
+interface ToolbarProps {
+  children?: ReactNode
+  leadingChildren?: ReactNode
+  trailingChildren?: ReactNode
 }
 
-Toolbar.propTypes = {
-  children: PropTypes.node,
-  leadingChildren: PropTypes.node,
-  trailingChildren: PropTypes.node,
+const Toolbar: FC<ToolbarProps> = ({
+  children,
+  leadingChildren,
+  trailingChildren,
+}) => {
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.leading}>{leadingChildren}</div>
+      <div className={styles.center}>{children}</div>
+      <div className={styles.trailing}>{trailingChildren}</div>
+    </div>
+  )
 }
 
 Toolbar.defaultProps = {}

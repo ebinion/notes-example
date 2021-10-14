@@ -1,37 +1,38 @@
-import React, { useRef, useEffect } from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, ReactNode, useRef, useEffect } from 'react'
 
 import styles from './AppLayout.module.css'
 
-const AppLayout = props => {
-  const navRef = useRef()
+interface AppLayoutProps {
+  children: ReactNode
+  isNavOpen: boolean
+  navChildren: ReactNode
+}
+
+const AppLayout: FC<AppLayoutProps> = ({
+  children,
+  isNavOpen,
+  navChildren,
+}) => {
+  const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    if (props.isNavOpen) {
-      navRef.current.focus()
+    if (isNavOpen) {
+      navRef.current?.focus()
     }
-  }, [props.isNavOpen])
+  }, [isNavOpen])
 
   return (
     <main className={styles.wrapper}>
       <nav
-        className={`${styles.nav} ${props.isNavOpen && styles.navIsOpen}`}
+        className={`${styles.nav} ${isNavOpen && styles.navIsOpen}`}
         ref={navRef}
-        tabIndex="-1"
+        tabIndex={-1}
       >
-        {props.navChildren}
+        {navChildren}
       </nav>
-      <section className={styles.content}>{props.children}</section>
+      <section className={styles.content}>{children}</section>
     </main>
   )
 }
-
-AppLayout.propTypes = {
-  children: PropTypes.node,
-  isNavOpen: PropTypes.bool,
-  navChildren: PropTypes.node,
-}
-
-AppLayout.defaultProps = {}
 
 export default AppLayout

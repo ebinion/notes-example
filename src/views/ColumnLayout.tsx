@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types'
+import { FC, ReactNode } from 'react'
 
 import styles from './ColumnLayout.module.css'
 
-const ColumnLayout = ({ children }) => {
-  return <main className={styles.column}>{children}</main>
+interface ColumnLayoutProps {
+  children: ReactNode
 }
 
-ColumnLayout.propTypes = {
-  children: PropTypes.node,
+const ColumnLayout: FC<ColumnLayoutProps> = ({ children }) => {
+  return <main className={styles.column}>{children}</main>
 }
 
 export default ColumnLayout

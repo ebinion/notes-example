@@ -1,20 +1,18 @@
-import React from 'react' // eslint-disable-line no-unused-vars
-import PropTypes from 'prop-types'
+import { FC, ReactNode, ReactEventHandler } from 'react'
 
 import styles from './IconedButton.module.css'
 
-const IconedLink = ({ icon, ...props }) => {
+interface IconedLinkProps {
+  children: ReactNode
+  onClick: ReactEventHandler
+}
+
+const IconedLink: FC<IconedLinkProps> = ({ children, ...props }) => {
   return (
     <button className={styles.wrapper} {...props}>
-      {icon}
+      {children}
     </button>
   )
 }
-
-IconedLink.propTypes = {
-  icon: PropTypes.element,
-}
-
-IconedLink.defaultProps = {}
 
 export default IconedLink
