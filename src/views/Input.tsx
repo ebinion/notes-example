@@ -1,4 +1,4 @@
-import { FC, ReactNode, ReactEventHandler, useRef } from 'react' // eslint-disable-line no-unused-vars
+import { FC, ReactNode, ReactEventHandler, useRef, SyntheticEvent } from 'react' // eslint-disable-line no-unused-vars
 
 import styles from './Input.module.css'
 
@@ -9,7 +9,7 @@ interface InputProps {
   isRequired?: boolean
   label?: ReactNode
   minLength?: number
-  onChange?: Function
+  onChange?: (value: string, event: SyntheticEvent) => void
   placeholder?: string
   type?: Type
   value?: string
@@ -27,7 +27,7 @@ const Input: FC<InputProps> = ({
 }) => {
   const inputEle = useRef<HTMLInputElement>(null)
 
-  const handleChange: ReactEventHandler = (event) => {
+  const handleChange: ReactEventHandler<HTMLInputElement> = (event) => {
     if (typeof onChange === 'function' && inputEle.current) {
       onChange(inputEle.current.value, event)
     }

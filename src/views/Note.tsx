@@ -14,7 +14,6 @@ import IconedButton from './IconedButton'
 import Time from './Time'
 import Toolbar from './Toolbar'
 import VStack from './VStack'
-import { NoteType } from '../AppContext'
 
 import styles from './Note.module.css'
 
@@ -69,7 +68,7 @@ const Note: FC<NoteProps> = ({ data, toggleIsNavOpen, updateNote }) => {
 
   const handleSave = (
     event: SyntheticEvent,
-    note: NoteType,
+    note: NoteData,
     updateNote: Function
   ) => {
     event.preventDefault()

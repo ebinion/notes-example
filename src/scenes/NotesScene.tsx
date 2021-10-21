@@ -1,103 +1,101 @@
-import { FC, useContext } from 'react'
-import { signOut } from '@firebase/auth'
+// NOTE: file is largely commented out for refactoring work.
+import { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { AppContext } from '../AppContext'
+import { AppDispatch, selectCurrentUser, signOut } from '../store'
 
-import AppLayout from '../views/AppLayout'
-import Avatar from '../views/Avatar'
-import { auth } from '../database'
+// import AppLayout from '../views/AppLayout'
+// import Avatar from '../views/Avatar'
 import Button from '../views/Button'
-import Header from '../views/Header'
-import IconedButton from '../views/IconedButton'
-import Menu from '../views/Menu'
-import Note from '../views/Note'
-import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
-import Teaser from '../views/Teaser'
-import Toolbar from '../views/Toolbar'
-import VStack from '../views/VStack'
+// import Header from '../views/Header'
+// import IconedButton from '../views/IconedButton'
+// import Menu from '../views/Menu'
+// import Note from '../views/Note'
+// import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
+// import Teaser from '../views/Teaser'
+// import Toolbar from '../views/Toolbar'
+// import VStack from '../views/VStack'
+// import { signOut } from '../store/currentUserActions'
 
 const NotesScene: FC = () => {
-  const {
-    currentUser,
-    currentNoteID,
-    handleSetCurrentNote,
-    handleNewNote,
-    isNavOpen,
-    selectNotes,
-    selectNote,
-    toggleIsNavOpen,
-    updateNote,
-  } = useContext(AppContext)
+  const currentUser = useSelector(selectCurrentUser)
+  const dispatch = useDispatch<AppDispatch>()
 
   return (
-    <AppLayout
-      isNavOpen={isNavOpen}
-      navChildren={
-        <>
-          <Header isSticky role="banner">
-            <Toolbar
-              leadingChildren={
-                <Menu
-                  trigger={
-                    <Avatar
-                      name={
-                        currentUser && currentUser.displayName
-                          ? currentUser.displayName
-                          : undefined
-                      }
-                    />
-                  }
-                >
-                  <VStack>
-                    <div className="text--s text--light">
-                      {currentUser?.displayName &&
-                        `Hi, ${currentUser.displayName}`}
-                    </div>
-                    <Button
-                      isAlignedLeading
-                      isFullWidth
-                      onClick={() => signOut(auth)}
-                      size="s"
-                      type="secondary"
-                    >
-                      Sign Out
-                    </Button>
-                  </VStack>
-                </Menu>
-              }
-              trailingChildren={
-                <IconedButton onClick={handleNewNote}>
-                  <PlusIcon />
-                </IconedButton>
-              }
-            >
-              <h1 className="h4 text--light">Notes</h1>
-            </Toolbar>
-          </Header>
-
-          <VStack gap="xs" hasOutterGutter>
-            {selectNotes().map((note) => {
-              return (
-                <Teaser
-                  isActive={note.id === currentNoteID}
-                  title={note.title}
-                  date={note.lastModifiedDate}
-                  onClick={(event) => handleSetCurrentNote(note, event)}
-                  key={note.id}
-                />
-              )
-            })}
-          </VStack>
-        </>
-      }
-    >
-      <Note
-        data={selectNote()}
-        updateNote={updateNote}
-        toggleIsNavOpen={toggleIsNavOpen}
-      />
-    </AppLayout>
+    <div>
+      <h1>Hi, {currentUser?.name}</h1>
+      <Button onClick={() => dispatch(signOut())}>Logout</Button>
+    </div>
   )
+
+  // return (
+  //   <AppLayout
+  //     isNavOpen={isNavOpen}
+  //     navChildren={
+  //       <>
+  //         <Header isSticky role="banner">
+  //           <Toolbar
+  //             leadingChildren={
+  //               <Menu
+  //                 trigger={
+  //                   <Avatar
+  //                     name={
+  //                       currentUser && currentUser.name
+  //                         ? currentUser.name
+  //                         : undefined
+  //                     }
+  //                   />
+  //                 }
+  //               >
+  //                 <VStack>
+  //                   <div className="text--s text--light">
+  //                     {currentUser?.name && `Hi, ${currentUser.name}`}
+  //                   </div>
+  //                   <Button
+  //                     isAlignedLeading
+  //                     isFullWidth
+  //                     onClick={() => signOut(currentUserDispatch)}
+  //                     size="s"
+  //                     type="secondary"
+  //                   >
+  //                     Sign Out
+  //                   </Button>
+  //                 </VStack>
+  //               </Menu>
+  //             }
+  //             trailingChildren={
+  //               <IconedButton onClick={handleNewNote}>
+  //                 <PlusIcon />
+  //               </IconedButton>
+  //             }
+  //           >
+  //             <h1 className="h4 text--light">Notes</h1>
+  //           </Toolbar>
+  //         </Header>
+
+  //         <VStack gap="xs" hasOutterGutter>
+  //           {selectNotes().map((note) => {
+  //             return (
+  //               <Teaser
+  //                 isActive={note.id === currentNoteID}
+  //                 title={note.title}
+  //                 date={note.lastModifiedDate}
+  //                 onClick={(event) => handleSetCurrentNote(note, event)}
+  //                 key={note.id}
+  //               />
+  //             )
+  //           })}
+  //         </VStack>
+  //       </>
+  //     }
+  //   >
+  //     <Note
+  //       data={selectNote()}
+  //       updateNote={updateNote}
+  //       toggleIsNavOpen={toggleIsNavOpen}
+  //     />
+  //   </AppLayout>
+  // )
 }
 
 export default NotesScene

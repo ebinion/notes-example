@@ -6,7 +6,7 @@ import VStack from './VStack'
 interface FormProps {
   children: ReactNode
   checkForValidityOn: Object[]
-  errorMessage: ReactNode
+  errorMessage?: ReactNode
   onSubmit: ReactEventHandler
   validityCallback: Function
 }
