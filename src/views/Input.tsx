@@ -1,30 +1,27 @@
-import { FC, ReactNode, ReactEventHandler, useRef, SyntheticEvent } from 'react' // eslint-disable-line no-unused-vars
+import { ReactNode, ReactEventHandler, useRef, SyntheticEvent } from 'react'
 
 import styles from './Input.module.css'
 
-type Type = 'text' | 'email' | 'password'
-
-interface InputProps {
+const Input = (props: {
   autoComplete?: string
   isRequired?: boolean
   label?: ReactNode
   minLength?: number
   onChange?: (value: string, event: SyntheticEvent) => void
   placeholder?: string
-  type?: Type
+  type?: 'text' | 'email' | 'password'
   value?: string
-}
-
-const Input: FC<InputProps> = ({
-  autoComplete,
-  isRequired,
-  label,
-  minLength,
-  onChange,
-  placeholder,
-  type,
-  value,
 }) => {
+  const {
+    autoComplete,
+    isRequired,
+    label,
+    minLength,
+    onChange,
+    placeholder,
+    type,
+    value,
+  } = props
   const inputEle = useRef<HTMLInputElement>(null)
 
   const handleChange: ReactEventHandler<HTMLInputElement> = (event) => {

@@ -1,10 +1,12 @@
 import { FC, ReactEventHandler, useState } from 'react'
 import { connect, DispatchProp } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
-import Input from '../views/Input'
 import Form from '../views/Form'
+import FormHeader from '../views/FormHeader'
+import Input from '../views/Input'
 import VStack from '../views/VStack'
 import { appDispatch, createUserAndSignIn } from '../store'
 
@@ -27,11 +29,16 @@ const CreateAccountScene: FC<DispatchProp> = () => {
 
   return (
     <ColumnLayout>
-      <h1>Welcome to Notes</h1>
-      <p>
-        Notes is a simple app that let&rsquo;s you jot down your thoughts using
-        markdown.
-      </p>
+      <div className="text--trailing">
+        <Link to="/sign-in">Sign In</Link>
+      </div>
+      <FormHeader>
+        <h1>Welcome to Notes</h1>
+        <p>
+          Notes is a simple app that let&rsquo;s you jot down your thoughts
+          using markdown.
+        </p>
+      </FormHeader>
       <Form
         checkForValidityOn={[name, email, password]}
         // errorMessage={/* TODO: implement */}

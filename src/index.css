@@ -75,6 +75,16 @@ h1,
   font-weight: var(--bold);
   line-height: 36px;
 }
+h1:first-child,
+.h1:first-child {
+  margin-bottom: 0;
+}
+h1:first-child + p,
+.h1:first-child + p,
+h1:first-child + .text,
+.h1:first-child + .text {
+  margin-top: 8px;
+}
 
 h2,
 .h2 {
@@ -159,6 +169,10 @@ h6:last-child,
   color: var(--c-text-light);
 }
 
+.text--trailing {
+  text-align: right;
+}
+
 .text--truncated {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -176,4 +190,13 @@ b,
 p {
   font-size: 16px;
   color: var(--c-text);
+  margin: 16px 0;
+}
+.text:first-child,
+p:first-child {
+  margin-top: 0;
+}
+.text:last-child,
+p:last-child {
+  margin-bottom: 0;
 }

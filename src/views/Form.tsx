@@ -1,23 +1,22 @@
-import { FC, ReactNode, ReactEventHandler, useEffect, useRef } from 'react'
+import { ReactNode, ReactEventHandler, useEffect, useRef } from 'react'
 
 import Notice from './Notice'
 import VStack from './VStack'
 
-interface FormProps {
+const Form = (props: {
   children: ReactNode
   checkForValidityOn: Object[]
   errorMessage?: ReactNode
   onSubmit: ReactEventHandler
-  validityCallback: Function
-}
-
-const Form: FC<FormProps> = ({
-  children,
-  checkForValidityOn,
-  errorMessage,
-  onSubmit,
-  validityCallback,
+  validityCallback: (isValid: boolean) => any
 }) => {
+  const {
+    children,
+    checkForValidityOn,
+    errorMessage,
+    onSubmit,
+    validityCallback,
+  } = props
   const formRef = useRef<HTMLFormElement>(null)
 
   const checkFormValidity = () => {

@@ -1,14 +1,13 @@
-import { AriaRole, FC, ReactNode } from 'react'
+import { AriaRole, ReactNode } from 'react'
 
 import styles from './Header.module.css'
 
-interface HeaderProps {
+const Header = (props: {
   children: ReactNode
   isSticky?: boolean
   role?: AriaRole
-}
-
-const Header: FC<HeaderProps> = ({ children, isSticky, role }) => {
+}) => {
+  const { children, isSticky, role } = props
   return (
     <header
       role={role}

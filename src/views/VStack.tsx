@@ -1,16 +1,15 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import styles from './VStack.module.css'
 
-type Gap = 'xs' | 's' | 'm' | 'l'
+type GapLike = 'xs' | 's' | 'm' | 'l'
 
-interface VStackProps {
+const VStack = (props: {
   children: ReactNode
-  gap?: Gap
+  gap?: GapLike
   hasOutterGutter?: boolean
-}
-
-const VStack: FC<VStackProps> = ({ children, gap, hasOutterGutter }) => {
-  const getClassNames = (gapSize: Gap) => {
+}) => {
+  const { children, gap, hasOutterGutter } = props
+  const getClassNames = (gapSize: GapLike) => {
     let classNames = [styles.wrapper]
 
     switch (gapSize) {
