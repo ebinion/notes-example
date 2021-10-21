@@ -1,20 +1,29 @@
-import { FC, useState } from 'react'
-import { connect, DispatchProp, useDispatch } from 'react-redux'
+import { FC, ReactEventHandler, useState } from 'react'
+import { connect, DispatchProp } from 'react-redux'
 
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
 import Input from '../views/Input'
 import Form from '../views/Form'
 import VStack from '../views/VStack'
-import { createUserAndSignIn } from '../store/currentUserStore'
-import { AppDispatch } from '../store'
+import { appDispatch, createUserAndSignIn } from '../store'
 
 const CreateAccountScene: FC<DispatchProp> = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isFormValid, setIsFormValid] = useState(false)
-  const dispatch = useDispatch<AppDispatch>()
+
+  const handleSubmit: ReactEventHandler = (event) => {
+    event.preventDefault()
+    appDispatch(
+      createUserAndSignIn({
+        name,
+        email,
+        password,
+      })
+    )
+  }
 
   return (
     <ColumnLayout>
@@ -26,16 +35,7 @@ const CreateAccountScene: FC<DispatchProp> = () => {
       <Form
         checkForValidityOn={[name, email, password]}
         // errorMessage={/* TODO: implement */}
-        onSubmit={(event) => {
-          event.preventDefault()
-          dispatch(
-            createUserAndSignIn({
-              name,
-              email,
-              password,
-            })
-          )
-        }}
+        onSubmit={handleSubmit}
         validityCallback={setIsFormValid}
       >
         <VStack gap="l">

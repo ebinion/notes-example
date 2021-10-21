@@ -2,8 +2,7 @@
 import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { selectCurrentUser, signOut } from '../store/currentUserStore'
-import { AppDispatch } from '../store'
+import { AppDispatch, selectCurrentUser, signOut } from '../store'
 
 // import AppLayout from '../views/AppLayout'
 // import Avatar from '../views/Avatar'

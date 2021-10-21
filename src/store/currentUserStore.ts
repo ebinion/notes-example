@@ -6,13 +6,7 @@ import {
 } from '@firebase/auth'
 
 import { auth } from '../database'
-import { RootState } from '.'
-
-export type UserLike = {
-  id: string
-  name?: string
-  email: string
-}
+import { isUserLike, RootState, UserLike } from '.'
 
 export const createUserAndSignIn = createAsyncThunk(
   'currentUser/post',
@@ -44,29 +38,6 @@ export const createUserAndSignIn = createAsyncThunk(
   }
 )
 
-export const isUserLike = (value: any): value is UserLike => {
-  const hasRequireds = () => {
-    return (
-      value &&
-      typeof value === 'object' &&
-      typeof value.id === 'string' &&
-      typeof value.email === 'string'
-    )
-  }
-
-  const hasCorrectOptionals = () => {
-    if (value.name && typeof value.name === 'string') {
-      return true
-    } else if (typeof value.name === 'undefined') {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  return hasRequireds() && hasCorrectOptionals()
-}
-
 export const selectCurrentUser = (state: RootState) => state.currentUser
 
 export const signOut = createAsyncThunk('currentUser/delete', () => {
@@ -81,15 +52,15 @@ export const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState: null as UserLike | null,
   reducers: {
-    set: (state, action: PayloadAction<UserLike>) => {
+    destroyCurrentUser: () => {
+      return null
+    },
+    setCurrentUser: (state, action: PayloadAction<UserLike>) => {
       if (isUserLike(action.payload)) {
         return action.payload
       } else {
         return state
       }
-    },
-    destroy: () => {
-      return null
     },
   },
   extraReducers: (builder) => {
@@ -103,5 +74,5 @@ export const currentUserSlice = createSlice({
   },
 })
 
-export const { destroy, set } = currentUserSlice.actions
+export const { destroyCurrentUser, setCurrentUser } = currentUserSlice.actions
 export default currentUserSlice.reducer

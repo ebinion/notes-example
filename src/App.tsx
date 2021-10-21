@@ -1,34 +1,33 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Redirect, Route } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { onAuthStateChanged } from '@firebase/auth'
 
 import NotesScene from './scenes/NotesScene'
 import CreateAccountScene from './scenes/CreateAccountScene'
 import {
-  destroy as destroyUser,
+  destroyCurrentUser,
   selectCurrentUser,
-  set as setUser,
-} from './store/currentUserStore'
-import { AppDispatch } from './store'
+  setCurrentUser,
+  appDispatch,
+} from './store'
 import { auth } from './database'
 
 const App = () => {
   const currentUser = useSelector(selectCurrentUser)
-  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(
-          setUser({
+        appDispatch(
+          setCurrentUser({
             name: user.displayName!,
             id: user.uid,
             email: user.email!,
           })
         )
       } else {
-        dispatch(destroyUser())
+        appDispatch(destroyCurrentUser())
       }
     })
   }, [])
