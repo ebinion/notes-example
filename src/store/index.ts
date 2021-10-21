@@ -1,14 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import currentUserReducer from './currentUserStore'
-import {
+import currentUserReducer, {
   createUserAndSignIn,
-  currentUserSlice,
   destroyCurrentUser,
   selectCurrentUser,
   setCurrentUser,
+  signIn,
   signOut,
 } from './currentUserStore'
+import uiReducer, { destroyError, selectError, setError } from './uiStore'
 
 export type UserLike = {
   id: string
@@ -41,6 +41,7 @@ export const isUserLike = (value: any): value is UserLike => {
 // Store & reducer exports
 export const reducer = combineReducers({
   currentUser: currentUserReducer,
+  ui: uiReducer,
 })
 export const store = configureStore({ reducer })
 export type RootState = ReturnType<typeof store.getState>
@@ -50,9 +51,12 @@ export const appDispatch = store.dispatch
 // Export directory
 export {
   createUserAndSignIn,
-  currentUserSlice,
   destroyCurrentUser,
+  destroyError,
   selectCurrentUser,
+  selectError,
   setCurrentUser,
+  setError,
+  signIn,
   signOut,
 }

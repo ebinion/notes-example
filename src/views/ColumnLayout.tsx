@@ -1,13 +1,9 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import styles from './ColumnLayout.module.css'
 
-interface ColumnLayoutProps {
-  children: ReactNode
-}
-
-const ColumnLayout: FC<ColumnLayoutProps> = ({ children }) => {
-  return <main className={styles.column}>{children}</main>
+const ColumnLayout = (props: { children: ReactNode }) => {
+  return <main className={styles.column}>{props.children}</main>
 }
 
 export default ColumnLayout

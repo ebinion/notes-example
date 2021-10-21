@@ -1,18 +1,23 @@
 import { FC, ReactEventHandler, useState } from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect, DispatchProp, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
+import { routes } from '../App'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
-import Input from '../views/Input'
 import Form from '../views/Form'
+import FormHeader from '../views/FormHeader'
+import Input from '../views/Input'
 import VStack from '../views/VStack'
-import { appDispatch, createUserAndSignIn } from '../store'
+import { appDispatch, createUserAndSignIn, selectError } from '../store'
 
 const CreateAccountScene: FC<DispatchProp> = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isFormValid, setIsFormValid] = useState(false)
+
+  const error = useSelector(selectError)
 
   const handleSubmit: ReactEventHandler = (event) => {
     event.preventDefault()
@@ -27,14 +32,19 @@ const CreateAccountScene: FC<DispatchProp> = () => {
 
   return (
     <ColumnLayout>
-      <h1>Welcome to Notes</h1>
-      <p>
-        Notes is a simple app that let&rsquo;s you jot down your thoughts using
-        markdown.
-      </p>
+      <div className="text--trailing">
+        <Link to={routes.signIn}>Sign In</Link>
+      </div>
+      <FormHeader>
+        <h1>Welcome to Notes</h1>
+        <p>
+          Notes is a simple app that let&rsquo;s you jot down your thoughts
+          using markdown.
+        </p>
+      </FormHeader>
       <Form
         checkForValidityOn={[name, email, password]}
-        // errorMessage={/* TODO: implement */}
+        errorMessage={error}
         onSubmit={handleSubmit}
         validityCallback={setIsFormValid}
       >

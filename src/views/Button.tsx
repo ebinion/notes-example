@@ -1,28 +1,21 @@
-import {FC, ReactNode, ReactEventHandler} from 'react'
+import { ReactNode, ReactEventHandler } from 'react'
 
 import styles from './Button.module.css'
 
-type Size = 's' | 'm'
-type Type = 'danger' | 'disabled' | 'primary' | 'secondary'
+type SizeLike = 's' | 'm'
+type TypeLike = 'danger' | 'disabled' | 'primary' | 'secondary'
 
-interface ButtonProps {
+const Button = (props: {
   children: ReactNode
   isFullWidth?: boolean
   isAlignedLeading?: boolean
   onClick?: ReactEventHandler
-  size?: Size
-  type?: Type
-}
-
-const Button: FC<ButtonProps> = ({
-  children,
-  isAlignedLeading,
-  isFullWidth,
-  size,
-  type,
-  ...props
+  size?: SizeLike
+  type?: TypeLike
 }) => {
-  const getClassNames = (size: Size, type: Type) => {
+  const { children, isAlignedLeading, isFullWidth, onClick, size, type } = props
+
+  const getClassNames = (size: SizeLike, type: TypeLike) => {
     let classList = [styles.button]
 
     switch (size) {
@@ -59,7 +52,7 @@ const Button: FC<ButtonProps> = ({
     <button
       className={size && type && getClassNames(size, type)}
       disabled={type === 'disabled'}
-      {...props}
+      onClick={onClick}
     >
       {children}
     </button>
