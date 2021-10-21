@@ -5,8 +5,9 @@ import {
   signOut as firebaseSignOut,
 } from '@firebase/auth'
 
+import { isUserLike, RootState, setError, UserLike } from '.'
 import { auth } from '../database'
-import { isUserLike, RootState, UserLike } from '.'
+import { getAuthErrorMessage } from '../helpers'
 
 export const createUserAndSignIn = createAsyncThunk(
   'currentUser/post',
@@ -33,7 +34,10 @@ export const createUserAndSignIn = createAsyncThunk(
             })
             .catch((error) => reject(error))
         })
-        .catch((error) => reject(error))
+        .catch((error) => {
+          thunkAPI.dispatch(setError(getAuthErrorMessage(error)))
+          reject(error)
+        })
     })
   }
 )
@@ -48,7 +52,7 @@ export const signOut = createAsyncThunk('currentUser/delete', () => {
   })
 })
 
-export const currentUserSlice = createSlice({
+const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState: null as UserLike | null,
   reducers: {

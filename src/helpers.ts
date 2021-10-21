@@ -1,3 +1,5 @@
+import { AuthError } from 'firebase/auth'
+
 export const addLeadingZero = (num: number): string => {
   const numString = num.toString()
 
@@ -8,7 +10,7 @@ export const addLeadingZero = (num: number): string => {
   }
 }
 
-export const getAuthErrorMessage = (errorCode: string): string => {
+export const getAuthErrorMessage = (authError: AuthError): string => {
   const errorMap = {
     CREDENTIAL_TOO_OLD_LOGIN_AGAIN: {
       code: 'auth/requires-recent-login',
@@ -45,8 +47,11 @@ export const getAuthErrorMessage = (errorCode: string): string => {
     },
   }
 
-  const currentError = Object.values(errorMap).find(error => error.code === errorCode)
-  const defaultMessage = 'Sorry, there was an error. Please reload the page and try again.'
+  const currentError = Object.values(errorMap).find(
+    (error) => error.code === authError.code
+  )
+  const defaultMessage =
+    'Sorry, there was an error. Please reload the page and try again.'
 
   return currentError ? currentError.message : defaultMessage
 }
@@ -76,17 +81,18 @@ export const convertSecondsToMilliseconds = (seconds: number): number => {
 }
 
 export const getDateString = (date: Date): string => {
-  return `${
-    date.getMonth() + 1
-  }/${date.getDate()}/${date.getFullYear()}`
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 }
 
 interface Interval {
-  elapsedTime: number,
-  updateInterval: number,
+  elapsedTime: number
+  updateInterval: number
 }
 
-export const getNextInterval = (elapsedTime: number, intervalsArray: Interval[]): number | false => {
+export const getNextInterval = (
+  elapsedTime: number,
+  intervalsArray: Interval[]
+): number | false => {
   if (intervalsArray[0].elapsedTime > elapsedTime) {
     return intervalsArray[0].updateInterval
   } else if (intervalsArray.length === 1) {
@@ -97,11 +103,15 @@ export const getNextInterval = (elapsedTime: number, intervalsArray: Interval[])
 }
 
 interface TimeAgo {
-  elapsedTime: number,
-  string: string | Function,
+  elapsedTime: number
+  string: string | Function
 }
 
-export const getTimeAgo = (elapsedTime: number, timeAgos: TimeAgo[], defaultString = ''): string => {
+export const getTimeAgo = (
+  elapsedTime: number,
+  timeAgos: TimeAgo[],
+  defaultString = ''
+): string => {
   if (elapsedTime < timeAgos[0].elapsedTime) {
     return typeof timeAgos[0].string === 'function'
       ? timeAgos[0].string(elapsedTime)

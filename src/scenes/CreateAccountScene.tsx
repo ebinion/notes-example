@@ -1,5 +1,5 @@
 import { FC, ReactEventHandler, useState } from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect, DispatchProp, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import Button from '../views/Button'
@@ -8,7 +8,12 @@ import Form from '../views/Form'
 import FormHeader from '../views/FormHeader'
 import Input from '../views/Input'
 import VStack from '../views/VStack'
-import { appDispatch, createUserAndSignIn } from '../store'
+import {
+  appDispatch,
+  createUserAndSignIn,
+  destroyError,
+  selectError,
+} from '../store'
 
 const CreateAccountScene: FC<DispatchProp> = () => {
   const [name, setName] = useState('')
@@ -16,8 +21,11 @@ const CreateAccountScene: FC<DispatchProp> = () => {
   const [password, setPassword] = useState('')
   const [isFormValid, setIsFormValid] = useState(false)
 
+  const error = useSelector(selectError)
+
   const handleSubmit: ReactEventHandler = (event) => {
     event.preventDefault()
+    appDispatch(destroyError())
     appDispatch(
       createUserAndSignIn({
         name,
@@ -41,7 +49,7 @@ const CreateAccountScene: FC<DispatchProp> = () => {
       </FormHeader>
       <Form
         checkForValidityOn={[name, email, password]}
-        // errorMessage={/* TODO: implement */}
+        errorMessage={error}
         onSubmit={handleSubmit}
         validityCallback={setIsFormValid}
       >
