@@ -5,6 +5,7 @@ import currentUserReducer, {
   destroyCurrentUser,
   selectCurrentUser,
   setCurrentUser,
+  signIn,
   signOut,
 } from './currentUserStore'
 import uiReducer, { destroyError, selectError, setError } from './uiStore'
@@ -56,5 +57,6 @@ export {
   selectError,
   setCurrentUser,
   setError,
+  signIn,
   signOut,
 }

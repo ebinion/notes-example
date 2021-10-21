@@ -1,7 +1,12 @@
 import { ReactEventHandler, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { sendPasswordResetEmail } from 'firebase/auth'
 
+import { routes } from '../App'
+import { auth } from '../database'
+import { getAuthErrorMessage } from '../helpers'
+import { appDispatch, destroyError, selectError, setError } from '../store'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
 import Form from '../views/Form'
@@ -14,17 +19,26 @@ const ForgotPasswordScene = () => {
   const [email, setEmail] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
 
+  const error = useSelector(selectError)
+
   const handleSumbit: ReactEventHandler = (event) => {
     event.preventDefault()
-    setIsSubmitted(true)
-    // TODO: wire submission to Firebase
+    appDispatch(destroyError())
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        setIsSubmitted(true)
+      })
+      .catch((error) => {
+        appDispatch(setError(getAuthErrorMessage(error)))
+      })
   }
 
   const renderForm = () => {
     return (
       <>
         <div className="text--trailing">
-          <Link to="/sign-in">Sign In</Link>
+          <Link to={routes.signIn}>Sign In</Link>
         </div>
         <FormHeader>
           <h1>Forgot your password?</h1>
@@ -35,7 +49,7 @@ const ForgotPasswordScene = () => {
         </FormHeader>
         <Form
           checkForValidityOn={[email]}
-          // errorMessage={/* TODO: implement */}
+          errorMessage={error}
           validityCallback={setIsValid}
           onSubmit={handleSumbit}
         >
@@ -67,7 +81,7 @@ const ForgotPasswordScene = () => {
           provided to create a new password.
         </p>
         <p>
-          <Link to="/sign-in">Sign Into Your Account</Link>
+          <Link to={routes.signIn}>Sign Into Your Account</Link>
         </p>
       </>
     )

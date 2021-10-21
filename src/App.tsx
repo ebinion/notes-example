@@ -15,6 +15,13 @@ import NotesScene from './scenes/NotesScene'
 import SignInScene from './scenes/SignInScene'
 import ForgotPasswordScene from './scenes/ForgotPasswordScene'
 
+export const routes = {
+  createAccount: '/',
+  forgotPassword: '/forgot-password',
+  notes: '/notes',
+  signIn: '/sign-in',
+}
+
 const App = () => {
   const currentUser = useSelector(selectCurrentUser)
 
@@ -37,17 +44,29 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/notes">
-          {currentUser ? <NotesScene /> : <Redirect to="/" />}
+        <Route path={routes.notes}>
+          {currentUser ? (
+            <NotesScene />
+          ) : (
+            <Redirect to={routes.createAccount} />
+          )}
         </Route>
-        <Route path="/forgot-password">
-          <ForgotPasswordScene />
+        <Route path={routes.forgotPassword}>
+          {currentUser ? (
+            <Redirect to={routes.notes} />
+          ) : (
+            <ForgotPasswordScene />
+          )}
         </Route>
-        <Route path="/sign-in">
-          <SignInScene />
+        <Route path={routes.signIn}>
+          {currentUser ? <Redirect to={routes.notes} /> : <SignInScene />}
         </Route>
-        <Route path="/">
-          {currentUser ? <Redirect to="/notes" /> : <CreateAccountScene />}
+        <Route path={routes.createAccount}>
+          {currentUser ? (
+            <Redirect to={routes.notes} />
+          ) : (
+            <CreateAccountScene />
+          )}
         </Route>
       </Switch>
     </BrowserRouter>

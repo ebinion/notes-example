@@ -6,7 +6,7 @@ import VStack from './VStack'
 const Form = (props: {
   children: ReactNode
   checkForValidityOn: Object[]
-  errorMessage?: ReactNode
+  errorMessage?: string | null
   onSubmit: ReactEventHandler
   validityCallback: (isValid: boolean) => any
 }) => {

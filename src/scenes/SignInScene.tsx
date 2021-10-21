@@ -1,7 +1,8 @@
 import { ReactEventHandler, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { routes } from '../App'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
 import Form from '../views/Form'
@@ -9,21 +10,25 @@ import FormHeader from '../views/FormHeader'
 import Input from '../views/Input'
 import VStack from '../views/VStack'
 
+import { appDispatch, signIn, selectError } from '../store'
+
 const SignInScene = () => {
   const [isValid, setIsValid] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const error = useSelector(selectError)
+
   const handleSumbit: ReactEventHandler = (event) => {
     event.preventDefault()
 
-    console.log('You submitted stuff')
+    appDispatch(signIn({ email, password }))
   }
 
   return (
     <ColumnLayout>
       <div className="text--trailing">
-        <Link to="/">Create Account</Link>
+        <Link to={routes.createAccount}>Create Account</Link>
       </div>
       <FormHeader>
         <h1>Sign Into Your Account</h1>
@@ -33,7 +38,7 @@ const SignInScene = () => {
       </FormHeader>
       <Form
         checkForValidityOn={[email, password]}
-        // errorMessage={/* TODO: implement */}
+        errorMessage={error}
         validityCallback={setIsValid}
         onSubmit={handleSumbit}
       >
@@ -53,7 +58,7 @@ const SignInScene = () => {
               value={password}
               onChange={setPassword}
             />
-            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to={routes.forgotPassword}>Forgot password?</Link>
           </div>
           <Button type={isValid ? 'primary' : 'disabled'}>Sign In</Button>
         </VStack>

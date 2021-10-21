@@ -1,4 +1,5 @@
 import { AuthError } from 'firebase/auth'
+import { routes } from './App'
 
 export const addLeadingZero = (num: number): string => {
   const numString = num.toString()
@@ -14,7 +15,9 @@ export const getAuthErrorMessage = (authError: AuthError): string => {
   const errorMap = {
     CREDENTIAL_TOO_OLD_LOGIN_AGAIN: {
       code: 'auth/requires-recent-login',
-      message: 'The credential expired. Please login again.',
+      message: JSON.stringify(
+        `The credential expired. Please <a href="${routes.signIn}">sign in</a> again.`
+      ),
     },
     EMAIL_CHANGE_NEEDS_VERIFICATION: {
       code: 'auth/email-change-needs-verification',
@@ -22,7 +25,9 @@ export const getAuthErrorMessage = (authError: AuthError): string => {
     },
     EMAIL_EXISTS: {
       code: 'auth/email-already-in-use',
-      message: 'The email you provided is in use, please sign in instead.',
+      message: JSON.stringify(
+        `The email you provided is in use. Please <a href="${routes.signIn}">sign in.</a>`
+      ),
     },
     INVALID_EMAIL: {
       code: 'auth/invalid-email',
@@ -30,7 +35,8 @@ export const getAuthErrorMessage = (authError: AuthError): string => {
     },
     INVALID_PASSWORD: {
       code: 'auth/wrong-password',
-      message: 'The password you provided was wrong. Please try again.',
+      message:
+        'Sorry, the password you provided didn’t match our records. Please try again.',
     },
     UNVERIFIED_EMAIL: {
       code: 'auth/unverified-email',
@@ -39,6 +45,12 @@ export const getAuthErrorMessage = (authError: AuthError): string => {
     USER_SIGNED_OUT: {
       code: 'auth/user-signed-out',
       message: 'You’ve been signed out.',
+    },
+    USER_NOT_FOUND: {
+      code: 'auth/user-not-found',
+      message: JSON.stringify(
+        `Sorry, that email address doesn’t match our records. Please <a href="${routes.createAccount}">create an account.</a>`
+      ),
     },
     WEAK_PASSWORD: {
       code: 'auth/weak-password',

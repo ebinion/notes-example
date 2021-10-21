@@ -2,18 +2,14 @@ import { FC, ReactEventHandler, useState } from 'react'
 import { connect, DispatchProp, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { routes } from '../App'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'
 import Form from '../views/Form'
 import FormHeader from '../views/FormHeader'
 import Input from '../views/Input'
 import VStack from '../views/VStack'
-import {
-  appDispatch,
-  createUserAndSignIn,
-  destroyError,
-  selectError,
-} from '../store'
+import { appDispatch, createUserAndSignIn, selectError } from '../store'
 
 const CreateAccountScene: FC<DispatchProp> = () => {
   const [name, setName] = useState('')
@@ -25,7 +21,6 @@ const CreateAccountScene: FC<DispatchProp> = () => {
 
   const handleSubmit: ReactEventHandler = (event) => {
     event.preventDefault()
-    appDispatch(destroyError())
     appDispatch(
       createUserAndSignIn({
         name,
@@ -38,7 +33,7 @@ const CreateAccountScene: FC<DispatchProp> = () => {
   return (
     <ColumnLayout>
       <div className="text--trailing">
-        <Link to="/sign-in">Sign In</Link>
+        <Link to={routes.signIn}>Sign In</Link>
       </div>
       <FormHeader>
         <h1>Welcome to Notes</h1>
