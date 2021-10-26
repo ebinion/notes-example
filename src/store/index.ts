@@ -8,7 +8,26 @@ import currentUserReducer, {
   signIn,
   signOut,
 } from './currentUserStore'
+import {
+  createNoteAndSetCurrent,
+  destroyNote,
+  notesSlice,
+  selectCurrentNote,
+  selectCurrentNoteID,
+  selectNotes,
+  setCurrentNote,
+  updateNote,
+} from './notesStore'
 import uiReducer, { destroyError, selectError, setError } from './uiStore'
+
+export type NoteLike = {
+  lastModifiedDate: string
+  id: string
+  createdDate: string
+  title: string
+  body: string
+  noteUserID: string
+}
 
 export type UserLike = {
   id: string
@@ -41,6 +60,7 @@ export const isUserLike = (value: any): value is UserLike => {
 // Store & reducer exports
 export const reducer = combineReducers({
   currentUser: currentUserReducer,
+  notes: notesSlice.reducer,
   ui: uiReducer,
 })
 export const store = configureStore({ reducer })
@@ -50,13 +70,20 @@ export const appDispatch = store.dispatch
 
 // Export directory
 export {
+  createNoteAndSetCurrent,
   createUserAndSignIn,
   destroyCurrentUser,
   destroyError,
+  destroyNote,
+  selectCurrentNote,
+  selectCurrentNoteID,
   selectCurrentUser,
   selectError,
+  selectNotes,
+  setCurrentNote,
   setCurrentUser,
   setError,
   signIn,
   signOut,
+  updateNote,
 }

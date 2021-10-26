@@ -1,14 +1,22 @@
+.wrapper {
+  box-sizing: border-box;
+  max-width: 1300px;
+}
+
 .content {
   box-sizing: border-box;
   min-height: 100vh;
+  padding: calc(var(--gutter) / 2);
 }
 
 .nav {
   background-color: var(--c-bg);
+  box-sizing: border-box;
   height: 100%;
   left: 0;
   opacity: 0;
   overflow: scroll;
+  padding: calc(var(--gutter) / 2);
   pointer-events: none;
   position: absolute;
   top: 0;
@@ -38,18 +46,26 @@
   z-index: 1;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
+  .content {
+    padding: 0;
+  }
+
   .nav {
     background: transparent;
     backdrop-filter: unset;
     opacity: 1;
     transform: none;
+    padding: 0;
     position: static;
     pointer-events: all;
+    transition: none;
   }
 
   .wrapper {
     display: grid;
     grid-template-columns: minmax(260px, 320px) 1fr;
+    gap: var(--gutter);
+    padding: calc(var(--gutter) / 2);
   }
 }

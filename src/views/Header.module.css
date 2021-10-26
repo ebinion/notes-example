@@ -1,7 +1,3 @@
-.wrapper {
-  padding: var(--pad-s) calc(var(--gutter) / 2) var(--pad);
-}
-
 .wrapperIsSticky {
   background: var(--c-bg);
   position: sticky;
@@ -11,11 +7,5 @@
   .wrapperIsSticky {
     background: var(--c-bg-secondary);
     backdrop-filter: var(--backdrop-blur);
-  }
-}
-
-@media (min-width: 600px) {
-  .wrapper {
-    padding-top: var(--pad);
   }
 }

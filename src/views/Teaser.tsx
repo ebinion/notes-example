@@ -1,16 +1,15 @@
-import { FC, MouseEventHandler } from 'react'
+import { MouseEventHandler } from 'react'
 
 import Time from './Time'
 import styles from './Teaser.module.css'
 
-interface CardProps {
-  date: Date
+const Card = (props: {
+  date: Date | string
   isActive?: boolean
   onClick: MouseEventHandler
   title?: string
-}
-
-const Card: FC<CardProps> = ({ date, isActive, onClick, title }) => {
+}) => {
+  const { date, isActive, onClick, title } = props
   return (
     <button
       onClick={onClick}

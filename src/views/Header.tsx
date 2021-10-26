@@ -9,10 +9,7 @@ const Header = (props: {
 }) => {
   const { children, isSticky, role } = props
   return (
-    <header
-      role={role}
-      className={`${styles.wrapper} ${isSticky && styles.wrapperIsSticky}`}
-    >
+    <header role={role} className={isSticky ? styles.wrapperIsSticky : ''}>
       {children}
     </header>
   )

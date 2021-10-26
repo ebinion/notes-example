@@ -45,6 +45,12 @@
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
 }
 
+@media (min-width: 1300px) {
+  :root {
+    --gutter: 60px;
+  }
+}
+
 * {
   font: inherit;
   color: inherit;
@@ -199,4 +205,10 @@ p:first-child {
 .text:last-child,
 p:last-child {
   margin-bottom: 0;
+}
+
+@media (min-width: 800px) {
+  .u--hidden-multicolumn {
+    display: none;
+  }
 }

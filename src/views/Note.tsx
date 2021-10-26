@@ -1,5 +1,4 @@
 import {
-  FC,
   ReactEventHandler,
   SyntheticEvent,
   useEffect,
@@ -7,8 +6,10 @@ import {
   useRef,
 } from 'react' // eslint-disable-line no-unused-vars
 
+import { NoteLike } from '../store'
+
 import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
-import Button from './Button'
+import Editor from './Editor'
 import Header from './Header'
 import IconedButton from './IconedButton'
 import Time from './Time'
@@ -17,103 +18,18 @@ import VStack from './VStack'
 
 import styles from './Note.module.css'
 
-type NoteData = {
-  lastModifiedDate: Date
-  id: string
-  createdDate: Date
-  title: string
-  body: string
-}
-
-interface NoteProps {
-  data?: NoteData
+const Note = (props: {
+  data: NoteLike | null
   toggleIsNavOpen: ReactEventHandler
-  updateNote: Function
-}
+  updateNote?: (note: NoteLike) => any
+}) => {
+  const { data, toggleIsNavOpen, updateNote } = props
 
-const Note: FC<NoteProps> = ({ data, toggleIsNavOpen, updateNote }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [titleHasContent, setTitleHasContent] = useState(false)
-  const [bodyHasContent, setBodyHasContent] = useState(false)
-  const titleEleRef = useRef<HTMLHeadingElement>(null)
-  const bodyEleRef = useRef<HTMLDivElement>(null)
+  const [noteTitle, setNoteTitle] = useState(data!.title)
+  const [noteBody, setNoteBody] = useState(data!.body)
 
-  const addFieldChangeListener = (element: HTMLElement, callback: Function) => {
-    const handleChange: MutationCallback = (
-      mutatuionsList: MutationRecord[],
-      observer: MutationObserver
-    ) => {
-      callback(mutatuionsList, observer)
-    }
-
-    const config = {
-      attributes: true,
-      childList: true,
-      subtree: true,
-      characterData: true,
-    }
-
-    const observer = new MutationObserver(handleChange)
-    observer.observe(element, config)
-
-    return () => {
-      observer.disconnect()
-    }
-  }
-
-  const handleEdit: ReactEventHandler = (event) => {
-    event.preventDefault()
-    setIsEditing(true)
-  }
-
-  const handleSave = (
-    event: SyntheticEvent,
-    note: NoteData,
-    updateNote: Function
-  ) => {
-    event.preventDefault()
-
-    const newNote = Object.assign({}, note, {
-      body: bodyEleRef.current && bodyEleRef.current.innerHTML,
-      title: titleEleRef.current && titleEleRef.current.innerHTML,
-    })
-
-    updateNote(newNote)
-    setIsEditing(false)
-  }
-
-  const handleBodyClick = () => {
-    bodyEleRef.current && bodyEleRef.current.focus()
-  }
-
-  useEffect(() => {
-    if (titleEleRef.current !== null) {
-      const disconnect = addFieldChangeListener(titleEleRef.current, () => {
-        if (
-          titleEleRef.current &&
-          titleEleRef.current.innerHTML !== '<br>' &&
-          titleEleRef.current.innerHTML
-        ) {
-          setTitleHasContent(true)
-        } else {
-          setTitleHasContent(false)
-        }
-      })
-
-      return disconnect
-    }
-  }, [])
-
-  useEffect(() => {
-    if (bodyEleRef.current) {
-      const disconnect = addFieldChangeListener(bodyEleRef.current, () => {
-        bodyEleRef.current &&
-          setBodyHasContent(bodyEleRef.current.innerHTML !== '')
-      })
-
-      return disconnect
-    }
-  }, [bodyEleRef])
+  // Handle changes to note date from props
+  // useEffect()
 
   return (
     <article className={styles.wrapper}>
@@ -121,9 +37,11 @@ const Note: FC<NoteProps> = ({ data, toggleIsNavOpen, updateNote }) => {
         <Toolbar
           leadingChildren={
             <>
-              <IconedButton onClick={toggleIsNavOpen}>
-                <BarsIcon />
-              </IconedButton>
+              <i className={styles.backButton}>
+                <IconedButton onClick={toggleIsNavOpen}>
+                  <BarsIcon />
+                </IconedButton>
+              </i>
 
               {data && (
                 <div className="text--light text--s">
@@ -132,50 +50,16 @@ const Note: FC<NoteProps> = ({ data, toggleIsNavOpen, updateNote }) => {
               )}
             </>
           }
-          trailingChildren={
-            isEditing && (
-              <Button
-                onClick={(event) =>
-                  data && updateNote && handleSave(event, data, updateNote)
-                }
-                size="s"
-              >
-                Save
-              </Button>
-            )
-          }
         />
       </Header>
       <VStack hasOutterGutter>
-        <div className={styles.header}>
-          <h1
-            className={`${styles.headerHeading} text--noMargin`}
-            contentEditable
-            onClick={handleEdit}
-            ref={titleEleRef}
-            dangerouslySetInnerHTML={{ __html: data ? data.title : '' }}
-          />
-          <div className={styles.headerPlaceholder}>
-            <div className="h1 text--light">
-              {titleHasContent ? '' : 'Untitled Note'}
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.body} onClick={handleBodyClick}>
-          <div
-            className={styles.bodyContent}
-            contentEditable
-            onClick={handleEdit}
-            ref={bodyEleRef}
-            dangerouslySetInnerHTML={data && { __html: data.body }}
-          />
-          <div className={styles.bodyPlaceholder}>
-            <div className="text--light">
-              {bodyHasContent ? '' : 'Write here'}
-            </div>
-          </div>
-        </div>
+        <textarea
+          // type="text"
+          className={`h1 ${styles.titleInput}`}
+          value={noteTitle}
+          onChange={(event) => setNoteTitle(event.target.value)}
+          placeholder="Untitled Note"
+        />
       </VStack>
     </article>
   )

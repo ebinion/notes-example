@@ -1,4 +1,6 @@
 import { AuthError } from 'firebase/auth'
+import ShortUniqueId from 'short-unique-id'
+
 import { routes } from './App'
 
 export const addLeadingZero = (num: number): string => {
@@ -10,6 +12,16 @@ export const addLeadingZero = (num: number): string => {
     return numString
   }
 }
+
+export const convertDateToString = (date = new Date()) => {
+  return date.toISOString()
+}
+
+export const convertStringToDate = (string: string): Date => {
+  return new Date(string)
+}
+
+export const shortID = new ShortUniqueId({ length: 16 })
 
 export const getAuthErrorMessage = (authError: AuthError): string => {
   const errorMap = {
@@ -96,14 +108,12 @@ export const getDateString = (date: Date): string => {
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 }
 
-interface Interval {
-  elapsedTime: number
-  updateInterval: number
-}
-
 export const getNextInterval = (
   elapsedTime: number,
-  intervalsArray: Interval[]
+  intervalsArray: {
+    elapsedTime: number
+    updateInterval: number
+  }[]
 ): number | false => {
   if (intervalsArray[0].elapsedTime > elapsedTime) {
     return intervalsArray[0].updateInterval
@@ -114,14 +124,12 @@ export const getNextInterval = (
   }
 }
 
-interface TimeAgo {
-  elapsedTime: number
-  string: string | Function
-}
-
 export const getTimeAgo = (
   elapsedTime: number,
-  timeAgos: TimeAgo[],
+  timeAgos: {
+    elapsedTime: number
+    string: string | Function
+  }[],
   defaultString = ''
 ): string => {
   if (elapsedTime < timeAgos[0].elapsedTime) {

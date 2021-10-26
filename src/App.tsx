@@ -9,7 +9,7 @@ import {
   setCurrentUser,
   appDispatch,
 } from './store'
-import { auth } from './database'
+import { auth } from './services/firebase'
 import CreateAccountScene from './scenes/CreateAccountScene'
 import NotesScene from './scenes/NotesScene'
 import SignInScene from './scenes/SignInScene'

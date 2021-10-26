@@ -1,4 +1,4 @@
-import { EffectCallback, FC, useEffect, useRef, useState } from 'react' // eslint-disable-line no-unused-vars
+import { EffectCallback, useEffect, useRef, useState } from 'react'
 
 import {
   convertHoursToMilliseconds,
@@ -53,50 +53,43 @@ const useTimeAgo = (date: Date) => {
   const updateText: EffectCallback = () => {
     const dateString = date.toISOString()
 
-      const nextInterval = getNextInterval(
+    const nextInterval = getNextInterval(
+      Date.now() - Date.parse(dateString),
+      updateIntervals.current
+    )
+
+    const newTimeString = () => {
+      return getTimeAgo(
         Date.now() - Date.parse(dateString),
-        updateIntervals.current
+        updateIntervals.current,
+        defaultTimeString
       )
+    }
 
-      const newTimeString = () => {
-        return getTimeAgo(
-          Date.now() - Date.parse(dateString),
-          updateIntervals.current,
-          defaultTimeString
-        )
-      }
+    if (newTimeString() !== timeString) {
+      setTimeString(newTimeString())
+    }
 
-      if (newTimeString() !== timeString) {
+    if (nextInterval) {
+      const timeoutID = setTimeout(() => {
         setTimeString(newTimeString())
-      }
+      }, nextInterval)
 
-      if (nextInterval) {
-        const timeoutID = setTimeout(() => {
-          setTimeString(newTimeString())
-        }, nextInterval)
-
-        return () => clearTimeout(timeoutID)
-      }
+      return () => clearTimeout(timeoutID)
+    }
   }
 
-  useEffect(
-    updateText,
-    [date, defaultTimeString, updateIntervals, timeString]
-  )
+  useEffect(updateText, [date, defaultTimeString, updateIntervals, timeString])
 
   return timeString
 }
-
-interface TimeProps {
-  className?: string
-  date: Date,
-}
-
-const Time:FC<TimeProps> = ({className, date}) => {
-  const timeString = useTimeAgo(date)
+const Time = (props: { className?: string; date: Date | string }) => {
+  const { className, date } = props
+  const usableDate = typeof date === 'string' ? new Date(date) : date
+  const timeString = useTimeAgo(usableDate)
 
   return (
-    <time dateTime={getZuluDate(date)} className={className}>
+    <time dateTime={getZuluDate(usableDate)} className={className}>
       {timeString}
     </time>
   )

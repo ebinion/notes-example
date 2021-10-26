@@ -8,6 +8,7 @@
   text-align: left;
   transition: var(--transition);
   transition-property: background-color;
+  overflow: hidden;
   width: 100%;
 }
 .wrapper:hover {

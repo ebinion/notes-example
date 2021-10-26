@@ -8,7 +8,7 @@ import {
 } from '@firebase/auth'
 
 import { destroyError, isUserLike, RootState, setError, UserLike } from '.'
-import { auth } from '../database'
+import { auth } from '../services/firebase'
 import { getAuthErrorMessage } from '../helpers'
 
 export const createUserAndSignIn = createAsyncThunk(
@@ -29,14 +29,15 @@ export const createUserAndSignIn = createAsyncThunk(
       createUserWithEmailAndPassword(auth, payload.email, payload.password)
         .then((userCredential) => {
           updateProfile(userCredential.user, { displayName: trimmedName })
+            .catch((error: AuthError) => reject(error))
             .then(() => {
+              // Set currentUser on state
               resolve({
                 id: userCredential.user.uid,
                 email: userCredential.user.email!,
                 name: trimmedName,
               })
             })
-            .catch((error: AuthError) => reject(error))
         })
         .catch((error: AuthError) => {
           thunkAPI.dispatch(setError(getAuthErrorMessage(error)))
