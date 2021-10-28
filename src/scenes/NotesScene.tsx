@@ -65,7 +65,7 @@ const NotesScene: FC = () => {
     })
   }, [note])
 
-  const handleNewNote: ReactEventHandler = async (event) => {
+  const handleNewNote: ReactEventHandler = (event) => {
     event.preventDefault()
     appDispatch(
       createNoteAndSetCurrent({
@@ -73,12 +73,13 @@ const NotesScene: FC = () => {
         date: new Date().toISOString(),
       })
     )
+    setIsNavOpen(false)
   }
 
   const handleSetCurrentNote = (note: NoteLike, event: SyntheticEvent) => {
     event.preventDefault()
-    setIsNavOpen(false)
     appDispatch(setCurrentNote({ noteID: note.id }))
+    setIsNavOpen(false)
   }
 
   const renderNav = () => {

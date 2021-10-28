@@ -23,7 +23,10 @@ const app = initializeApp(firebaseConfig)
 const firestore = getFirestore(app)
 const auth = getAuth(app)
 
-if (window.location.hostname === 'localhost') {
+if (
+  window.location.hostname === 'localhost' ||
+  window.location.port === '3000'
+) {
   connectFirestoreEmulator(firestore, 'localhost', 8080)
   connectAuthEmulator(auth, 'http://localhost:9099')
 }
