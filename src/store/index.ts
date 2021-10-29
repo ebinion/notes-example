@@ -11,6 +11,7 @@ import currentUserReducer, {
 import {
   createNoteAndSetCurrent,
   destroyNote,
+  fetchNotes,
   notesSlice,
   selectCurrentNote,
   selectCurrentNoteID,
@@ -23,6 +24,14 @@ import uiReducer, { destroyError, selectError, setError } from './uiStore'
 export type NoteLike = {
   lastModifiedDate: string
   id: string
+  createdDate: string
+  title: string
+  body: string
+  noteUserID: string
+}
+
+export type NoteFirestoreLike = {
+  lastModifiedDate: string
   createdDate: string
   title: string
   body: string
@@ -75,6 +84,7 @@ export {
   destroyCurrentUser,
   destroyError,
   destroyNote,
+  fetchNotes,
   selectCurrentNote,
   selectCurrentNoteID,
   selectCurrentUser,

@@ -1,7 +1,8 @@
 import { AuthError } from 'firebase/auth'
 import ShortUniqueId from 'short-unique-id'
 
-import { routes } from './App'
+import { NoteLike } from '../store'
+import { routes } from '../App'
 
 export const addLeadingZero = (num: number): string => {
   const numString = num.toString()
@@ -175,3 +176,28 @@ export const getZuluDate = (date: Date): string => {
 
 export const getDateTimeString = (date: Date): string =>
   `${getDateString(date)} at ${getTimeString(date)}`
+
+export const sortNotes = (notes: NoteLike[]) => {
+  return [...notes].sort((a, b) => {
+    return compareDateRecency(a.lastModifiedDate, b.lastModifiedDate)
+  })
+}
+
+/**
+ *
+ * @param a Any string accepted by Date contructor
+ * @param b Any string accepted by Date contructor
+ * @returns 1 when `a` is more recent, -1 when `b` is more recent, 0 when both are equal
+ */
+export const compareDateRecency = (a: string, b: string) => {
+  const sinceA = new Date(a).toISOString()
+  const sinceB = new Date(b).toISOString()
+
+  if (sinceA > sinceB) {
+    return -1
+  } else if (sinceA < sinceB) {
+    return 1
+  } else {
+    return 0
+  }
+}

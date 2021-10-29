@@ -21,7 +21,7 @@ import {
   store,
 } from '../store'
 
-import { convertDateToString } from '../helpers'
+import { convertDateToString } from '../utilities/helpers'
 import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
 import AppLayout from '../views/AppLayout'
 import Avatar from '../views/Avatar'

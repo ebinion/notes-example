@@ -5,7 +5,7 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 
 import { routes } from '../App'
 import { auth } from '../services/firebase'
-import { getAuthErrorMessage } from '../helpers'
+import { getAuthErrorMessage } from '../utilities/helpers'
 import { appDispatch, destroyError, selectError, setError } from '../store'
 import Button from '../views/Button'
 import ColumnLayout from '../views/ColumnLayout'

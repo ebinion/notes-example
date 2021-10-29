@@ -1,15 +1,16 @@
 import ReactDom from 'react-dom'
+import { Provider } from 'react-redux'
 
 import App from './App'
-import { AppContextProvider } from './AppContext'
+import { store } from './store'
 
 it('renders without crashing', () => {
   const divEle = document.createElement('div')
 
   ReactDom.render(
-    <AppContextProvider>
+    <Provider store={store}>
       <App />
-    </AppContextProvider>,
+    </Provider>,
     divEle
   )
 })

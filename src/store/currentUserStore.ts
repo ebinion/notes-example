@@ -9,7 +9,7 @@ import {
 
 import { destroyError, isUserLike, RootState, setError, UserLike } from '.'
 import { auth } from '../services/firebase'
-import { getAuthErrorMessage } from '../helpers'
+import { getAuthErrorMessage } from '../utilities/helpers'
 
 export const createUserAndSignIn = createAsyncThunk(
   'currentUser/post',
