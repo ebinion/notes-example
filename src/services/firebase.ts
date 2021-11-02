@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore/lite'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore/'
 import { connectAuthEmulator, getAuth } from 'firebase/auth/'
 
 // Your web app's Firebase configuration
@@ -23,7 +23,10 @@ const app = initializeApp(firebaseConfig)
 const firestore = getFirestore(app)
 const auth = getAuth(app)
 
-if (window.location.hostname === 'localhost') {
+if (
+  window.location.hostname === 'localhost' ||
+  window.location.port === '3000'
+) {
   connectFirestoreEmulator(firestore, 'localhost', 8080)
   connectAuthEmulator(auth, 'http://localhost:9099')
 }

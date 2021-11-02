@@ -23,3 +23,17 @@
   width: 16px;
   transform: translate(-50%, -50%);
 }
+
+.wrapperOffsetLeading {
+  margin-left: -14px;
+}
+
+.wrapperOffsetTrailing {
+  margin-right: -14px;
+}
+
+@media (min-width: 800px) {
+  .wrapperHiddenLg {
+    display: none;
+  }
+}

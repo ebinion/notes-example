@@ -43,6 +43,15 @@
   --radius: 6px;
   --touch-target: 44px;
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
+  --z-above-content: 9;
+  --z-above-most: 99;
+  --z-above-everything: 999;
+}
+
+@media (min-width: 1300px) {
+  :root {
+    --gutter: 60px;
+  }
 }
 
 * {
@@ -199,4 +208,10 @@ p:first-child {
 .text:last-child,
 p:last-child {
   margin-bottom: 0;
+}
+
+@media (min-width: 800px) {
+  .u--hidden-multicolumn {
+    display: none;
+  }
 }

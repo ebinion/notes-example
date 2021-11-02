@@ -1,0 +1,29 @@
+.wrapper {
+  font: inherit;
+  overflow: hidden;
+  position: relative;
+}
+
+.dupContent {
+  opacity: 0;
+  padding-bottom: 2px; /* Visual adjustment to prevent clipping */
+}
+
+.textarea {
+  background: transparent;
+  border: 0;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  resize: none;
+  top: 0;
+  width: 100%;
+}
+.textarea:focus {
+  outline: 0;
+}
+.textarea::placeholder {
+  color: var(--c-text-light);
+}

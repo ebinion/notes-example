@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux'
 import { onAuthStateChanged } from '@firebase/auth'
 
 import {
+  appDispatch,
   destroyCurrentUser,
+  fetchNotes,
   selectCurrentUser,
   setCurrentUser,
-  appDispatch,
 } from './store'
-import { auth } from './database'
+import { auth } from './services/firebase'
 import CreateAccountScene from './scenes/CreateAccountScene'
 import NotesScene from './scenes/NotesScene'
 import SignInScene from './scenes/SignInScene'
@@ -35,6 +36,7 @@ const App = () => {
             email: user.email!,
           })
         )
+        appDispatch(fetchNotes(user.uid))
       } else {
         appDispatch(destroyCurrentUser())
       }

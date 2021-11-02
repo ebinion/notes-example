@@ -11,7 +11,11 @@ const Header = (props: {
   return (
     <header
       role={role}
-      className={`${styles.wrapper} ${isSticky && styles.wrapperIsSticky}`}
+      className={
+        isSticky
+          ? `${styles.wrapper} ${styles.wrapperIsSticky}`
+          : styles.wrapper
+      }
     >
       {children}
     </header>

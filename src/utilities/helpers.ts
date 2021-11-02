@@ -1,5 +1,9 @@
 import { AuthError } from 'firebase/auth'
-import { routes } from './App'
+import { DocumentSnapshot } from 'firebase/firestore'
+import ShortUniqueId from 'short-unique-id'
+
+import { NoteLike } from '../store'
+import { routes } from '../App'
 
 export const addLeadingZero = (num: number): string => {
   const numString = num.toString()
@@ -10,6 +14,16 @@ export const addLeadingZero = (num: number): string => {
     return numString
   }
 }
+
+export const convertDateToString = (date = new Date()) => {
+  return date.toISOString()
+}
+
+export const convertStringToDate = (string: string): Date => {
+  return new Date(string)
+}
+
+export const shortID = new ShortUniqueId({ length: 16 })
 
 export const getAuthErrorMessage = (authError: AuthError): string => {
   const errorMap = {
@@ -96,14 +110,12 @@ export const getDateString = (date: Date): string => {
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 }
 
-interface Interval {
-  elapsedTime: number
-  updateInterval: number
-}
-
 export const getNextInterval = (
   elapsedTime: number,
-  intervalsArray: Interval[]
+  intervalsArray: {
+    elapsedTime: number
+    updateInterval: number
+  }[]
 ): number | false => {
   if (intervalsArray[0].elapsedTime > elapsedTime) {
     return intervalsArray[0].updateInterval
@@ -114,14 +126,12 @@ export const getNextInterval = (
   }
 }
 
-interface TimeAgo {
-  elapsedTime: number
-  string: string | Function
-}
-
 export const getTimeAgo = (
   elapsedTime: number,
-  timeAgos: TimeAgo[],
+  timeAgos: {
+    elapsedTime: number
+    string: string | Function
+  }[],
   defaultString = ''
 ): string => {
   if (elapsedTime < timeAgos[0].elapsedTime) {
@@ -167,3 +177,39 @@ export const getZuluDate = (date: Date): string => {
 
 export const getDateTimeString = (date: Date): string =>
   `${getDateString(date)} at ${getTimeString(date)}`
+
+export const sortNotes = (notes: NoteLike[]) => {
+  return [...notes].sort((a, b) => {
+    return compareDateRecency(a.lastModifiedDate, b.lastModifiedDate)
+  })
+}
+
+/**
+ *
+ * @param a Any string accepted by Date contructor
+ * @param b Any string accepted by Date contructor
+ * @returns 1 when `a` is more recent, -1 when `b` is more recent, 0 when both are equal
+ */
+export const compareDateRecency = (a: string, b: string) => {
+  const sinceA = new Date(a).toISOString()
+  const sinceB = new Date(b).toISOString()
+
+  if (sinceA > sinceB) {
+    return -1
+  } else if (sinceA < sinceB) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+export const convertSnapshotToNote = (snapshot: DocumentSnapshot): NoteLike => {
+  return {
+    lastModifiedDate: snapshot.get('lastModifiedDate'),
+    id: snapshot.id,
+    createdDate: snapshot.get('createdDate'),
+    title: snapshot.get('title'),
+    body: snapshot.get('body'),
+    noteUserID: snapshot.get('noteUserID'),
+  }
+}
