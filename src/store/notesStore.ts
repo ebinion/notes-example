@@ -1,7 +1,6 @@
 import {
   collection,
   doc,
-  DocumentSnapshot,
   getDocs,
   query,
   setDoc,
@@ -11,7 +10,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { firestore } from '../services/firebase'
 import { RootState, NoteLike, NoteFirestoreLike } from '.'
-import { compareDateRecency, shortID, sortNotes } from '../utilities/helpers'
+import {
+  compareDateRecency,
+  convertSnapshotToNote,
+  shortID,
+  sortNotes,
+} from '../utilities/helpers'
 import Queue from '../utilities/Queue'
 
 let saveNotesTimeout: NodeJS.Timeout
@@ -54,17 +58,6 @@ const cloneNoteWithoutId = (note: NoteLike): NoteFirestoreLike => {
     title,
     body,
     noteUserID,
-  }
-}
-
-export const convertSnapshotToNote = (snapshot: DocumentSnapshot): NoteLike => {
-  return {
-    lastModifiedDate: snapshot.get('lastModifiedDate'),
-    id: snapshot.id,
-    createdDate: snapshot.get('createdDate'),
-    title: snapshot.get('title'),
-    body: snapshot.get('body'),
-    noteUserID: snapshot.get('noteUserID'),
   }
 }
 
@@ -168,13 +161,16 @@ export const notesSlice = createSlice({
     builder.addCase(fetchNotes.fulfilled, (state, action) => {
       const sortedNotes = sortNotes([...action.payload!])
 
-      if (state.all.length === 0) {
+      if (state.all.length === 0 && sortedNotes.length > 0) {
         return {
           all: sortedNotes,
           currentID: sortedNotes[0].id,
         }
-      } else {
+      } else if (sortedNotes.length > 0) {
         const currentNotes = [...state.all]
+
+        // Retains most current note by removing older version
+        // of incoming note from state
         const newNotes = action.payload.filter((newNote) => {
           // Is there an existing note in state?
           const currentNoteIndex = currentNotes.findIndex((currentNote) => {
@@ -203,6 +199,8 @@ export const notesSlice = createSlice({
           currentID: state.currentID,
         }
       }
+
+      return state
     })
   },
 })

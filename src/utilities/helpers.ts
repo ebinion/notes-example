@@ -1,4 +1,5 @@
 import { AuthError } from 'firebase/auth'
+import { DocumentSnapshot } from 'firebase/firestore'
 import ShortUniqueId from 'short-unique-id'
 
 import { NoteLike } from '../store'
@@ -199,5 +200,16 @@ export const compareDateRecency = (a: string, b: string) => {
     return 1
   } else {
     return 0
+  }
+}
+
+export const convertSnapshotToNote = (snapshot: DocumentSnapshot): NoteLike => {
+  return {
+    lastModifiedDate: snapshot.get('lastModifiedDate'),
+    id: snapshot.id,
+    createdDate: snapshot.get('createdDate'),
+    title: snapshot.get('title'),
+    body: snapshot.get('body'),
+    noteUserID: snapshot.get('noteUserID'),
   }
 }

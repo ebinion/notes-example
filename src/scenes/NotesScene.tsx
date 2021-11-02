@@ -4,10 +4,13 @@ import {
   ReactEventHandler,
   SyntheticEvent,
   useEffect,
+  useCallback,
 } from 'react'
 import { useSelector } from 'react-redux'
 import { Descendant } from 'slate'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
 
+import { firestore } from '../services/firebase'
 import {
   appDispatch,
   createNoteAndSetCurrent,
@@ -21,7 +24,10 @@ import {
   store,
 } from '../store'
 
-import { convertDateToString } from '../utilities/helpers'
+import {
+  convertDateToString,
+  convertSnapshotToNote,
+} from '../utilities/helpers'
 import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
 import AppLayout from '../views/AppLayout'
 import Avatar from '../views/Avatar'
@@ -36,6 +42,31 @@ import Teaser from '../views/Teaser'
 import Time from '../views/Time'
 import Toolbar from '../views/Toolbar'
 import VStack from '../views/VStack'
+
+const useNotesSubscription = (currentUserId: string) => {
+  useEffect(() => {
+    const notesQuery = query(
+      collection(firestore, 'notes'),
+      where('noteUserID', '==', currentUserId)
+    )
+
+    return onSnapshot(notesQuery, (notesSnapshot) => {
+      let notes: NoteLike[] = []
+
+      notesSnapshot.forEach((noteSnapshot) => {
+        notes = [...notes, convertSnapshotToNote(noteSnapshot)]
+      })
+
+      if (notes.length > 0) {
+        appDispatch({
+          type: 'notes/fetchNotes/fulfilled',
+          payload: notes,
+        })
+        notes = []
+      }
+    })
+  }, [currentUserId])
+}
 
 const handleNoteUpdate = (
   value: { title?: string; body?: Descendant[] },
@@ -58,6 +89,8 @@ const NotesScene: FC = () => {
   const notes = useSelector(selectNotes)
   const [note, setNote] = useState(useSelector(selectCurrentNote))
   const currentNoteID = note?.id
+
+  useNotesSubscription(currentUser!.id)
 
   useEffect(() => {
     return store.subscribe(() => {

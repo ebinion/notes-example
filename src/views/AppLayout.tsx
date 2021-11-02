@@ -1,18 +1,14 @@
-import { FC, ReactNode, useRef, useEffect } from 'react'
+import { ReactNode, useRef, useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 
 import styles from './AppLayout.module.css'
 
-interface AppLayoutProps {
+const AppLayout = (props: {
   children: ReactNode
   isNavOpen: boolean
   navChildren: ReactNode
-}
-
-const AppLayout: FC<AppLayoutProps> = ({
-  children,
-  isNavOpen,
-  navChildren,
 }) => {
+  const { children, isNavOpen, navChildren } = props
   const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -21,8 +17,25 @@ const AppLayout: FC<AppLayoutProps> = ({
     }
   }, [isNavOpen])
 
+  const preventScroll = () => {
+    return (
+      <Helmet>
+        <style type="text/css">
+          {`
+          @media (max-width: 599px){
+            body {
+              overflow: hidden;
+            }
+          }
+          `}
+        </style>
+      </Helmet>
+    )
+  }
+
   return (
     <main className={styles.wrapper}>
+      {isNavOpen && preventScroll()}
       <nav
         className={`${styles.nav} ${isNavOpen && styles.navIsOpen}`}
         ref={navRef}

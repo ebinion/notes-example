@@ -1,13 +1,11 @@
 .wrapper {
   box-sizing: border-box;
-  /* max-width: 1300px; */
+  width: 100%;
 }
 
 .content {
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
-  height: 100vh;
-  overflow-y: auto;
   padding: 0 calc(var(--gutter) / 2) var(--gutter);
   position: relative;
   z-index: 1;
@@ -23,7 +21,7 @@
   overflow-y: auto;
   padding: 0 calc(var(--gutter) / 2) var(--gutter);
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   transform: translateX(-33%);
   transition: var(--transition);
@@ -36,19 +34,15 @@
   opacity: 1;
   pointer-events: all;
 }
+.nav:focus {
+  outline: 0;
+}
+
 @supports (backdrop-filter: var(--backdrop-blur)) {
   .nav {
     background-color: var(--c-bg-secondary);
     backdrop-filter: var(--backdrop-blur);
   }
-}
-
-.wrapper {
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  z-index: 1;
 }
 
 @media (min-width: 800px) {
@@ -60,11 +54,12 @@
   .nav {
     background: transparent;
     backdrop-filter: unset;
+    height: 100vh;
     opacity: 1;
     transform: none;
     padding: 0 calc(var(--gutter) / 2) calc(var(--gutter) / 2);
     padding-bottom: calc((var(--gutter) / 2) + env(safe-area-inset-bottom));
-    position: static;
+    position: sticky;
     pointer-events: all;
     transition: none;
     z-index: 1;
@@ -72,6 +67,12 @@
 
   .wrapper {
     display: grid;
-    grid-template-columns: minmax(260px, 420px) minmax(320px, 900px);
+    grid-template-columns: minmax(260px, 320px) minmax(320px, 900px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .wrapper {
+    grid-template-columns: minmax(320px, 420px) minmax(320px, 900px);
   }
 }
