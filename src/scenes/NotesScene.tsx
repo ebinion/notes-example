@@ -4,7 +4,6 @@ import {
   ReactEventHandler,
   SyntheticEvent,
   useEffect,
-  useCallback,
 } from 'react'
 import { useSelector } from 'react-redux'
 import { Descendant } from 'slate'
