@@ -19,9 +19,6 @@
   z-index: var(--z-above-most);
   top: 100%;
 }
-.menu:hover {
-  outline: 0;
-}
 @supports (backdrop-filter: blur(var(--backdrop-blur))) {
   .menu {
     backdrop-filter: blur(var(--backdrop-blur));

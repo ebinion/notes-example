@@ -3,12 +3,8 @@ import styles from './VStack.module.css'
 
 type GapLike = 'xs' | 's' | 'm' | 'l'
 
-const VStack = (props: {
-  children: ReactNode
-  gap?: GapLike
-  hasOutterGutter?: boolean
-}) => {
-  const { children, gap, hasOutterGutter } = props
+const VStack = (props: { children: ReactNode; gap?: GapLike }) => {
+  const { children, gap } = props
   const getClassNames = (gapSize: GapLike) => {
     let classNames = [styles.wrapper]
 
@@ -25,8 +21,6 @@ const VStack = (props: {
       default:
         break
     }
-
-    if (hasOutterGutter) classNames.push(styles.outterGutter)
 
     return classNames.join(' ')
   }

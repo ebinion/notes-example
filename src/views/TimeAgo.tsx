@@ -83,7 +83,7 @@ const useTimeAgo = (date: Date) => {
 
   return timeString
 }
-const Time = (props: { className?: string; date: Date | string }) => {
+const TimeAgo = (props: { className?: string; date: Date | string }) => {
   const { className, date } = props
   const usableDate = typeof date === 'string' ? new Date(date) : date
   const timeString = useTimeAgo(usableDate)
@@ -95,4 +95,4 @@ const Time = (props: { className?: string; date: Date | string }) => {
   )
 }
 
-export default Time
+export default TimeAgo

@@ -1,6 +1,5 @@
 import {
   cloneElement,
-  FC,
   ReactElement,
   ReactNode,
   SyntheticEvent,
@@ -13,13 +12,12 @@ import styles from './Menu.module.css'
 
 type Anchor = 'leading' | 'trailing'
 
-interface MenuProps {
+const Menu = (props: {
   anchor?: Anchor
   children: ReactNode
   trigger: ReactElement
-}
-
-const Menu: FC<MenuProps> = ({ anchor, children, trigger }) => {
+}) => {
+  const { anchor, children, trigger } = props
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
