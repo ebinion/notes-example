@@ -22,14 +22,15 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint": "eslint .",
-    "test": "react-scripts test",
+    "build-storybook": "build-storybook -s public -o build-storybook",
+    "deploy-config": "firebase deploy --only firestore:indexes,firestore:rules",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start",
+    "lint": "eslint .",
+    "start": "react-scripts start",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public -o build-storybook"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
