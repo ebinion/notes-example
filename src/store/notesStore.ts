@@ -83,6 +83,11 @@ export const fetchNotes = createAsyncThunk(
   }
 )
 
+const initialState: {
+  all: NoteLike[]
+  currentID: string | null
+} = { all: [], currentID: null }
+
 export const selectCurrentNote = (state: RootState) => {
   return state.notes.all.find((note) => note.id === state.notes.currentID)
 }
@@ -97,10 +102,7 @@ export const selectNotes = (state: RootState) => {
 
 export const notesSlice = createSlice({
   name: 'notes',
-  initialState: { all: [], currentID: null } as {
-    all: NoteLike[]
-    currentID: string | null
-  },
+  initialState,
   reducers: {
     createNoteAndSetCurrent: (
       state,
@@ -133,6 +135,9 @@ export const notesSlice = createSlice({
         newState.all.splice(noteIndex, 1)
       }
       return newState
+    },
+    reset: () => {
+      return initialState
     },
     setCurrentNote: (state, action: PayloadAction<{ noteID: string }>) => {
       const newState = { ...state }
@@ -208,6 +213,7 @@ export const notesSlice = createSlice({
 export const {
   createNoteAndSetCurrent,
   destroyNote,
+  reset,
   setCurrentNote,
   updateNote,
 } = notesSlice.actions
