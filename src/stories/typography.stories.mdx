@@ -1,0 +1,94 @@
+import { Canvas, Meta } from '@storybook/addon-docs'
+
+<Meta title="Basics/Typography" />
+
+# Typography
+
+For the sake of speed and simplicity, typography components do not exist. Instead the app relies on BEM style class names and HTML attributes.
+
+## Headings
+
+Headings, h1-h6, can be styled using their native HTML tag (e.g. `<h1 />`) or through the use of classNames (e.g. `<div className="h1" />`)
+
+<Canvas>
+  <h1>H1 element</h1>
+</Canvas>
+
+<Canvas>
+  <div className="h1">DIV with h1 class</div>
+</Canvas>
+
+<Canvas>
+  <h2>H2 element</h2>
+</Canvas>
+
+<Canvas>
+  <h3>H3 element</h3>
+</Canvas>
+
+<Canvas>
+  <h4>H4 element</h4>
+</Canvas>
+
+<Canvas>
+  <h5>H5 element</h5>
+</Canvas>
+
+<Canvas>
+  <h6>H6 element</h6>
+</Canvas>
+
+## Text Sizing
+
+A few styles exist to resize non-heading text.
+
+<Canvas>
+  <p>Paragraph text</p>
+</Canvas>
+
+<Canvas>
+  <div className="text">Medium size text as DIV</div>
+</Canvas>
+
+<Canvas>
+  <p className="text--s">DIV with className</p>
+</Canvas>
+
+## Modifiers
+
+<Canvas>
+  <p className="text--noMargin">No margin</p>
+</Canvas>
+
+<Canvas>
+  <p className="text--light">Light colored text</p>
+</Canvas>
+
+<Canvas>
+  <p className="text--trailing">Aligned to trailing edge</p>
+</Canvas>
+
+<Canvas>
+  <p className="text--truncated">
+    Truncated, this text will be truncated to just one line and it doesn't
+    matter how much text you put into the element
+  </p>
+</Canvas>
+
+## Inline
+
+<Canvas>
+  <strong>Bold text</strong>
+</Canvas>
+
+<Canvas>
+  <span className="text--bold">Span with bold class</span>
+</Canvas>
+
+<Canvas>
+  <em>Emphasized text</em>
+</Canvas>
+
+<Canvas>
+  <span className="text--em">Span with emphasized class</span>
+</Canvas>

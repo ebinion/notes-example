@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { ComponentStory } from '@storybook/react'
+import { ComponentStory, Meta } from '@storybook/react'
 
 import Button from './Button'
 import AppLayout from './AppLayout'
 
 export default {
-  title: 'App Layout',
+  title: 'Layouts/App Layout',
   component: AppLayout,
-}
+} as Meta
 
 const Template: ComponentStory<typeof AppLayout> = (args) => {
   const [isNavOpen, setIsNavOpen] = useState(false)

@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "build-storybook": "build-storybook -s public",
+    "build-storybook": "build-storybook -s public -o build-storybook",
     "deploy-config": "firebase deploy --only firestore:indexes,firestore:rules",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start",

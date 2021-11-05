@@ -1,18 +1,14 @@
-import { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import styles from './Toolbar.module.css'
 
-interface ToolbarProps {
+const Toolbar = (props: {
   children?: ReactNode
   leadingChildren?: ReactNode
   trailingChildren?: ReactNode
-}
-
-const Toolbar: FC<ToolbarProps> = ({
-  children,
-  leadingChildren,
-  trailingChildren,
 }) => {
+  const { children, leadingChildren, trailingChildren } = props
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.leading}>{leadingChildren}</div>

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { ComponentStory } from '@storybook/react'
+import { ComponentStory, Meta } from '@storybook/react'
 import NoteTitle from './NoteTitle'
 
 export default {
-  title: 'Note Title',
+  title: 'Views/Note Title',
   component: NoteTitle,
-}
+} as Meta
 
 const Template: ComponentStory<typeof NoteTitle> = (args) => {
   const modifiedArgs = { ...args }

@@ -1,6 +1,6 @@
 import { MouseEventHandler } from 'react'
 
-import Time from './Time'
+import Time from './TimeAgo'
 import styles from './Teaser.module.css'
 
 const Card = (props: {

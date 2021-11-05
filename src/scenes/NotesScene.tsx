@@ -38,7 +38,7 @@ import Menu from '../views/Menu'
 import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
 import NoteTitle from '../views/NoteTitle'
 import Teaser from '../views/Teaser'
-import Time from '../views/Time'
+import Time from '../views/TimeAgo'
 import Toolbar from '../views/Toolbar'
 import VStack from '../views/VStack'
 
