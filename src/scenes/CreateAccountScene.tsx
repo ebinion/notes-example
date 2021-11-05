@@ -3,12 +3,7 @@ import { connect, DispatchProp, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { routes } from '../App'
-import Button from '../views/Button'
-import ColumnLayout from '../views/ColumnLayout'
-import Form from '../views/Form'
-import FormHeader from '../views/FormHeader'
-import Input from '../views/Input'
-import VStack from '../views/VStack'
+import { Button, ColumnLayout, Form, FormHeader, Input, VStack } from '../views'
 import { appDispatch, createUserAndSignIn, selectError } from '../store'
 
 const CreateAccountScene: FC<DispatchProp> = () => {

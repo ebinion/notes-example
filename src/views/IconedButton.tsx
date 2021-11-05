@@ -2,7 +2,7 @@ import { ReactNode, ReactEventHandler } from 'react'
 
 import styles from './IconedButton.module.css'
 
-const IconedLink = (props: {
+const IconedButton = (props: {
   children: ReactNode
   onClick: ReactEventHandler
   offset?: 'leading' | 'trailing'
@@ -29,4 +29,4 @@ const IconedLink = (props: {
   )
 }
 
-export default IconedLink
+export default IconedButton

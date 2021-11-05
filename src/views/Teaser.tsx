@@ -3,7 +3,7 @@ import { MouseEventHandler } from 'react'
 import Time from './TimeAgo'
 import styles from './Teaser.module.css'
 
-const Card = (props: {
+const Teaser = (props: {
   date: Date | string
   isActive?: boolean
   onClick: MouseEventHandler
@@ -26,6 +26,4 @@ const Card = (props: {
   )
 }
 
-Card.defaultProps = {}
-
-export default Card
+export default Teaser

@@ -27,20 +27,22 @@ import {
   convertDateToString,
   convertSnapshotToNote,
 } from '../utilities/helpers'
-import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
-import AppLayout from '../views/AppLayout'
-import Avatar from '../views/Avatar'
-import Button from '../views/Button'
-import Editor from '../views/Editor'
-import Header from '../views/Header'
-import IconedButton from '../views/IconedButton'
-import Menu from '../views/Menu'
-import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
-import NoteTitle from '../views/NoteTitle'
-import Teaser from '../views/Teaser'
-import Time from '../views/TimeAgo'
-import Toolbar from '../views/Toolbar'
-import VStack from '../views/VStack'
+import { BarsIcon, PlusIcon } from '../icons'
+
+import {
+  AppLayout,
+  Avatar,
+  Button,
+  Editor,
+  Header,
+  IconedButton,
+  Menu,
+  NoteTitle,
+  Teaser,
+  TimeAgo,
+  Toolbar,
+  VStack,
+} from '../views'
 
 const useNotesSubscription = (currentUserId: string) => {
   useEffect(() => {
@@ -191,7 +193,7 @@ const NotesScene: FC = () => {
 
                 {note && (
                   <div className="text--light text--s">
-                    Last edited <Time date={note.lastModifiedDate} />
+                    Last edited <TimeAgo date={note.lastModifiedDate} />
                   </div>
                 )}
               </>
