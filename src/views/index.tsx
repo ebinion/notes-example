@@ -1,6 +1,7 @@
 import AppLayout from './AppLayout'
 import Avatar from './Avatar'
 import Button from './Button'
+import ButtonGroup from './ButtonGroup'
 import ColumnLayout from './ColumnLayout'
 import Editor from './Editor'
 import Form from './Form'
@@ -20,6 +21,7 @@ export {
   AppLayout,
   Avatar,
   Button,
+  ButtonGroup,
   ColumnLayout,
   Editor,
   Form,

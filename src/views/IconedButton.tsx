@@ -4,7 +4,7 @@ import styles from './IconedButton.module.css'
 
 const IconedButton = (props: {
   children: ReactNode
-  onClick: ReactEventHandler
+  onClick?: ReactEventHandler
   offset?: 'leading' | 'trailing'
   isHiddenLg?: boolean
 }) => {

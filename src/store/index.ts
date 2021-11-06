@@ -10,7 +10,7 @@ import currentUserReducer, {
 } from './currentUserStore'
 import {
   createNoteAndSetCurrent,
-  destroyNote,
+  deleteNoteAndSetCurrent,
   fetchNotes,
   notesSlice,
   reset as resetNotes,
@@ -89,7 +89,7 @@ export {
   createUserAndSignIn,
   destroyCurrentUser,
   destroyError,
-  destroyNote,
+  deleteNoteAndSetCurrent,
   fetchNotes,
   resetNotes,
   resetUI,

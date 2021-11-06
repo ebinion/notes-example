@@ -3,7 +3,7 @@ import { ReactNode, ReactEventHandler } from 'react'
 import styles from './Button.module.css'
 
 type SizeLike = 's' | 'm'
-type TypeLike = 'danger' | 'disabled' | 'primary' | 'secondary'
+type TypeLike = 'danger' | 'disabled' | 'primary' | 'secondary' | 'warning'
 
 const Button = (props: {
   children: ReactNode
@@ -36,6 +36,9 @@ const Button = (props: {
         break
       case 'secondary':
         classList.push(styles.buttonSecondary)
+        break
+      case 'warning':
+        classList.push(styles.buttonWarning)
         break
       default:
         classList.push(styles.buttonPrimary)
