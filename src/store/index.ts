@@ -10,16 +10,22 @@ import currentUserReducer, {
 } from './currentUserStore'
 import {
   createNoteAndSetCurrent,
-  destroyNote,
+  deleteNoteAndSetCurrent,
   fetchNotes,
   notesSlice,
+  reset as resetNotes,
   selectCurrentNote,
   selectCurrentNoteID,
   selectNotes,
   setCurrentNote,
   updateNote,
 } from './notesStore'
-import uiReducer, { destroyError, selectError, setError } from './uiStore'
+import uiReducer, {
+  destroyError,
+  reset as resetUI,
+  selectError,
+  setError,
+} from './uiStore'
 
 export type NoteLike = {
   lastModifiedDate: string
@@ -83,8 +89,10 @@ export {
   createUserAndSignIn,
   destroyCurrentUser,
   destroyError,
-  destroyNote,
+  deleteNoteAndSetCurrent,
   fetchNotes,
+  resetNotes,
+  resetUI,
   selectCurrentNote,
   selectCurrentNoteID,
   selectCurrentUser,

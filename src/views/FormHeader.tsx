@@ -2,7 +2,7 @@ import { AriaRole, ReactNode } from 'react'
 
 import styles from './FormHeader.module.css'
 
-const Header = (props: { children: ReactNode; role?: AriaRole }) => {
+const FormHeader = (props: { children: ReactNode; role?: AriaRole }) => {
   const { children, role } = props
 
   return (
@@ -12,4 +12,4 @@ const Header = (props: { children: ReactNode; role?: AriaRole }) => {
   )
 }
 
-export default Header
+export default FormHeader

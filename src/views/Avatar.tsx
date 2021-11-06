@@ -1,18 +1,14 @@
-import { FC, ReactEventHandler } from 'react'
+import { ReactEventHandler } from 'react'
 
 import { ReactComponent as Chevron } from '../icons/chevron-down-solid.svg'
 import styles from './Avatar.module.css'
 
-interface AvatarProps {
-  name?: string
-  onClick?: ReactEventHandler
-}
-
-const Avatar: FC<AvatarProps> = ({ name, ...props }) => {
+const Avatar = (props: { name?: string; onClick?: ReactEventHandler }) => {
+  const { name, onClick } = props
   const letter = name ? name.charAt(0) : ''
 
   return (
-    <button className={styles.wrapper} {...props}>
+    <button className={styles.wrapper} onClick={onClick}>
       <abbr
         aria-label={`${name}’s settings`}
         title={`${name}’s settings`}

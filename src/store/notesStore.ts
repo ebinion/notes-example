@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -21,7 +22,6 @@ import Queue from '../utilities/Queue'
 let saveNotesTimeout: NodeJS.Timeout
 
 export const notesQueue = new Queue<NoteLike>()
-
 notesQueue.onEnqueue(() => {
   try {
     if (saveNotesTimeout) clearTimeout(saveNotesTimeout)
@@ -61,6 +61,21 @@ const cloneNoteWithoutId = (note: NoteLike): NoteFirestoreLike => {
   }
 }
 
+export const deleteNoteAndSetCurrent = createAsyncThunk(
+  'notes/destroyNote',
+  (noteID: string, thunkAPI) => {
+    return new Promise<string>(async (resolve, reject) => {
+      try {
+        await deleteDoc(doc(firestore, `notes/${noteID}`))
+      } catch (error) {
+        console.error(error)
+        reject(error)
+      }
+      resolve(noteID)
+    })
+  }
+)
+
 export const fetchNotes = createAsyncThunk(
   'notes/fetch',
   (currentUserId: string, thunkAPI) => {
@@ -83,6 +98,11 @@ export const fetchNotes = createAsyncThunk(
   }
 )
 
+const initialState: {
+  all: NoteLike[]
+  currentID: string | null
+} = { all: [], currentID: null }
+
 export const selectCurrentNote = (state: RootState) => {
   return state.notes.all.find((note) => note.id === state.notes.currentID)
 }
@@ -97,10 +117,7 @@ export const selectNotes = (state: RootState) => {
 
 export const notesSlice = createSlice({
   name: 'notes',
-  initialState: { all: [], currentID: null } as {
-    all: NoteLike[]
-    currentID: string | null
-  },
+  initialState,
   reducers: {
     createNoteAndSetCurrent: (
       state,
@@ -124,15 +141,8 @@ export const notesSlice = createSlice({
 
       return state
     },
-    destroyNote: (state, action: PayloadAction<NoteLike>) => {
-      const newState = { ...state }
-      const noteIndex = newState.all.findIndex(
-        (note) => note.id === action.payload.id
-      )
-      if (noteIndex !== -1) {
-        newState.all.splice(noteIndex, 1)
-      }
-      return newState
+    reset: () => {
+      return initialState
     },
     setCurrentNote: (state, action: PayloadAction<{ noteID: string }>) => {
       const newState = { ...state }
@@ -202,12 +212,26 @@ export const notesSlice = createSlice({
 
       return state
     })
+
+    builder.addCase(deleteNoteAndSetCurrent.fulfilled, (state, action) => {
+      const newState = {
+        all: sortNotes([...state.all]),
+        currentID: state.currentID,
+      }
+
+      const noteIndex = newState.all.findIndex(
+        (note) => note.id === action.payload
+      )
+      if (noteIndex !== -1) {
+        newState.all.splice(noteIndex, 1)
+      }
+
+      newState.currentID = newState.all[0].id
+
+      return newState
+    })
   },
 })
 
-export const {
-  createNoteAndSetCurrent,
-  destroyNote,
-  setCurrentNote,
-  updateNote,
-} = notesSlice.actions
+export const { createNoteAndSetCurrent, reset, setCurrentNote, updateNote } =
+  notesSlice.actions

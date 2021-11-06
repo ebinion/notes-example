@@ -7,7 +7,15 @@ import {
   signOut as firebaseSignOut,
 } from '@firebase/auth'
 
-import { destroyError, isUserLike, RootState, setError, UserLike } from '.'
+import {
+  destroyError,
+  isUserLike,
+  RootState,
+  resetNotes,
+  resetUI,
+  setError,
+  UserLike,
+} from '.'
 import { auth } from '../services/firebase'
 import { getAuthErrorMessage } from '../utilities/helpers'
 
@@ -72,13 +80,22 @@ export const signIn = createAsyncThunk(
   }
 )
 
-export const signOut = createAsyncThunk('currentUser/delete', () => {
-  return new Promise<null>((resolve, reject) => {
-    firebaseSignOut(auth)
-      .then(() => resolve(null))
-      .catch((error) => reject(error))
-  })
-})
+export const signOut = createAsyncThunk(
+  'currentUser/delete',
+  (payload, thunkAPI) => {
+    return new Promise<null>((resolve, reject) => {
+      firebaseSignOut(auth)
+        .then(() => {
+          thunkAPI.dispatch(resetNotes())
+          thunkAPI.dispatch(resetUI())
+        })
+        .then(() => {
+          resolve(null)
+        })
+        .catch((error) => reject(error))
+    })
+  }
+)
 
 const currentUserSlice = createSlice({
   name: 'currentUser',

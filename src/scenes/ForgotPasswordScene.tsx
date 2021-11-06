@@ -7,12 +7,7 @@ import { routes } from '../App'
 import { auth } from '../services/firebase'
 import { getAuthErrorMessage } from '../utilities/helpers'
 import { appDispatch, destroyError, selectError, setError } from '../store'
-import Button from '../views/Button'
-import ColumnLayout from '../views/ColumnLayout'
-import Form from '../views/Form'
-import FormHeader from '../views/FormHeader'
-import Input from '../views/Input'
-import VStack from '../views/VStack'
+import { Button, ColumnLayout, Form, FormHeader, Input, VStack } from '../views'
 
 const ForgotPasswordScene = () => {
   const [isValid, setIsValid] = useState(false)

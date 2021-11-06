@@ -1,5 +1,5 @@
 import {
-  FC,
+  VFC,
   useState,
   ReactEventHandler,
   SyntheticEvent,
@@ -9,10 +9,12 @@ import { useSelector } from 'react-redux'
 import { Descendant } from 'slate'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 
+import { getDateTimeString } from '../utilities/helpers'
 import { firestore } from '../services/firebase'
 import {
   appDispatch,
   createNoteAndSetCurrent,
+  deleteNoteAndSetCurrent,
   NoteLike,
   selectCurrentNote,
   selectCurrentUser,
@@ -27,20 +29,22 @@ import {
   convertDateToString,
   convertSnapshotToNote,
 } from '../utilities/helpers'
-import { ReactComponent as BarsIcon } from '../icons/bars-solid.svg'
-import AppLayout from '../views/AppLayout'
-import Avatar from '../views/Avatar'
-import Button from '../views/Button'
-import Editor from '../views/Editor'
-import Header from '../views/Header'
-import IconedButton from '../views/IconedButton'
-import Menu from '../views/Menu'
-import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
-import NoteTitle from '../views/NoteTitle'
-import Teaser from '../views/Teaser'
-import Time from '../views/TimeAgo'
-import Toolbar from '../views/Toolbar'
-import VStack from '../views/VStack'
+import { BarsIcon, EllipsisIcon, PlusIcon } from '../icons'
+import {
+  AppLayout,
+  Avatar,
+  Button,
+  ButtonGroup,
+  Editor,
+  Header,
+  IconedButton,
+  Menu,
+  NoteTitle,
+  Teaser,
+  TimeAgo,
+  Toolbar,
+  VStack,
+} from '../views'
 
 const useNotesSubscription = (currentUserId: string) => {
   useEffect(() => {
@@ -81,10 +85,11 @@ const handleNoteUpdate = (
   appDispatch(updateNote(newNote))
 }
 
-const NotesScene: FC = () => {
-  const currentUser = useSelector(selectCurrentUser)
+const NotesScene: VFC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
+  const currentUser = useSelector(selectCurrentUser)
   const notes = useSelector(selectNotes)
   const [note, setNote] = useState(useSelector(selectCurrentNote))
   const currentNoteID = note?.id
@@ -121,6 +126,7 @@ const NotesScene: FC = () => {
           <Toolbar
             leadingChildren={
               <Menu
+                noBottomPad
                 trigger={
                   <Avatar
                     name={
@@ -130,21 +136,21 @@ const NotesScene: FC = () => {
                     }
                   />
                 }
-              >
-                <VStack>
+                headerChildren={
                   <div className="text--s text--light">
                     {currentUser?.name && `Hi, ${currentUser.name}`}
                   </div>
-                  <Button
-                    isAlignedLeading
-                    isFullWidth
-                    onClick={() => appDispatch(signOut())}
-                    size="s"
-                    type="secondary"
-                  >
-                    Sign Out
-                  </Button>
-                </VStack>
+                }
+              >
+                <Button
+                  isAlignedLeading
+                  isFullWidth
+                  onClick={() => appDispatch(signOut())}
+                  size="s"
+                  type="secondary"
+                >
+                  Sign Out
+                </Button>
               </Menu>
             }
             trailingChildren={
@@ -186,15 +192,83 @@ const NotesScene: FC = () => {
                   isHiddenLg
                   offset="leading"
                 >
-                  <BarsIcon />
+                  <BarsIcon title="Menu" />
                 </IconedButton>
 
                 {note && (
                   <div className="text--light text--s">
-                    Last edited <Time date={note.lastModifiedDate} />
+                    Last edited <TimeAgo date={note.lastModifiedDate} />
                   </div>
                 )}
               </>
+            }
+            trailingChildren={
+              <Menu
+                anchor="trailing"
+                closeCallback={() => setShowDeleteConfirmation(false)}
+                headerChildren={
+                  <>
+                    {showDeleteConfirmation && (
+                      <VStack>
+                        <div>
+                          <h4 className="text--noMargin">Are you sure?</h4>
+                          <p className="text--noMargin text--s">
+                            Your note will be permantly deleted.
+                          </p>
+                        </div>
+                        <ButtonGroup>
+                          <Button
+                            type="danger"
+                            onClick={() => {
+                              note &&
+                                appDispatch(deleteNoteAndSetCurrent(note.id))
+                            }}
+                            size="s"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            type="secondary"
+                            onClick={() => setShowDeleteConfirmation(false)}
+                            size="s"
+                          >
+                            Cancel
+                          </Button>
+                        </ButtonGroup>
+                      </VStack>
+                    )}
+                    {!showDeleteConfirmation && (
+                      <p className="text--s text--light">
+                        Created{' '}
+                        {note && getDateTimeString(new Date(note.createdDate))}
+                      </p>
+                    )}
+                  </>
+                }
+                noBottomPad={showDeleteConfirmation ? false : true}
+                trigger={
+                  <IconedButton>
+                    <EllipsisIcon title="Options" />
+                  </IconedButton>
+                }
+              >
+                {!showDeleteConfirmation && (
+                  <VStack gap="s">
+                    <Button
+                      isAlignedLeading
+                      isFullWidth
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setShowDeleteConfirmation(true)
+                      }}
+                      size="s"
+                      type="warning"
+                    >
+                      Delete Note
+                    </Button>
+                  </VStack>
+                )}
+              </Menu>
             }
           />
         </Header>

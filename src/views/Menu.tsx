@@ -12,12 +12,25 @@ import styles from './Menu.module.css'
 
 type Anchor = 'leading' | 'trailing'
 
+/** Openable pop-up menu */
 const Menu = (props: {
+  headerChildren?: ReactNode
   anchor?: Anchor
-  children: ReactNode
+  /** Use `event.preventDefault()` to stop menu from closing for children element interactions */
+  children?: ReactNode
+  /** Trigger will be provided with onClick handler to open and close menu */
   trigger: ReactElement
+  closeCallback?: Function
+  noBottomPad?: Boolean
 }) => {
-  const { anchor, children, trigger } = props
+  const {
+    anchor,
+    children,
+    closeCallback,
+    headerChildren,
+    noBottomPad,
+    trigger,
+  } = props
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -30,9 +43,9 @@ const Menu = (props: {
       classNames.push(styles.menuLeadingAnchor)
     }
 
-    if (isMenuOpen) {
-      classNames.push(styles.menuOpen)
-    }
+    if (isMenuOpen) classNames.push(styles.menuOpen)
+
+    if (noBottomPad) classNames.push(styles.menuNoPadBottom)
 
     return classNames.join(' ')
   }
@@ -48,14 +61,17 @@ const Menu = (props: {
 
   useEffect(() => {
     const handleDocClick = (event: Event) => {
-      isMenuOpen && setIsMenuOpen(false)
+      if (isMenuOpen) {
+        setIsMenuOpen(false)
+        if (typeof closeCallback === 'function') closeCallback()
+      }
     }
     document.addEventListener('click', handleDocClick)
 
     isMenuOpen && menuRef?.current?.focus()
 
     return () => document.removeEventListener('click', handleDocClick)
-  }, [isMenuOpen])
+  }, [isMenuOpen, closeCallback])
 
   return (
     <i className={styles.wrapper}>
@@ -68,7 +84,10 @@ const Menu = (props: {
         ref={menuRef}
         role="menu"
       >
-        {children}
+        {headerChildren && (
+          <div className={styles.header}>{headerChildren}</div>
+        )}
+        {children && <div className={styles.body}>{children}</div>}
       </div>
     </i>
   )

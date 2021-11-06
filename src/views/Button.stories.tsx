@@ -42,3 +42,10 @@ small.args = {
   onClick: () => alert('Button clicked'),
   size: 's',
 }
+
+export const warn = Template.bind({})
+small.args = {
+  children: 'Small Button',
+  onClick: () => alert('Button clicked'),
+  type: 'warning',
+}

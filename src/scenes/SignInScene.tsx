@@ -3,14 +3,8 @@ import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { routes } from '../App'
-import Button from '../views/Button'
-import ColumnLayout from '../views/ColumnLayout'
-import Form from '../views/Form'
-import FormHeader from '../views/FormHeader'
-import Input from '../views/Input'
-import VStack from '../views/VStack'
-
 import { appDispatch, signIn, selectError } from '../store'
+import { Button, ColumnLayout, Form, FormHeader, Input, VStack } from '../views'
 
 const SignInScene = () => {
   const [isValid, setIsValid] = useState(false)
