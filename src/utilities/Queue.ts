@@ -9,6 +9,7 @@ export default class Queue<Type> {
     this._enqueueCallbacks = []
   }
 
+  /** Print queue to the console */
   public display(): void {
     console.log(this._items)
   }

@@ -11,6 +11,7 @@
 .leading {
   align-items: center;
   display: flex;
+  gap: var(--pad-s);
   min-height: 44px;
 }
 

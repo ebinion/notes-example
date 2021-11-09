@@ -21,7 +21,7 @@ import {
   selectNotes,
   setCurrentNote,
   signOut,
-  updateNote,
+  postNote,
   store,
 } from '../store'
 
@@ -40,6 +40,7 @@ import {
   IconedButton,
   Menu,
   NoteTitle,
+  Spinner,
   Teaser,
   TimeAgo,
   Toolbar,
@@ -82,7 +83,7 @@ const handleNoteUpdate = (
 
   newNote.lastModifiedDate = convertDateToString(new Date())
 
-  appDispatch(updateNote(newNote))
+  appDispatch(postNote(newNote))
 }
 
 const NotesScene: VFC = () => {
@@ -200,6 +201,8 @@ const NotesScene: VFC = () => {
                     Last edited <TimeAgo date={note.lastModifiedDate} />
                   </div>
                 )}
+
+                {note && note.sync === 'unfulfilled' && <Spinner />}
               </>
             }
             trailingChildren={

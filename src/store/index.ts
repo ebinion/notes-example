@@ -18,7 +18,7 @@ import {
   selectCurrentNoteID,
   selectNotes,
   setCurrentNote,
-  updateNote,
+  postNote,
 } from './notesStore'
 import uiReducer, {
   destroyError,
@@ -34,6 +34,7 @@ export type NoteLike = {
   title: string
   body: string
   noteUserID: string
+  sync: 'pending' | 'unfulfilled' | 'fulfilled'
 }
 
 export type NoteFirestoreLike = {
@@ -103,5 +104,5 @@ export {
   setError,
   signIn,
   signOut,
-  updateNote,
+  postNote,
 }

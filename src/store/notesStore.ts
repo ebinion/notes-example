@@ -10,7 +10,7 @@ import {
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { firestore } from '../services/firebase'
-import { RootState, NoteLike, NoteFirestoreLike } from '.'
+import { RootState, NoteLike, NoteFirestoreLike, appDispatch } from '.'
 import {
   compareDateRecency,
   convertSnapshotToNote,
@@ -23,33 +23,42 @@ let saveNotesTimeout: NodeJS.Timeout
 
 export const notesQueue = new Queue<NoteLike>()
 notesQueue.onEnqueue(() => {
-  try {
-    if (saveNotesTimeout) clearTimeout(saveNotesTimeout)
-  } catch (error) {
-    console.error(error)
+  if (!notesQueue.isEmpty) {
+    try {
+      if (saveNotesTimeout) clearTimeout(saveNotesTimeout)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const storeNoteInFirestore = async () => {
+  const postNote = () => {
     if (!notesQueue.isEmpty) {
       const note = notesQueue.dequeue()
+
       if (note) {
+        appDispatch(updateNote({ ...note, sync: 'pending' }))
+
         const docRef = doc(firestore, `notes/${note.id}`)
-        const savableNote = cloneNoteWithoutId(note)
+        const savableNote = cloneNoteForFirestore(note)
+
         try {
-          await setDoc(docRef, savableNote)
+          setDoc(docRef, savableNote).then(() => {
+            appDispatch(updateNote({ ...note, sync: 'fulfilled' }))
+          })
         } catch (error) {
+          appDispatch(updateNote({ ...note, sync: 'unfulfilled' }))
           console.error(error)
         }
       }
 
-      storeNoteInFirestore()
+      postNote()
     }
   }
 
-  saveNotesTimeout = setTimeout(storeNoteInFirestore, 5000)
+  saveNotesTimeout = setTimeout(postNote, 5000)
 })
 
-const cloneNoteWithoutId = (note: NoteLike): NoteFirestoreLike => {
+const cloneNoteForFirestore = (note: NoteLike): NoteFirestoreLike => {
   const { lastModifiedDate, createdDate, title, body, noteUserID } = note
 
   return {
@@ -59,6 +68,18 @@ const cloneNoteWithoutId = (note: NoteLike): NoteFirestoreLike => {
     body,
     noteUserID,
   }
+}
+
+const replaceNote = (note: NoteLike, notes: NoteLike[]): NoteLike[] => {
+  const newNote: NoteLike = { ...note }
+
+  return notes.map((note) => {
+    if (note.id === newNote.id) {
+      return newNote
+    } else {
+      return note
+    }
+  })
 }
 
 export const deleteNoteAndSetCurrent = createAsyncThunk(
@@ -104,7 +125,11 @@ const initialState: {
 } = { all: [], currentID: null }
 
 export const selectCurrentNote = (state: RootState) => {
-  return state.notes.all.find((note) => note.id === state.notes.currentID)
+  if (state.notes.currentID) return selectNote(state.notes.currentID, state)
+}
+
+export const selectNote = (noteID: string, state: RootState) => {
+  return state.notes.all.find((note) => note.id === noteID)
 }
 
 export const selectCurrentNoteID = (state: RootState) => {
@@ -132,6 +157,7 @@ export const notesSlice = createSlice({
         title: '',
         body: '',
         noteUserID: action.payload.userID,
+        sync: 'unfulfilled',
       }
 
       state.currentID = noteID
@@ -145,26 +171,21 @@ export const notesSlice = createSlice({
       return initialState
     },
     setCurrentNote: (state, action: PayloadAction<{ noteID: string }>) => {
-      const newState = { ...state }
-
-      newState.currentID = action.payload.noteID
-
-      return newState
+      return { ...state, currentID: action.payload.noteID }
     },
+    /** Update Note in store only */
     updateNote: (state, action: PayloadAction<NoteLike>) => {
-      const newNote = { ...action.payload }
-
-      const newNotes = state.all.map((note) => {
-        if (note.id === action.payload.id) {
-          return newNote
-        } else {
-          return note
-        }
-      })
+      console.log('Update note ran')
+      const newNote: NoteLike = { ...action.payload, sync: 'unfulfilled' }
+      return { ...state, all: replaceNote(newNote, state.all) }
+    },
+    /** Eagerly update Note in store and post to server */
+    postNote: (state, action: PayloadAction<NoteLike>) => {
+      const newNote: NoteLike = { ...action.payload, sync: 'unfulfilled' }
 
       notesQueue.enqueue(newNote)
 
-      return { all: newNotes, currentID: state.currentID }
+      return { ...state, all: replaceNote(newNote, state.all) }
     },
   },
   extraReducers: (builder) => {
@@ -205,8 +226,8 @@ export const notesSlice = createSlice({
         })
 
         return {
+          ...state,
           all: sortNotes([...currentNotes, ...newNotes]),
-          currentID: state.currentID,
         }
       }
 
@@ -226,12 +247,17 @@ export const notesSlice = createSlice({
         newState.all.splice(noteIndex, 1)
       }
 
-      newState.currentID = newState.all[0].id
+      newState.currentID = newState.all[0] ? newState.all[0].id : null
 
       return newState
     })
   },
 })
 
-export const { createNoteAndSetCurrent, reset, setCurrentNote, updateNote } =
-  notesSlice.actions
+export const {
+  createNoteAndSetCurrent,
+  reset,
+  setCurrentNote,
+  postNote,
+  updateNote,
+} = notesSlice.actions

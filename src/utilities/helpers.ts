@@ -211,5 +211,6 @@ export const convertSnapshotToNote = (snapshot: DocumentSnapshot): NoteLike => {
     title: snapshot.get('title'),
     body: snapshot.get('body'),
     noteUserID: snapshot.get('noteUserID'),
+    sync: 'fulfilled',
   }
 }
