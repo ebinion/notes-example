@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from '.'
+import { RootState, postNote } from '.'
 
 const initialState = {
-  error: null,
+  error: null as string | null,
 }
 
 const uiSlice = createSlice({
@@ -18,6 +18,19 @@ const uiSlice = createSlice({
     setError: (state, action) => {
       return { ...state, error: action.payload }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(postNote.fulfilled, (state) => {
+      return { ...state, error: null }
+    })
+
+    builder.addCase(postNote.rejected, (state) => {
+      return {
+        ...state,
+        error:
+          'Something went wrong with our servers. Please copy your note and refresh the page.',
+      }
+    })
   },
 })
 
