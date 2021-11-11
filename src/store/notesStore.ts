@@ -10,56 +10,19 @@ import {
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { firestore } from '../services/firebase'
-import { RootState, NoteLike, NoteFirestoreLike } from '.'
+import { RootState, NoteLike /* , NoteFirestoreLike */ } from '.'
 import {
+  getFirestoreableNote,
   compareDateRecency,
-  convertSnapshotToNote,
+  noteConverter,
   shortID,
   sortNotes,
 } from '../utilities/helpers'
-import Queue from '../utilities/Queue'
 
-let saveNotesTimeout: NodeJS.Timeout
-
-export const notesQueue = new Queue<NoteLike>()
-notesQueue.onEnqueue(() => {
-  try {
-    if (saveNotesTimeout) clearTimeout(saveNotesTimeout)
-  } catch (error) {
-    console.error(error)
-  }
-
-  const storeNoteInFirestore = async () => {
-    if (!notesQueue.isEmpty) {
-      const note = notesQueue.dequeue()
-      if (note) {
-        const docRef = doc(firestore, `notes/${note.id}`)
-        const savableNote = cloneNoteWithoutId(note)
-        try {
-          await setDoc(docRef, savableNote)
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      storeNoteInFirestore()
-    }
-  }
-
-  saveNotesTimeout = setTimeout(storeNoteInFirestore, 5000)
-})
-
-const cloneNoteWithoutId = (note: NoteLike): NoteFirestoreLike => {
-  const { lastModifiedDate, createdDate, title, body, noteUserID } = note
-
-  return {
-    lastModifiedDate,
-    createdDate,
-    title,
-    body,
-    noteUserID,
-  }
-}
+const initialState: {
+  all: NoteLike[]
+  currentID: string | null
+} = { all: [], currentID: null }
 
 export const deleteNoteAndSetCurrent = createAsyncThunk(
   'notes/destroyNote',
@@ -83,12 +46,12 @@ export const fetchNotes = createAsyncThunk(
       if (currentUserId) {
         const notes: NoteLike[] = []
         const notesQuery = query(
-          collection(firestore, 'notes'),
+          collection(firestore, 'notes').withConverter(noteConverter),
           where('noteUserID', '==', currentUserId)
         )
         const notesSnapshot = await getDocs(notesQuery)
         notesSnapshot.forEach((noteSnapshot) => {
-          notes.push(convertSnapshotToNote(noteSnapshot))
+          notes.push(noteSnapshot.data())
         })
         resolve(notes)
       } else {
@@ -98,10 +61,24 @@ export const fetchNotes = createAsyncThunk(
   }
 )
 
-const initialState: {
-  all: NoteLike[]
-  currentID: string | null
-} = { all: [], currentID: null }
+export const postNote = createAsyncThunk(
+  'notes/postNote',
+  async (note: NoteLike) => {
+    return new Promise<NoteLike>(async (resolve, reject) => {
+      const docRef = doc(firestore, `notes/${note.id}`).withConverter(
+        noteConverter
+      )
+
+      try {
+        await setDoc(docRef, note)
+        resolve(note)
+      } catch (error) {
+        console.error(error)
+        reject(error)
+      }
+    })
+  }
+)
 
 export const selectCurrentNote = (state: RootState) => {
   return state.notes.all.find((note) => note.id === state.notes.currentID)
@@ -137,8 +114,6 @@ export const notesSlice = createSlice({
       state.currentID = noteID
       state.all.push(newNote)
 
-      notesQueue.enqueue(newNote)
-
       return state
     },
     reset: () => {
@@ -161,8 +136,6 @@ export const notesSlice = createSlice({
           return note
         }
       })
-
-      notesQueue.enqueue(newNote)
 
       return { all: newNotes, currentID: state.currentID }
     },
@@ -226,7 +199,7 @@ export const notesSlice = createSlice({
         newState.all.splice(noteIndex, 1)
       }
 
-      newState.currentID = newState.all[0].id
+      newState.currentID = newState.all.length > 0 ? newState.all[0].id : null
 
       return newState
     })
