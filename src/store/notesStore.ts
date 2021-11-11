@@ -23,6 +23,18 @@ const initialState: {
   currentID: string | null
 } = { all: [], currentID: null }
 
+const replaceNote = (note: NoteLike, notes: NoteLike[]): NoteLike[] => {
+  const newNote: NoteLike = { ...note }
+
+  return notes.map((note) => {
+    if (note.id === newNote.id) {
+      return newNote
+    } else {
+      return note
+    }
+  })
+}
+
 export const deleteNoteAndSetCurrent = createAsyncThunk(
   'notes/destroyNote',
   (noteID: string, thunkAPI) => {
@@ -80,7 +92,11 @@ export const postNote = createAsyncThunk(
 )
 
 export const selectCurrentNote = (state: RootState) => {
-  return state.notes.all.find((note) => note.id === state.notes.currentID)
+  if (state.notes.currentID) return selectNote(state.notes.currentID, state)
+}
+
+export const selectNote = (noteID: string, state: RootState) => {
+  return state.notes.all.find((note) => note.id === noteID)
 }
 
 export const selectCurrentNoteID = (state: RootState) => {
@@ -119,24 +135,12 @@ export const notesSlice = createSlice({
       return initialState
     },
     setCurrentNote: (state, action: PayloadAction<{ noteID: string }>) => {
-      const newState = { ...state }
-
-      newState.currentID = action.payload.noteID
-
-      return newState
+      return { ...state, currentID: action.payload.noteID }
     },
+    /** Update Note in store only */
     updateNote: (state, action: PayloadAction<NoteLike>) => {
-      const newNote = { ...action.payload }
-
-      const newNotes = state.all.map((note) => {
-        if (note.id === action.payload.id) {
-          return newNote
-        } else {
-          return note
-        }
-      })
-
-      return { all: newNotes, currentID: state.currentID }
+      const newNote: NoteLike = { ...action.payload }
+      return { ...state, all: replaceNote(newNote, state.all) }
     },
   },
   extraReducers: (builder) => {
@@ -177,8 +181,8 @@ export const notesSlice = createSlice({
         })
 
         return {
+          ...state,
           all: sortNotes([...currentNotes, ...newNotes]),
-          currentID: state.currentID,
         }
       }
 

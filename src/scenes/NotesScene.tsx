@@ -150,7 +150,9 @@ const NotesScene: VFC = () => {
 
   return (
     <AppLayout isNavOpen={isNavOpen} navChildren={renderNav()}>
-      <CurrentNoteScene handleNavOpen={setIsNavOpen} />
+      {currentNoteID && (
+        <CurrentNoteScene handleNavOpen={setIsNavOpen} key={currentNoteID} />
+      )}
     </AppLayout>
   )
 }

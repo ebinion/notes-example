@@ -4,6 +4,7 @@ import { ReactComponent as ChevronDownIcon } from '../icons/chevron-down-solid.s
 import { ReactComponent as ChevronLeftIcon } from '../icons/chevron-left-solid.svg'
 import { ReactComponent as EllipsisIcon } from '../icons/ellipsis-h-solid.svg'
 import { ReactComponent as PlusIcon } from '../icons/plus-solid.svg'
+import { ReactComponent as SpinnerIcon } from '../icons/circle-notch-solid.svg'
 
 export {
   BarsIcon,
@@ -12,4 +13,5 @@ export {
   ChevronLeftIcon,
   EllipsisIcon,
   PlusIcon,
+  SpinnerIcon,
 }

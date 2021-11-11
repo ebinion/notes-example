@@ -12,6 +12,7 @@ import Input from './Input'
 import Menu from './Menu'
 import NoteTitle from './NoteTitle'
 import Notice from './Notice'
+import Spinner from './Spinner'
 import Teaser from './Teaser'
 import TimeAgo from './TimeAgo'
 import Toolbar from './Toolbar'
@@ -32,6 +33,7 @@ export {
   Menu,
   NoteTitle,
   Notice,
+  Spinner,
   Teaser,
   TimeAgo,
   Toolbar,

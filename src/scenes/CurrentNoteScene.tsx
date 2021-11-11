@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 import {
@@ -25,6 +25,7 @@ import {
   IconedButton,
   Menu,
   NoteTitle,
+  Spinner,
   TimeAgo,
   Toolbar,
   VStack,
@@ -59,19 +60,28 @@ const handleNewNote = () => {
 
 const useAutoPostNote = (note?: NoteLike) => {
   const [isNoteSaved, setIsNoteSaved] = useState(true)
+  const isFirstRun = useRef(true)
 
   useEffect(() => {
-    const delayedPostNote = debounce(async () => {
-      if (note) {
-        await appDispatch(postNote(note))
-        setIsNoteSaved(true)
-      }
-    }, 3000)
+    const delayedPostNote = !isFirstRun.current
+      ? debounce(async () => {
+          if (note) {
+            await appDispatch(postNote(note))
+            setIsNoteSaved(true)
+          }
+        }, 3000)
+      : null
 
-    setIsNoteSaved(false)
-    delayedPostNote()
+    if (delayedPostNote) {
+      setIsNoteSaved(false)
+      delayedPostNote()
+    } else {
+      isFirstRun.current = false
+    }
 
-    return delayedPostNote.cancel
+    return () => {
+      delayedPostNote && delayedPostNote.cancel()
+    }
   }, [note])
 
   return isNoteSaved
@@ -79,13 +89,13 @@ const useAutoPostNote = (note?: NoteLike) => {
 
 const CurrentNoteScene = (props: {
   handleNavOpen: (isOpen: boolean) => void
+  key: string
 }) => {
   const { handleNavOpen } = props
 
   const note = useSelector(selectCurrentNote)
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-
   const isNoteSaved = useAutoPostNote(note)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
   return (
     <VStack gap="m">
@@ -107,9 +117,7 @@ const CurrentNoteScene = (props: {
                 </div>
               )}
 
-              {!isNoteSaved && (
-                <div className="text--light text--s">...saving</div>
-              )}
+              {!isNoteSaved && <Spinner />}
             </>
           }
           trailingChildren={
