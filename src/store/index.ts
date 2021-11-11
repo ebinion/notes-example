@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { Timestamp } from 'firebase/firestore'
 
 import currentUserReducer, {
   createUserAndSignIn,
@@ -13,12 +14,13 @@ import {
   deleteNoteAndSetCurrent,
   fetchNotes,
   notesSlice,
+  postNote,
   reset as resetNotes,
   selectCurrentNote,
   selectCurrentNoteID,
   selectNotes,
   setCurrentNote,
-  postNote,
+  updateNote,
 } from './notesStore'
 import uiReducer, {
   destroyError,
@@ -34,12 +36,11 @@ export type NoteLike = {
   title: string
   body: string
   noteUserID: string
-  sync: 'pending' | 'unfulfilled' | 'fulfilled'
 }
 
 export type NoteFirestoreLike = {
-  lastModifiedDate: string
-  createdDate: string
+  lastModifiedDate: Timestamp
+  createdDate: Timestamp
   title: string
   body: string
   noteUserID: string
@@ -92,6 +93,7 @@ export {
   destroyError,
   deleteNoteAndSetCurrent,
   fetchNotes,
+  postNote,
   resetNotes,
   resetUI,
   selectCurrentNote,
@@ -104,5 +106,5 @@ export {
   setError,
   signIn,
   signOut,
-  postNote,
+  updateNote,
 }

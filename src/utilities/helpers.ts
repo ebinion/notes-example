@@ -1,8 +1,8 @@
 import { AuthError } from 'firebase/auth'
-import { DocumentSnapshot } from 'firebase/firestore'
+import { QueryDocumentSnapshot, Timestamp } from 'firebase/firestore'
 import ShortUniqueId from 'short-unique-id'
 
-import { NoteLike } from '../store'
+import { NoteLike, NoteFirestoreLike } from '../store'
 import { routes } from '../App'
 
 export const addLeadingZero = (num: number): string => {
@@ -13,6 +13,72 @@ export const addLeadingZero = (num: number): string => {
   } else {
     return numString
   }
+}
+
+export const getFirestoreableNote = (note: NoteLike): NoteFirestoreLike => {
+  const { lastModifiedDate, createdDate, title, body, noteUserID } = note
+
+  return {
+    lastModifiedDate: Timestamp.fromDate(new Date(lastModifiedDate)),
+    createdDate: Timestamp.fromDate(new Date(createdDate)),
+    title,
+    body,
+    noteUserID,
+  }
+}
+
+/**
+ *
+ * @param a Any string accepted by Date contructor
+ * @param b Any string accepted by Date contructor
+ * @returns 1 when `a` is more recent, -1 when `b` is more recent, 0 when both are equal
+ */
+export const compareDateRecency = (a: string, b: string) => {
+  const sinceA = new Date(a).toISOString()
+  const sinceB = new Date(b).toISOString()
+
+  if (sinceA > sinceB) {
+    return -1
+  } else if (sinceA < sinceB) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+export const noteConverter = {
+  toFirestore: (note: NoteLike): NoteFirestoreLike => {
+    const { lastModifiedDate, createdDate, title, body, noteUserID } = note
+
+    return {
+      lastModifiedDate: Timestamp.fromDate(new Date(lastModifiedDate)),
+      createdDate: Timestamp.fromDate(new Date(createdDate)),
+      title,
+      body,
+      noteUserID,
+    }
+  },
+  fromFirestore: (snapshot: QueryDocumentSnapshot): NoteLike => {
+    const note = snapshot.data()
+
+    const getDateString = (date?: Timestamp) => {
+      return date ? date.toDate().toISOString() : new Date().toISOString()
+    }
+
+    if (note) {
+      return {
+        lastModifiedDate: getDateString(note.lastModifiedDate),
+        id: snapshot.id,
+        createdDate: getDateString(note.createdDate),
+        title: note.title,
+        body: note.body,
+        noteUserID: note.noteUserID,
+      }
+    }
+
+    console.error('Unable to convert Firestore Note Snapshot')
+    throw new Error('Sorry, an error occurred with our server.')
+  },
 }
 
 export const convertDateToString = (date = new Date()) => {
@@ -182,35 +248,4 @@ export const sortNotes = (notes: NoteLike[]) => {
   return [...notes].sort((a, b) => {
     return compareDateRecency(a.lastModifiedDate, b.lastModifiedDate)
   })
-}
-
-/**
- *
- * @param a Any string accepted by Date contructor
- * @param b Any string accepted by Date contructor
- * @returns 1 when `a` is more recent, -1 when `b` is more recent, 0 when both are equal
- */
-export const compareDateRecency = (a: string, b: string) => {
-  const sinceA = new Date(a).toISOString()
-  const sinceB = new Date(b).toISOString()
-
-  if (sinceA > sinceB) {
-    return -1
-  } else if (sinceA < sinceB) {
-    return 1
-  } else {
-    return 0
-  }
-}
-
-export const convertSnapshotToNote = (snapshot: DocumentSnapshot): NoteLike => {
-  return {
-    lastModifiedDate: snapshot.get('lastModifiedDate'),
-    id: snapshot.id,
-    createdDate: snapshot.get('createdDate'),
-    title: snapshot.get('title'),
-    body: snapshot.get('body'),
-    noteUserID: snapshot.get('noteUserID'),
-    sync: 'fulfilled',
-  }
 }
