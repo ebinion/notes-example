@@ -10,9 +10,8 @@ import {
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { firestore } from '../services/firebase'
-import { RootState, NoteLike /* , NoteFirestoreLike */ } from '.'
+import { RootState, NoteLike } from '.'
 import {
-  getFirestoreableNote,
   compareDateRecency,
   noteConverter,
   shortID,
