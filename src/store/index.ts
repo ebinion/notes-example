@@ -26,7 +26,9 @@ import uiReducer, {
   destroyError,
   reset as resetUI,
   selectError,
+  selectIsSaving,
   setError,
+  setIsSaving,
 } from './uiStore'
 
 export type NoteLike = {
@@ -100,10 +102,12 @@ export {
   selectCurrentNoteID,
   selectCurrentUser,
   selectError,
+  selectIsSaving,
   selectNotes,
   setCurrentNote,
   setCurrentUser,
   setError,
+  setIsSaving,
   signIn,
   signOut,
   updateNote,

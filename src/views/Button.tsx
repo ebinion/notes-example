@@ -12,8 +12,17 @@ const Button = (props: {
   onClick?: ReactEventHandler
   size?: SizeLike
   type?: TypeLike
+  [k: string]: any
 }) => {
-  const { children, isAlignedLeading, isFullWidth, onClick, size, type } = props
+  const {
+    children,
+    isAlignedLeading,
+    isFullWidth,
+    onClick,
+    size,
+    type,
+    ...rest
+  } = props
 
   const getClassNames = (size: SizeLike, type: TypeLike) => {
     let classList = [styles.button]
@@ -56,6 +65,7 @@ const Button = (props: {
       className={size && type && getClassNames(size, type)}
       disabled={type === 'disabled'}
       onClick={onClick}
+      {...rest}
     >
       {children}
     </button>
