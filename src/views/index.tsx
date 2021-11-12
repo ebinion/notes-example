@@ -4,6 +4,7 @@ import Button from './Button'
 import ButtonGroup from './ButtonGroup'
 import ColumnLayout from './ColumnLayout'
 import Editor from './Editor'
+import Flash from './Flash'
 import Form from './Form'
 import FormHeader from './FormHeader'
 import Header from './Header'
@@ -25,6 +26,7 @@ export {
   ButtonGroup,
   ColumnLayout,
   Editor,
+  Flash,
   Form,
   FormHeader,
   Header,

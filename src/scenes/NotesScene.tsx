@@ -12,9 +12,11 @@ import { firestore } from '../services/firebase'
 import {
   appDispatch,
   createNoteAndSetCurrent,
+  destroyError,
   NoteLike,
   selectCurrentNote,
   selectCurrentUser,
+  selectError,
   selectNotes,
   setCurrentNote,
   signOut,
@@ -26,6 +28,7 @@ import {
   AppLayout,
   Avatar,
   Button,
+  Flash,
   Header,
   IconedButton,
   Menu,
@@ -66,6 +69,7 @@ const NotesScene: VFC = () => {
   const currentUser = useSelector(selectCurrentUser)
   const notes = useSelector(selectNotes)
   const note = useSelector(selectCurrentNote)
+  const error = useSelector(selectError)
   const currentNoteID = note?.id
 
   useNotesSubscription(currentUser!.id)
@@ -85,6 +89,10 @@ const NotesScene: VFC = () => {
     event.preventDefault()
     appDispatch(setCurrentNote({ noteID: note.id }))
     setIsNavOpen(false)
+  }
+
+  const handleDismissError = () => {
+    appDispatch(destroyError())
   }
 
   const renderNav = () => {
@@ -149,11 +157,14 @@ const NotesScene: VFC = () => {
   }
 
   return (
-    <AppLayout isNavOpen={isNavOpen} navChildren={renderNav()}>
-      {currentNoteID && (
-        <CurrentNoteScene handleNavOpen={setIsNavOpen} key={currentNoteID} />
-      )}
-    </AppLayout>
+    <>
+      {error && <Flash message={error} closeHandler={handleDismissError} />}
+      <AppLayout isNavOpen={isNavOpen} navChildren={renderNav()}>
+        {currentNoteID && (
+          <CurrentNoteScene handleNavOpen={setIsNavOpen} key={currentNoteID} />
+        )}
+      </AppLayout>
+    </>
   )
 }
 
