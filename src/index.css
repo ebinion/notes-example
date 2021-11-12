@@ -48,7 +48,7 @@
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
   --z-above-content: 9;
   --z-above-most: 99;
-  --z-above-everything: 999;
+  --z-above-everything: 99999;
 }
 
 @media (min-width: 1300px) {

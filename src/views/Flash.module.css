@@ -1,0 +1,41 @@
+.wrapper {
+  background: var(--c-bg);
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom);
+  box-shadow: var(--drop-shadow);
+  padding: 0 var(--pad) var(--pad);
+  position: fixed;
+  right: 0;
+  z-index: var(--z-above-everything);
+}
+
+@supports (backdrop-filter: var(--backdrop-blur)) {
+  .wrapper {
+    background: var(--c-bg-secondary);
+    backdrop-filter: var(--backdrop-blur);
+  }
+}
+
+.doc {
+  display: grid;
+  gap: var(--pad);
+  grid-template-columns: 32px 1fr auto;
+}
+
+.icon,
+.message {
+  padding-top: var(--pad);
+}
+
+.icon {
+  color: var(--c-red);
+}
+
+@media (min-width: 600px) {
+  .wrapper {
+    border-radius: var(--radius);
+    bottom: var(--pad);
+    right: var(--pad);
+    max-width: 360px;
+  }
+}

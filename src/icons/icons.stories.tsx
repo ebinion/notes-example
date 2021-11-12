@@ -6,7 +6,9 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   EllipsisIcon,
+  ExclamationIcon,
   PlusIcon,
+  XIcon,
 } from './'
 
 export default {
@@ -50,6 +52,12 @@ export const ellipsisIcon: ComponentStory<typeof EllipsisIcon> = (args) => (
   <EllipsisIcon {...args} />
 )
 
+export const exclamationIcon: ComponentStory<typeof ExclamationIcon> = (
+  args
+) => <ExclamationIcon {...args} />
+
 export const plusIcon: ComponentStory<typeof PlusIcon> = (args) => (
   <PlusIcon {...args} />
 )
+
+export const xIcon: ComponentStory<typeof XIcon> = (args) => <XIcon {...args} />

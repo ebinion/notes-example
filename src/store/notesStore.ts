@@ -55,18 +55,22 @@ export const fetchNotes = createAsyncThunk(
   (currentUserId: string, thunkAPI) => {
     return new Promise<NoteLike[]>(async (resolve, reject) => {
       if (currentUserId) {
-        const notes: NoteLike[] = []
-        const notesQuery = query(
-          collection(firestore, 'notes').withConverter(noteConverter),
-          where('noteUserID', '==', currentUserId)
-        )
-        const notesSnapshot = await getDocs(notesQuery)
-        notesSnapshot.forEach((noteSnapshot) => {
-          notes.push(noteSnapshot.data())
-        })
-        resolve(notes)
+        try {
+          const notes: NoteLike[] = []
+          const notesQuery = query(
+            collection(firestore, 'notes').withConverter(noteConverter),
+            where('noteUserID', '==', currentUserId)
+          )
+          const notesSnapshot = await getDocs(notesQuery)
+          notesSnapshot.forEach((noteSnapshot) => {
+            notes.push(noteSnapshot.data())
+          })
+          resolve(notes)
+        } catch (error) {
+          reject(new Error('Could not fetch notes'))
+        }
       } else {
-        reject(new Error('Cannot fetch notes of logged out user'))
+        reject(new Error('User logged out, could not fetch notes.'))
       }
     })
   }
