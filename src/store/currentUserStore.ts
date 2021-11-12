@@ -8,12 +8,14 @@ import {
 } from '@firebase/auth'
 
 import {
+  AppDispatch,
   destroyError,
   isUserLike,
   RootState,
   resetNotes,
   resetUI,
   setError,
+  selectIsSaving,
   UserLike,
 } from '.'
 import { auth } from '../services/firebase'
@@ -80,22 +82,34 @@ export const signIn = createAsyncThunk(
   }
 )
 
-export const signOut = createAsyncThunk(
-  'currentUser/delete',
-  (payload, thunkAPI) => {
-    return new Promise<null>((resolve, reject) => {
+export const signOut = createAsyncThunk<
+  void,
+  void,
+  { dispatch: AppDispatch; state: RootState; rejectValue: string }
+>('currentUser/delete', (payload, thunkAPI) => {
+  return new Promise((resolve, reject) => {
+    const isSaving = selectIsSaving(thunkAPI.getState())
+
+    if (isSaving) {
+      console.log("Yep, it's saving")
+      reject('We’re saving a note you edited. Please try again shortly.')
+    } else {
       firebaseSignOut(auth)
         .then(() => {
           thunkAPI.dispatch(resetNotes())
           thunkAPI.dispatch(resetUI())
         })
         .then(() => {
-          resolve(null)
+          resolve()
         })
-        .catch((error) => reject(error))
-    })
-  }
-)
+        .catch(() =>
+          reject(
+            'Sorry, there was a server issue. Please try to sign out again. '
+          )
+        )
+    }
+  })
+})
 
 const currentUserSlice = createSlice({
   name: 'currentUser',
@@ -133,8 +147,8 @@ const currentUserSlice = createSlice({
       return null
     })
 
-    builder.addCase(signOut.rejected, () => {
-      return null
+    builder.addCase(signOut.rejected, (state) => {
+      return state
     })
   },
 })

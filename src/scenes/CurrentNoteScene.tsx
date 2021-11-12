@@ -10,6 +10,8 @@ import {
   postNote,
   selectCurrentNote,
   selectCurrentUser,
+  selectIsSaving,
+  setIsSaving,
   store,
   updateNote,
 } from '../store'
@@ -59,7 +61,6 @@ const handleNewNote = () => {
 }
 
 const useAutoPostNote = (note?: NoteLike) => {
-  const [isNoteSaved, setIsNoteSaved] = useState(true)
   const isFirstRun = useRef(true)
 
   useEffect(() => {
@@ -67,13 +68,12 @@ const useAutoPostNote = (note?: NoteLike) => {
       ? debounce(async () => {
           if (note) {
             await appDispatch(postNote(note))
-            setIsNoteSaved(true)
           }
         }, 3000)
       : null
 
     if (delayedPostNote) {
-      setIsNoteSaved(false)
+      appDispatch(setIsSaving(true))
       delayedPostNote()
     } else {
       isFirstRun.current = false
@@ -83,8 +83,6 @@ const useAutoPostNote = (note?: NoteLike) => {
       delayedPostNote && delayedPostNote.cancel()
     }
   }, [note])
-
-  return isNoteSaved
 }
 
 const CurrentNoteScene = (props: {
@@ -93,9 +91,25 @@ const CurrentNoteScene = (props: {
 }) => {
   const { handleNavOpen } = props
 
+  const isNoteSaving = useSelector(selectIsSaving)
   const note = useSelector(selectCurrentNote)
-  const isNoteSaved = useAutoPostNote(note)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+
+  useAutoPostNote(note)
+
+  useEffect(() => {
+    const unloadHandler = (event: BeforeUnloadEvent) => {
+      if (selectIsSaving(store.getState())) {
+        event.preventDefault()
+
+        return (event.returnValue = 'Changes to your note may not be saved.')
+      }
+    }
+
+    window.addEventListener('beforeunload', unloadHandler)
+
+    return () => window.removeEventListener('beforeunload', unloadHandler)
+  }, [])
 
   return (
     <VStack gap="m">
@@ -117,7 +131,7 @@ const CurrentNoteScene = (props: {
                 </div>
               )}
 
-              {!isNoteSaved && <Spinner />}
+              {isNoteSaving && <Spinner />}
             </>
           }
           trailingChildren={
@@ -137,12 +151,13 @@ const CurrentNoteScene = (props: {
                         </div>
                         <ButtonGroup>
                           <Button
-                            type="danger"
+                            type={isNoteSaving ? 'disabled' : 'danger'}
                             onClick={() => {
                               note &&
                                 appDispatch(deleteNoteAndSetCurrent(note.id))
                             }}
                             size="s"
+                            title={isNoteSaving ? '' : undefined}
                           >
                             Delete
                           </Button>
