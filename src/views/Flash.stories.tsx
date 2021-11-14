@@ -20,3 +20,12 @@ flash.args = {
     body: 'A more detailed message goes here, keep it short.',
   },
 }
+
+export const noTitle = Template.bind({})
+noTitle.args = {
+  closeHandler: () =>
+    alert(
+      "It’s best if you remove the 'Flash' from the dom for animation purposes"
+    ),
+  message: 'A more detailed message goes here, keep it short.',
+}

@@ -3,7 +3,7 @@
   bottom: 0;
   bottom: env(safe-area-inset-bottom);
   box-shadow: var(--drop-shadow);
-  padding: 0 var(--pad) var(--pad);
+  padding: 0 0 var(--pad) var(--pad);
   position: fixed;
   right: 0;
   z-index: var(--z-above-everything);
@@ -22,13 +22,14 @@
   grid-template-columns: 32px 1fr auto;
 }
 
-.icon,
 .message {
   padding-top: var(--pad);
 }
 
 .icon {
   color: var(--c-red);
+  line-height: 0;
+  padding-top: var(--pad);
 }
 
 @media (min-width: 600px) {
