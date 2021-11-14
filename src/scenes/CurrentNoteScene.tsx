@@ -4,12 +4,10 @@ import { useSelector } from 'react-redux'
 
 import {
   appDispatch,
-  createNoteAndSetCurrent,
   deleteNoteAndSetCurrent,
   NoteLike,
   postNote,
   selectCurrentNote,
-  selectCurrentUser,
   selectIsSaving,
   setIsSaving,
   store,
