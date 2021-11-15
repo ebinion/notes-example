@@ -4,12 +4,10 @@ import { useSelector } from 'react-redux'
 
 import {
   appDispatch,
-  createNoteAndSetCurrent,
   deleteNoteAndSetCurrent,
   NoteLike,
   postNote,
   selectCurrentNote,
-  selectCurrentUser,
   selectIsSaving,
   setIsSaving,
   store,
@@ -45,19 +43,6 @@ const handleNoteUpdate = (
   newNote.lastModifiedDate = convertDateToString(new Date())
 
   appDispatch(updateNote(newNote))
-}
-
-const handleNewNote = () => {
-  const currentUserID = selectCurrentUser(store.getState())?.id
-
-  if (currentUserID) {
-    appDispatch(
-      createNoteAndSetCurrent({
-        userID: currentUserID,
-        date: new Date().toISOString(),
-      })
-    )
-  }
 }
 
 const useAutoPostNote = (note?: NoteLike) => {
@@ -222,18 +207,6 @@ const CurrentNoteScene = (props: {
             value={note.body ? JSON.parse(note.body) : null}
           />
         </VStack>
-      )}
-      {!note && (
-        <div>
-          <p className="text--center">
-            It looks like you don't have any saved notes, yet.
-          </p>
-          <p className="text--center">
-            <Button onClick={handleNewNote} type="secondary">
-              Create Note
-            </Button>
-          </p>
-        </div>
       )}
     </VStack>
   )

@@ -9,7 +9,7 @@ import {
 } from 'firebase/firestore'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { firestore } from '../services/firebase'
+import { auth, firestore } from '../services/firebase'
 import { RootState, NoteLike } from '.'
 import {
   compareDateRecency,
@@ -76,6 +76,18 @@ export const fetchNotes = createAsyncThunk(
   }
 )
 
+const generateEmptyNote = (userID: string, date: Date | string): NoteLike => {
+  const newDate = typeof date === 'string' ? date : date.toISOString()
+  return {
+    lastModifiedDate: newDate,
+    createdDate: newDate,
+    id: shortID(),
+    title: '',
+    body: '',
+    noteUserID: userID,
+  }
+}
+
 export const postNote = createAsyncThunk(
   'notes/postNote',
   async (note: NoteLike) => {
@@ -119,18 +131,12 @@ export const notesSlice = createSlice({
       state,
       action: PayloadAction<{ userID: string; date: string }>
     ) => {
-      const noteID = shortID()
+      const newNote = generateEmptyNote(
+        action.payload.userID,
+        action.payload.date
+      )
 
-      const newNote: NoteLike = {
-        lastModifiedDate: action.payload.date,
-        createdDate: action.payload.date,
-        id: noteID,
-        title: '',
-        body: '',
-        noteUserID: action.payload.userID,
-      }
-
-      state.currentID = noteID
+      state.currentID = newNote.id
       state.all.push(newNote)
 
       return state
@@ -188,6 +194,13 @@ export const notesSlice = createSlice({
           ...state,
           all: sortNotes([...currentNotes, ...newNotes]),
         }
+      } else if (auth.currentUser) {
+        const emptyNote = generateEmptyNote(auth.currentUser.uid, new Date())
+        return {
+          ...state,
+          all: [emptyNote],
+          currentID: emptyNote.id,
+        }
       }
 
       return state
@@ -199,6 +212,7 @@ export const notesSlice = createSlice({
         currentID: state.currentID,
       }
 
+      // Remove note
       const noteIndex = newState.all.findIndex(
         (note) => note.id === action.payload
       )
@@ -206,6 +220,13 @@ export const notesSlice = createSlice({
         newState.all.splice(noteIndex, 1)
       }
 
+      // Ensure notes aren't empty
+      if (newState.all.length === 0) {
+        if (auth.currentUser)
+          newState.all.push(generateEmptyNote(auth.currentUser.uid, new Date()))
+      }
+
+      // Set current
       newState.currentID = newState.all.length > 0 ? newState.all[0].id : null
 
       return newState
