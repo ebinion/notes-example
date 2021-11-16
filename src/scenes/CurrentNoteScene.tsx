@@ -136,7 +136,7 @@ const CurrentNoteScene = (props: {
                         </div>
                         <ButtonGroup>
                           <Button
-                            type={isNoteSaving ? 'disabled' : 'danger'}
+                            kind={isNoteSaving ? 'disabled' : 'danger'}
                             onClick={() => {
                               note &&
                                 appDispatch(deleteNoteAndSetCurrent(note.id))
@@ -147,7 +147,7 @@ const CurrentNoteScene = (props: {
                             Delete
                           </Button>
                           <Button
-                            type="secondary"
+                            kind="secondary"
                             onClick={() => setShowDeleteConfirmation(false)}
                             size="s"
                           >
@@ -181,7 +181,7 @@ const CurrentNoteScene = (props: {
                         setShowDeleteConfirmation(true)
                       }}
                       size="s"
-                      type="warning"
+                      kind="warning"
                     >
                       Delete Note
                     </Button>

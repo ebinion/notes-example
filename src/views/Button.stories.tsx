@@ -18,21 +18,21 @@ button.args = {
 export const danger = Template.bind({})
 danger.args = {
   children: 'Danger Button',
-  type: 'danger',
+  kind: 'danger',
   onClick: () => alert('Button clicked'),
 }
 
 export const disabled = Template.bind({})
 disabled.args = {
   children: 'Disabled Button',
-  type: 'disabled',
+  kind: 'disabled',
   onClick: () => alert('Button clicked'),
 }
 
 export const secondary = Template.bind({})
 secondary.args = {
   children: 'Secondary Button',
-  type: 'secondary',
+  kind: 'secondary',
   onClick: () => alert('Button clicked'),
 }
 
@@ -43,9 +43,9 @@ small.args = {
   size: 's',
 }
 
-export const warn = Template.bind({})
-small.args = {
-  children: 'Small Button',
+export const warning = Template.bind({})
+warning.args = {
+  children: 'Warning Button',
   onClick: () => alert('Button clicked'),
-  type: 'warning',
+  kind: 'warning',
 }

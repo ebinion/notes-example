@@ -3,28 +3,28 @@ import { ReactNode, ReactEventHandler } from 'react'
 import styles from './Button.module.css'
 
 type SizeLike = 's' | 'm'
-type TypeLike = 'danger' | 'disabled' | 'primary' | 'secondary' | 'warning'
+type KindLike = 'danger' | 'disabled' | 'primary' | 'secondary' | 'warning'
 
 const Button = (props: {
   children: ReactNode
   isFullWidth?: boolean
   isAlignedLeading?: boolean
+  kind?: KindLike
   onClick?: ReactEventHandler
   size?: SizeLike
-  type?: TypeLike
   [k: string]: any
 }) => {
   const {
     children,
     isAlignedLeading,
     isFullWidth,
+    kind,
     onClick,
     size,
-    type,
     ...rest
   } = props
 
-  const getClassNames = (size: SizeLike, type: TypeLike) => {
+  const getClassNames = (size: SizeLike, kind: KindLike) => {
     let classList = [styles.button]
 
     switch (size) {
@@ -36,7 +36,7 @@ const Button = (props: {
         break
     }
 
-    switch (type) {
+    switch (kind) {
       case 'danger':
         classList.push(styles.buttonDanger)
         break
@@ -62,8 +62,8 @@ const Button = (props: {
 
   return (
     <button
-      className={size && type && getClassNames(size, type)}
-      disabled={type === 'disabled'}
+      className={size && kind && getClassNames(size, kind)}
+      disabled={kind === 'disabled'}
       onClick={onClick}
       {...rest}
     >
@@ -74,7 +74,7 @@ const Button = (props: {
 
 Button.defaultProps = {
   size: 'm',
-  type: 'primary',
+  kind: 'primary',
 }
 
 export default Button

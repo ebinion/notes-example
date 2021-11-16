@@ -54,7 +54,7 @@ const SignInScene = () => {
             />
             <Link to={routes.forgotPassword}>Forgot password?</Link>
           </div>
-          <Button type={isValid ? 'primary' : 'disabled'}>Sign In</Button>
+          <Button kind={isValid ? 'primary' : 'disabled'}>Sign In</Button>
         </VStack>
       </Form>
       <p className="text--light text--s">
