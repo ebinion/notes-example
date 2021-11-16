@@ -56,7 +56,7 @@ const ForgotPasswordScene = () => {
               value={email}
               onChange={setEmail}
             />
-            <Button type={isValid ? 'primary' : 'disabled'}>Send Email</Button>
+            <Button kind={isValid ? 'primary' : 'disabled'}>Send Email</Button>
           </VStack>
         </Form>
       </>

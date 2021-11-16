@@ -127,7 +127,7 @@ const NotesScene: VFC = () => {
                   isFullWidth
                   onClick={() => appDispatch(signOut())}
                   size="s"
-                  type="secondary"
+                  kind="secondary"
                 >
                   Sign Out
                 </Button>

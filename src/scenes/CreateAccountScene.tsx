@@ -70,7 +70,7 @@ const CreateAccountScene: FC<DispatchProp> = () => {
             type="password"
             value={password}
           />
-          <Button type={isFormValid ? 'primary' : 'disabled'}>
+          <Button kind={isFormValid ? 'primary' : 'disabled'}>
             Create Account
           </Button>
         </VStack>
