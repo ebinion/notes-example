@@ -15,18 +15,6 @@ export const addLeadingZero = (num: number): string => {
   }
 }
 
-export const getFirestoreableNote = (note: NoteLike): NoteFirestoreLike => {
-  const { lastModifiedDate, createdDate, title, body, noteUserID } = note
-
-  return {
-    lastModifiedDate: Timestamp.fromDate(new Date(lastModifiedDate)),
-    createdDate: Timestamp.fromDate(new Date(createdDate)),
-    title,
-    body,
-    noteUserID,
-  }
-}
-
 /**
  *
  * @param a Any string accepted by Date contructor
@@ -83,10 +71,6 @@ export const noteConverter = {
 
 export const convertDateToString = (date = new Date()) => {
   return date.toISOString()
-}
-
-export const convertStringToDate = (string: string): Date => {
-  return new Date(string)
 }
 
 export const shortID = new ShortUniqueId({ length: 16 })
