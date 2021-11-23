@@ -5,9 +5,18 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 
 import { routes } from '../App'
 import { auth } from '../services/firebase'
+
 import { getAuthErrorMessage } from '../utilities/helpers'
 import { appDispatch, destroyError, selectError, setError } from '../store'
-import { Button, ColumnLayout, Form, FormHeader, Input, VStack } from '../views'
+import {
+  Button,
+  ColumnLayout,
+  Form,
+  FormHeader,
+  Input,
+  Motion,
+  VStack,
+} from '../views'
 
 const ForgotPasswordScene = () => {
   const [isValid, setIsValid] = useState(false)
@@ -72,8 +81,8 @@ const ForgotPasswordScene = () => {
         <p>
           If the email address you submitted matches our records, you will
           recieve an email in your inbox from
-          "noreply@notes-7533e.firebaseapp.com ". Please follow the instructions
-          provided to create a new password.
+          <code>noreply@notes-7533e.firebaseapp.com</code>. Please follow the
+          instructions provided to create a new password.
         </p>
         <p>
           <Link to={routes.signIn}>Sign Into Your Account</Link>
@@ -83,9 +92,11 @@ const ForgotPasswordScene = () => {
   }
 
   return (
-    <ColumnLayout>
-      {isSubmitted ? renderSubmitted() : renderForm()}
-    </ColumnLayout>
+    <Motion kind="slideFromBottom">
+      <ColumnLayout>
+        {isSubmitted ? renderSubmitted() : renderForm()}
+      </ColumnLayout>
+    </Motion>
   )
 }
 

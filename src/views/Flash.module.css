@@ -3,9 +3,11 @@
   bottom: 0;
   bottom: env(safe-area-inset-bottom);
   box-shadow: var(--drop-shadow);
+  box-sizing: border-box;
   padding: 0 0 var(--pad) var(--pad);
   position: fixed;
   right: 0;
+  width: 100%;
   z-index: var(--z-above-everything);
 }
 
@@ -38,5 +40,6 @@
     bottom: var(--pad);
     right: var(--pad);
     max-width: 360px;
+    width: auto;
   }
 }

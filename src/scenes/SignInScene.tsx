@@ -4,7 +4,15 @@ import { Link } from 'react-router-dom'
 
 import { routes } from '../App'
 import { appDispatch, signIn, selectError } from '../store'
-import { Button, ColumnLayout, Form, FormHeader, Input, VStack } from '../views'
+import {
+  Button,
+  ColumnLayout,
+  Form,
+  FormHeader,
+  Input,
+  Motion,
+  VStack,
+} from '../views'
 
 const SignInScene = () => {
   const [isValid, setIsValid] = useState(false)
@@ -20,48 +28,51 @@ const SignInScene = () => {
   }
 
   return (
-    <ColumnLayout>
-      <div className="text--trailing">
-        <Link to={routes.createAccount}>Create Account</Link>
-      </div>
-      <FormHeader>
-        <h1>Sign Into Your Account</h1>
-        <p>
-          Welcome back to Notes. Enter your information to access your account.
-        </p>
-      </FormHeader>
-      <Form
-        checkForValidityOn={[email, password]}
-        errorMessage={error}
-        validityCallback={setIsValid}
-        onSubmit={handleSumbit}
-      >
-        <VStack gap="l">
-          <Input
-            label="Email"
-            type="email"
-            isRequired
-            value={email}
-            onChange={setEmail}
-          />
-          <div>
+    <Motion kind="slideFromBottom">
+      <ColumnLayout>
+        <div className="text--trailing">
+          <Link to={routes.createAccount}>Create Account</Link>
+        </div>
+        <FormHeader>
+          <h1>Sign Into Your Account</h1>
+          <p>
+            Welcome back to Notes. Enter your information to access your
+            account.
+          </p>
+        </FormHeader>
+        <Form
+          checkForValidityOn={[email, password]}
+          errorMessage={error}
+          validityCallback={setIsValid}
+          onSubmit={handleSumbit}
+        >
+          <VStack gap="l">
             <Input
-              label="Password"
-              type="password"
+              label="Email"
+              type="email"
               isRequired
-              value={password}
-              onChange={setPassword}
+              value={email}
+              onChange={setEmail}
             />
-            <Link to={routes.forgotPassword}>Forgot password?</Link>
-          </div>
-          <Button kind={isValid ? 'primary' : 'disabled'}>Sign In</Button>
-        </VStack>
-      </Form>
-      <p className="text--light text--s">
-        This is a demo app. If you would like your account deleted, please send
-        a note to zeke@binion.io.
-      </p>
-    </ColumnLayout>
+            <div>
+              <Input
+                label="Password"
+                type="password"
+                isRequired
+                value={password}
+                onChange={setPassword}
+              />
+              <Link to={routes.forgotPassword}>Forgot password?</Link>
+            </div>
+            <Button kind={isValid ? 'primary' : 'disabled'}>Sign In</Button>
+          </VStack>
+        </Form>
+        <p className="text--light text--s">
+          This is a demo app. If you would like your account deleted, please
+          send a note to zeke@binion.io.
+        </p>
+      </ColumnLayout>
+    </Motion>
   )
 }
 

@@ -5,7 +5,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
-} from '@firebase/auth'
+} from 'firebase/auth'
 
 import {
   AppDispatch,
