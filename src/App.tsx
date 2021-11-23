@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { onAuthStateChanged } from '@firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
+import { AnimatePresence } from 'framer-motion'
 
 import {
   appDispatch,
@@ -44,34 +45,36 @@ const App = () => {
   }, [])
 
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path={routes.notes}>
-          {currentUser ? (
-            <NotesScene />
-          ) : (
-            <Redirect to={routes.createAccount} />
-          )}
-        </Route>
-        <Route path={routes.forgotPassword}>
-          {currentUser ? (
-            <Redirect to={routes.notes} />
-          ) : (
-            <ForgotPasswordScene />
-          )}
-        </Route>
-        <Route path={routes.signIn}>
-          {currentUser ? <Redirect to={routes.notes} /> : <SignInScene />}
-        </Route>
-        <Route path={routes.createAccount}>
-          {currentUser ? (
-            <Redirect to={routes.notes} />
-          ) : (
-            <CreateAccountScene />
-          )}
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <AnimatePresence>
+      <BrowserRouter>
+        <Switch>
+          <Route path={routes.notes}>
+            {currentUser ? (
+              <NotesScene />
+            ) : (
+              <Redirect to={routes.createAccount} />
+            )}
+          </Route>
+          <Route path={routes.forgotPassword}>
+            {currentUser ? (
+              <Redirect to={routes.notes} />
+            ) : (
+              <ForgotPasswordScene />
+            )}
+          </Route>
+          <Route path={routes.signIn}>
+            {currentUser ? <Redirect to={routes.notes} /> : <SignInScene />}
+          </Route>
+          <Route path={routes.createAccount}>
+            {currentUser ? (
+              <Redirect to={routes.notes} />
+            ) : (
+              <CreateAccountScene />
+            )}
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </AnimatePresence>
   )
 }
 

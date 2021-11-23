@@ -11,6 +11,7 @@ import Header from './Header'
 import IconedButton from './IconedButton'
 import Input from './Input'
 import Menu from './Menu'
+import Motion from './Motion'
 import NoteTitle from './NoteTitle'
 import Notice from './Notice'
 import Spinner from './Spinner'
@@ -33,6 +34,7 @@ export {
   IconedButton,
   Input,
   Menu,
+  Motion,
   NoteTitle,
   Notice,
   Spinner,

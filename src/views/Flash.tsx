@@ -1,9 +1,24 @@
+import { motion } from 'framer-motion'
 import { ReactEventHandler } from 'react'
 
 import { ExclamationIcon, XIcon } from '../icons'
 import { IconedButton } from '.'
 
 import styles from './Flash.module.css'
+
+const animationVariants = () => {
+  if (window.matchMedia('(minWidth: 600px)').matches) {
+    return {
+      inert: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: 50, zIndex: 'var(--z-above-everything)' },
+    }
+  } else {
+    return {
+      inert: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -50, zIndex: 'var(--z-above-everything)' },
+    }
+  }
+}
 
 const Flash = (props: {
   closeHandler: ReactEventHandler
@@ -33,11 +48,15 @@ const Flash = (props: {
   }
 
   return (
-    <div
-      className={styles.wrapper}
-      role="alertdialog"
-      aria-labelledby={typeof message === 'string' ? undefined : 'flash-title'}
+    <motion.div
+      animate="inert"
       aria-describedby="flash-message"
+      aria-labelledby={typeof message === 'string' ? undefined : 'flash-title'}
+      className={styles.wrapper}
+      exit="exit"
+      initial="exit"
+      role="alertdialog"
+      variants={animationVariants()}
     >
       <div className={styles.doc} role="document" tabIndex={0}>
         <div className={styles.icon}>
@@ -50,7 +69,7 @@ const Flash = (props: {
           </IconedButton>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

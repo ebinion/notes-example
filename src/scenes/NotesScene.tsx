@@ -1,4 +1,5 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { AnimatePresence } from 'framer-motion'
 import { debounce } from 'lodash'
 import {
   ReactEventHandler,
@@ -35,6 +36,7 @@ import {
   Header,
   IconedButton,
   Menu,
+  Motion,
   Teaser,
   Toolbar,
   VStack,
@@ -144,52 +146,57 @@ const NotesScene: VFC = () => {
         </Header>
 
         <VStack gap="xs">
-          {notes.map((note) => {
-            const debouncedSave = debounce((event: SyntheticEvent) => {
-              if (isSaving) {
-                appDispatch(
-                  setError(
-                    'Your note is saving, please try again after the note has been saved.'
+          <AnimatePresence>
+            {notes.map((note) => {
+              const debouncedSave = debounce((event: SyntheticEvent) => {
+                if (isSaving) {
+                  appDispatch(
+                    setError(
+                      'Your note is saving, please try again after the note has been saved.'
+                    )
                   )
-                )
-              } else {
-                handleSetCurrentNote(note, event)
-              }
-            }, 500)
+                } else {
+                  handleSetCurrentNote(note, event)
+                }
+              }, 500)
 
-            return (
-              <Teaser
-                isActive={note.id === currentNoteID}
-                title={note.title}
-                date={note.lastModifiedDate}
-                onClick={(event) => {
-                  appDispatch(destroyError())
-                  if (isSaving) {
-                    debouncedSave.cancel()
-                    debouncedSave(event)
-                  } else {
-                    debouncedSave.cancel()
-                    handleSetCurrentNote(note, event)
-                  }
-                }}
-                key={note.id}
-              />
-            )
-          })}
+              return (
+                <Motion kind="slideFromLeft" key={`motion${note.id}`}>
+                  <Teaser
+                    isActive={note.id === currentNoteID}
+                    title={note.title}
+                    date={note.lastModifiedDate}
+                    onClick={(event) => {
+                      appDispatch(destroyError())
+                      if (isSaving) {
+                        debouncedSave.cancel()
+                        debouncedSave(event)
+                      } else {
+                        debouncedSave.cancel()
+                        handleSetCurrentNote(note, event)
+                      }
+                    }}
+                    key={note.id}
+                  />
+                </Motion>
+              )
+            })}
+          </AnimatePresence>
         </VStack>
       </VStack>
     )
   }
 
   return (
-    <>
+    <Motion kind="slideFromBottom">
       {error && <Flash message={error} closeHandler={handleDismissError} />}
+
       <AppLayout isNavOpen={isNavOpen} navChildren={renderNav()}>
         {currentNoteID && (
           <CurrentNoteScene handleNavOpen={setIsNavOpen} key={currentNoteID} />
         )}
       </AppLayout>
-    </>
+    </Motion>
   )
 }
 

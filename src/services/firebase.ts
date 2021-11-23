@@ -3,8 +3,8 @@ import { initializeApp } from 'firebase/app'
 
 // Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore/'
-import { connectAuthEmulator, getAuth } from 'firebase/auth/'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
