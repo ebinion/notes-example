@@ -78,6 +78,7 @@ body {
 }
 
 code {
+  background: var(--c-bg-secondary);
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
