@@ -7,3 +7,9 @@
   align-items: flex-start;
   margin-left: -14px; /* Magic number offsets leading bold button */
 }
+
+@media (pointer: coarse) {
+  .toolbar {
+    display: none;
+  }
+}
