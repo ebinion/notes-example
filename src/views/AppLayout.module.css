@@ -6,7 +6,6 @@
 .content {
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
-  padding: 0 calc(var(--gutter) / 2) var(--gutter);
   position: relative;
   z-index: 1;
 }
@@ -19,7 +18,6 @@
   left: 0;
   opacity: 0;
   overflow-y: auto;
-  padding: 0 calc(var(--gutter) / 2) var(--gutter);
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -47,8 +45,7 @@
 
 @media (min-width: 800px) {
   .content {
-    padding: 0 calc(var(--gutter) / 2) calc(var(--gutter) / 2);
-    padding-bottom: calc((var(--gutter) / 2) + env(safe-area-inset-bottom));
+    padding: 0;
   }
 
   .nav {
@@ -57,8 +54,7 @@
     height: 100vh;
     opacity: 1;
     transform: none;
-    padding: 0 calc(var(--gutter) / 2) calc(var(--gutter) / 2);
-    padding-bottom: calc((var(--gutter) / 2) + env(safe-area-inset-bottom));
+    padding: 0;
     position: sticky;
     pointer-events: all;
     transition: none;

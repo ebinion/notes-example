@@ -1,0 +1,9 @@
+.editable {
+  padding-bottom: 50vh;
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  margin-left: -14px; /* Magic number offsets leading bold button */
+}

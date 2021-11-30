@@ -47,7 +47,7 @@
   --touch-target: 44px;
   --transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
   --z-above-content: 9;
-  --z-above-most: 99;
+  --z-above-most: 999;
   --z-above-everything: 99999;
 }
 
@@ -75,9 +75,11 @@ body {
   font-size: 16px;
   line-height: 24px;
   margin: 0;
+  overscroll-behavior: none;
 }
 
 code {
+  background: var(--c-bg-secondary);
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
@@ -232,4 +234,9 @@ p:last-child {
 
 *:focus:not(.focus-visible) {
   outline: 0;
+}
+
+.firebase-emulator-warning {
+  pointer-events: none;
+  opacity: 0.2;
 }
