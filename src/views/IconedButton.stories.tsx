@@ -15,8 +15,15 @@ const Template: ComponentStory<typeof IconedButton> = (args) => (
   <IconedButton {...args} />
 )
 
-export const menu = Template.bind({})
-menu.args = {
+export const iconedButton = Template.bind({})
+iconedButton.args = {
   children: <BarsIcon />,
+  onClick: handleClick,
+}
+
+export const isActive = Template.bind({})
+isActive.args = {
+  children: <BarsIcon />,
+  isActive: true,
   onClick: handleClick,
 }

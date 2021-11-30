@@ -1,4 +1,5 @@
-import { KeyboardEventHandler, useCallback, useMemo, useState } from 'react'
+import { animate } from 'framer-motion'
+import { KeyboardEventHandler, useCallback, useMemo, useRef } from 'react'
 import {
   BaseEditor,
   createEditor,
@@ -12,6 +13,11 @@ import {
   RenderLeafProps,
   withReact,
 } from 'slate-react'
+
+import { BoldIcon, ItalicIcon, CodeIcon } from '../icons'
+import { Container, IconedButton } from '../views'
+
+import styles from './Editor.module.css'
 
 type CustomElement = { type: 'paragraph'; children: CustomText[] }
 type CustomText = {
@@ -55,19 +61,6 @@ const Leaf = (props: RenderLeafProps) => {
   return <span {...attributes}>{children}</span>
 }
 
-const toggleMark = (
-  format: FormatLike,
-  editor: EditorLike,
-  Editor = SlateEditor
-) => {
-  console.log('adding mark')
-  if (isMarkActive(format, editor, Editor)) {
-    Editor.removeMark(editor, format)
-  } else {
-    Editor.addMark(editor, format, true)
-  }
-}
-
 const isMarkActive = (
   format: FormatLike,
   editor: EditorLike,
@@ -77,39 +70,68 @@ const isMarkActive = (
   return marks ? marks[format] === true : false
 }
 
+const toggleMark = (
+  format: FormatLike,
+  editor: EditorLike,
+  Editor = SlateEditor
+) => {
+  if (isMarkActive(format, editor, Editor)) {
+    Editor.removeMark(editor, format)
+  } else {
+    Editor.addMark(editor, format, true)
+  }
+}
+
 const Editor = (props: {
   onChange: (value: Descendant[]) => any
   value: Descendant[] | null
 }) => {
+  const editorRef = useRef<HTMLDivElement>(null)
+
   const defaultValue: Descendant[] = [
     { type: 'paragraph', children: [{ text: '' }] },
   ]
+  const editor = useMemo(() => withReact(createEditor()), [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
-  const [keysLog, setKeysLog] = useState({} as { [k: string]: boolean })
-
-  const editor = useMemo(() => withReact(createEditor()), [])
-
   const handleKeyDown: KeyboardEventHandler = (event) => {
-    const newKeysLog = { ...keysLog, [event.key.toLowerCase()]: true }
-    console.log(newKeysLog)
-
-    if (newKeysLog.meta) {
-      if (newKeysLog.b) toggleMark('bold', editor)
-
-      if (newKeysLog.i) toggleMark('italic', editor)
-
-      if (newKeysLog.u) toggleMark('underline', editor)
-
-      if (newKeysLog.l) toggleMark('code', editor)
+    if (
+      (event.metaKey && navigator.userAgent.indexOf('Mac OS X') !== -1) ||
+      event.ctrlKey
+    ) {
+      event.preventDefault()
+      if (event.key === 'b') toggleMark('bold', editor)
+      if (event.key === 'i') toggleMark('italic', editor)
+      if (event.key === 'u') toggleMark('underline', editor)
+      if (event.key === '`') toggleMark('code', editor)
     }
 
-    setKeysLog(newKeysLog)
+    updateScrollPosition()
   }
 
-  const handleKeyUp: KeyboardEventHandler = (event) => {
-    // console.log(keysLog)
-    setKeysLog({})
+  const updateScrollPosition = () => {
+    const cursorPosY = window
+      .getSelection()
+      ?.getRangeAt(0)
+      ?.getBoundingClientRect().top
+    const windowHeight = document.querySelector('html')?.clientHeight
+
+    if (cursorPosY && windowHeight) {
+      const safeBottom = windowHeight * 0.6
+      const targetPosY = windowHeight * 0.5
+
+      const scrollPosY = window.scrollY
+
+      if (cursorPosY > safeBottom) {
+        const newScrollY = (targetPosY - cursorPosY) * -1 + window.scrollY
+        animate(scrollPosY, newScrollY, {
+          ease: 'easeOut',
+          onUpdate: (scrollPosY) => {
+            window.scrollTo(0, scrollPosY)
+          },
+        })
+      }
+    }
   }
 
   return (
@@ -118,13 +140,38 @@ const Editor = (props: {
       value={props.value || defaultValue}
       onChange={props.onChange}
     >
-      <Editable
-        placeholder="Write here..."
-        renderLeaf={renderLeaf}
-        onKeyDown={handleKeyDown}
-        onKeyUp={handleKeyUp}
-        spellCheck
-      />
+      <Container pad="horizontal">
+        <div className={styles.editable} ref={editorRef}>
+          <Editable
+            placeholder="Write here..."
+            renderLeaf={renderLeaf}
+            onKeyDown={handleKeyDown}
+            spellCheck
+          />
+        </div>
+      </Container>
+      <Container pad="horizontal" sticky="bottom">
+        <div className={styles.toolbar}>
+          <IconedButton
+            isActive={isMarkActive('bold', editor)}
+            onClick={() => toggleMark('bold', editor)}
+          >
+            <BoldIcon title="Bold" />
+          </IconedButton>
+          <IconedButton
+            isActive={isMarkActive('italic', editor)}
+            onClick={() => toggleMark('italic', editor)}
+          >
+            <ItalicIcon title="Italic" />
+          </IconedButton>
+          <IconedButton
+            isActive={isMarkActive('code', editor)}
+            onClick={() => toggleMark('code', editor)}
+          >
+            <CodeIcon title="Code" />
+          </IconedButton>
+        </div>
+      </Container>
     </Slate>
   )
 }

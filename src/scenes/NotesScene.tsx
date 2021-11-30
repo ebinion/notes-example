@@ -32,8 +32,8 @@ import {
   AppLayout,
   Avatar,
   Button,
+  Container,
   Flash,
-  Header,
   IconedButton,
   Menu,
   Motion,
@@ -103,87 +103,89 @@ const NotesScene: VFC = () => {
 
   const renderNav = () => {
     return (
-      <VStack gap="m">
-        <Header isSticky role="banner">
-          <Toolbar
-            leadingChildren={
-              <Menu
-                noBottomPad
-                trigger={
-                  <Avatar
-                    name={
-                      currentUser && currentUser.name
-                        ? currentUser.name
-                        : undefined
-                    }
-                  />
-                }
-                headerChildren={
-                  <div className="text--s text--light">
-                    {currentUser?.name && `Hi, ${currentUser.name}`}
-                  </div>
-                }
-              >
-                <Button
-                  isAlignedLeading
-                  isFullWidth
-                  onClick={() => appDispatch(signOut())}
-                  size="s"
-                  kind="secondary"
-                >
-                  Sign Out
-                </Button>
-              </Menu>
-            }
-            trailingChildren={
-              <IconedButton onClick={handleNewNote} offset="trailing">
-                <PlusIcon />
-              </IconedButton>
-            }
-          >
-            <h1 className="h4 text--light">Notes</h1>
-          </Toolbar>
-        </Header>
-
-        <VStack gap="xs">
-          <AnimatePresence>
-            {notes.map((note) => {
-              const debouncedSave = debounce((event: SyntheticEvent) => {
-                if (isSaving) {
-                  appDispatch(
-                    setError(
-                      'Your note is saving, please try again after the note has been saved.'
-                    )
-                  )
-                } else {
-                  handleSetCurrentNote(note, event)
-                }
-              }, 500)
-
-              return (
-                <Motion kind="slideFromLeft" key={`motion${note.id}`}>
-                  <Teaser
-                    isActive={note.id === currentNoteID}
-                    title={note.title}
-                    date={note.lastModifiedDate}
-                    onClick={(event) => {
-                      appDispatch(destroyError())
-                      if (isSaving) {
-                        debouncedSave.cancel()
-                        debouncedSave(event)
-                      } else {
-                        debouncedSave.cancel()
-                        handleSetCurrentNote(note, event)
+      <Container pad="horizontal">
+        <VStack gap="m">
+          <Container as="header" sticky="top" pad="top" role="banner">
+            <Toolbar
+              leadingChildren={
+                <Menu
+                  noBottomPad
+                  trigger={
+                    <Avatar
+                      name={
+                        currentUser && currentUser.name
+                          ? currentUser.name
+                          : undefined
                       }
-                    }}
-                    key={note.id}
-                  />
-                </Motion>
-              )
-            })}
-          </AnimatePresence>
+                    />
+                  }
+                  headerChildren={
+                    <div className="text--s text--light">
+                      {currentUser?.name && `Hi, ${currentUser.name}`}
+                    </div>
+                  }
+                >
+                  <Button
+                    isAlignedLeading
+                    isFullWidth
+                    onClick={() => appDispatch(signOut())}
+                    size="s"
+                    kind="secondary"
+                  >
+                    Sign Out
+                  </Button>
+                </Menu>
+              }
+              trailingChildren={
+                <IconedButton onClick={handleNewNote} offset="trailing">
+                  <PlusIcon />
+                </IconedButton>
+              }
+            >
+              <h1 className="h4 text--light">Notes</h1>
+            </Toolbar>
+          </Container>
+
+          <VStack gap="xs">
+            <AnimatePresence>
+              {notes.map((note) => {
+                const debouncedSave = debounce((event: SyntheticEvent) => {
+                  if (isSaving) {
+                    appDispatch(
+                      setError(
+                        'Your note is saving, please try again after the note has been saved.'
+                      )
+                    )
+                  } else {
+                    handleSetCurrentNote(note, event)
+                  }
+                }, 500)
+
+                return (
+                  <Motion kind="slideFromLeft" key={`motion${note.id}`}>
+                    <Teaser
+                      isActive={note.id === currentNoteID}
+                      title={note.title}
+                      date={note.lastModifiedDate}
+                      onClick={(event) => {
+                        appDispatch(destroyError())
+                        if (isSaving) {
+                          debouncedSave.cancel()
+                          debouncedSave(event)
+                        } else {
+                          debouncedSave.cancel()
+                          handleSetCurrentNote(note, event)
+                        }
+                      }}
+                      key={note.id}
+                    />
+                  </Motion>
+                )
+              })}
+            </AnimatePresence>
+          </VStack>
         </VStack>
-      </VStack>
+      </Container>
     )
   }
 

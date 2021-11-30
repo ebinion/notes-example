@@ -7,7 +7,7 @@ import Editor from './Editor'
 import Flash from './Flash'
 import Form from './Form'
 import FormHeader from './FormHeader'
-import Header from './Header'
+import Container from './Container'
 import IconedButton from './IconedButton'
 import Input from './Input'
 import Menu from './Menu'
@@ -30,7 +30,7 @@ export {
   Flash,
   Form,
   FormHeader,
-  Header,
+  Container,
   IconedButton,
   Input,
   Menu,

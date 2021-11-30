@@ -21,7 +21,7 @@ import {
   Button,
   ButtonGroup,
   Editor,
-  Header,
+  Container,
   IconedButton,
   Menu,
   NoteTitle,
@@ -98,107 +98,112 @@ const CurrentNoteScene = (props: {
 
   return (
     <VStack gap="m">
-      <Header isSticky>
-        <Toolbar
-          leadingChildren={
-            <>
-              <IconedButton
-                onClick={() => handleNavOpen(true)}
-                isHiddenLg
-                offset="leading"
-              >
-                <BarsIcon title="Menu" />
-              </IconedButton>
+      <Container as="header" pad="top" sticky="top">
+        <Container pad="horizontal">
+          <Toolbar
+            leadingChildren={
+              <>
+                <IconedButton
+                  onClick={() => handleNavOpen(true)}
+                  isHiddenLg
+                  offset="leading"
+                >
+                  <BarsIcon title="Menu" />
+                </IconedButton>
 
-              {note && (
-                <div className="text--light text--s">
-                  Last edited <TimeAgo date={note.lastModifiedDate} />
-                </div>
-              )}
-
-              {isNoteSaving && <Spinner />}
-            </>
-          }
-          trailingChildren={
-            note && (
-              <Menu
-                anchor="trailing"
-                closeCallback={() => setShowDeleteConfirmation(false)}
-                headerChildren={
-                  <>
-                    {showDeleteConfirmation && (
-                      <VStack>
-                        <div>
-                          <h4 className="text--noMargin">Are you sure?</h4>
-                          <p className="text--noMargin text--s">
-                            Your note will be permantly deleted.
-                          </p>
-                        </div>
-                        <ButtonGroup>
-                          <Button
-                            kind={isNoteSaving ? 'disabled' : 'danger'}
-                            onClick={() => {
-                              note &&
-                                appDispatch(deleteNoteAndSetCurrent(note.id))
-                            }}
-                            size="s"
-                            title={isNoteSaving ? '' : undefined}
-                          >
-                            Delete
-                          </Button>
-                          <Button
-                            kind="secondary"
-                            onClick={() => setShowDeleteConfirmation(false)}
-                            size="s"
-                          >
-                            Cancel
-                          </Button>
-                        </ButtonGroup>
-                      </VStack>
-                    )}
-                    {!showDeleteConfirmation && (
-                      <p className="text--s text--light">
-                        Created{' '}
-                        {note && getDateTimeString(new Date(note.createdDate))}
-                      </p>
-                    )}
-                  </>
-                }
-                noBottomPad={showDeleteConfirmation ? false : true}
-                trigger={
-                  <IconedButton>
-                    <EllipsisIcon title="Options" />
-                  </IconedButton>
-                }
-              >
-                {!showDeleteConfirmation && (
-                  <VStack gap="s">
-                    <Button
-                      isAlignedLeading
-                      isFullWidth
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setShowDeleteConfirmation(true)
-                      }}
-                      size="s"
-                      kind="warning"
-                    >
-                      Delete Note
-                    </Button>
-                  </VStack>
+                {note && (
+                  <div className="text--light text--s">
+                    Last edited <TimeAgo date={note.lastModifiedDate} />
+                  </div>
                 )}
-              </Menu>
-            )
-          }
-        />
-      </Header>
+
+                {isNoteSaving && <Spinner />}
+              </>
+            }
+            trailingChildren={
+              note && (
+                <Menu
+                  anchor="trailing"
+                  closeCallback={() => setShowDeleteConfirmation(false)}
+                  headerChildren={
+                    <>
+                      {showDeleteConfirmation && (
+                        <VStack>
+                          <div>
+                            <h4 className="text--noMargin">Are you sure?</h4>
+                            <p className="text--noMargin text--s">
+                              Your note will be permantly deleted.
+                            </p>
+                          </div>
+                          <ButtonGroup>
+                            <Button
+                              kind={isNoteSaving ? 'disabled' : 'danger'}
+                              onClick={() => {
+                                note &&
+                                  appDispatch(deleteNoteAndSetCurrent(note.id))
+                              }}
+                              size="s"
+                              title={isNoteSaving ? '' : undefined}
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              kind="secondary"
+                              onClick={() => setShowDeleteConfirmation(false)}
+                              size="s"
+                            >
+                              Cancel
+                            </Button>
+                          </ButtonGroup>
+                        </VStack>
+                      )}
+                      {!showDeleteConfirmation && (
+                        <p className="text--s text--light">
+                          Created{' '}
+                          {note &&
+                            getDateTimeString(new Date(note.createdDate))}
+                        </p>
+                      )}
+                    </>
+                  }
+                  noBottomPad={showDeleteConfirmation ? false : true}
+                  trigger={
+                    <IconedButton offset="trailing">
+                      <EllipsisIcon title="Options" />
+                    </IconedButton>
+                  }
+                >
+                  {!showDeleteConfirmation && (
+                    <VStack gap="s">
+                      <Button
+                        isAlignedLeading
+                        isFullWidth
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowDeleteConfirmation(true)
+                        }}
+                        size="s"
+                        kind="warning"
+                      >
+                        Delete Note
+                      </Button>
+                    </VStack>
+                  )}
+                </Menu>
+              )
+            }
+          />
+        </Container>
+      </Container>
       {note && (
         <VStack gap="s">
-          <NoteTitle
-            onChange={(value) => handleNoteUpdate({ title: value }, note)}
-            placeholder="Untitled Note"
-            value={note.title}
-          />
+          <Container pad="horizontal">
+            <NoteTitle
+              onChange={(value) => handleNoteUpdate({ title: value }, note)}
+              placeholder="Untitled Note"
+              value={note.title}
+            />
+          </Container>
           <Editor
             key={note.id}
             onChange={(value) => {

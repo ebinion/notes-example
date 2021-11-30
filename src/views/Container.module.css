@@ -1,0 +1,50 @@
+.wrapper {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.stickyBottom,
+.stickyTop {
+  background: linear-gradient(var(--c-bg), var(--c-bg-secondary));
+  z-index: var(--z-above-content);
+}
+
+.stickyTop {
+  position: sticky;
+  top: 0;
+  top: env(safe-area-inset-top);
+}
+
+.stickyBottom {
+  position: fixed;
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom);
+}
+
+@supports (backdrop-filter: var(--backdrop-blur)) {
+  .stickyBottom,
+  .stickyTop {
+    background: var(--c-bg-secondary);
+    backdrop-filter: var(--backdrop-blur);
+  }
+}
+
+.padAll {
+  padding: calc(var(--gutter) / 2);
+}
+
+.padBottom {
+  padding-bottom: calc(var(--gutter) / 2);
+}
+
+.padTop {
+  padding-top: calc(var(--gutter) / 2);
+}
+
+.padVertical {
+  padding: calc(var(--gutter) / 2) 0;
+}
+
+.padHorizontal {
+  padding: 0 calc(var(--gutter) / 2);
+}

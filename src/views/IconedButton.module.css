@@ -37,3 +37,7 @@
     display: none;
   }
 }
+
+.isActive {
+  color: var(--c-blue);
+}
