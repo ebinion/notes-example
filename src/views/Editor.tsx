@@ -114,7 +114,9 @@ const Editor = (props: {
       .getSelection()
       ?.getRangeAt(0)
       ?.getBoundingClientRect().top
-    const windowHeight = document.querySelector('html')?.clientHeight
+    const windowHeight = window.visualViewport
+      ? window.visualViewport.height
+      : document.querySelector('html')?.clientHeight
 
     if (cursorPosY && windowHeight) {
       const safeBottom = windowHeight * 0.6
