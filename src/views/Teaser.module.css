@@ -3,6 +3,7 @@
   background: transparent;
   border: 0;
   border-radius: var(--radius);
+  box-sizing: border-box;
   cursor: pointer;
   padding: var(--pad-s) var(--pad);
   text-align: left;

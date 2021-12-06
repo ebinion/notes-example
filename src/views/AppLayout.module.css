@@ -24,7 +24,7 @@
   transform: translateX(-33%);
   transition: var(--transition);
   transition-property: blur transform;
-  width: 100%;
+  width: auto;
   z-index: var(--z-above-content);
 }
 .navIsOpen {

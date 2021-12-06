@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import {
@@ -37,7 +37,7 @@ const handleNoteUpdate = (
 ) => {
   const newNote = { ...note }
 
-  if (value.title) newNote.title = value.title
+  if (typeof value.title == 'string') newNote.title = value.title
   if (value.body) newNote.body = JSON.stringify(value.body)
 
   newNote.lastModifiedDate = convertDateToString(new Date())
@@ -45,42 +45,27 @@ const handleNoteUpdate = (
   appDispatch(updateNote(newNote))
 }
 
-const useAutoPostNote = (note?: NoteLike) => {
-  const isFirstRun = useRef(true)
-
-  useEffect(() => {
-    const delayedPostNote = !isFirstRun.current
-      ? debounce(async () => {
-          if (note) {
-            await appDispatch(postNote(note))
-          }
-        }, 3000)
-      : null
-
-    if (delayedPostNote) {
-      appDispatch(setIsSaving(true))
-      delayedPostNote()
-    } else {
-      isFirstRun.current = false
-    }
-
-    return () => {
-      delayedPostNote && delayedPostNote.cancel()
-    }
-  }, [note])
-}
+const delayedPostNote = debounce((note: NoteLike) => {
+  if (note) {
+    appDispatch(postNote(note))
+  }
+}, 1000)
 
 const CurrentNoteScene = (props: {
   handleNavOpen: (isOpen: boolean) => void
-  key: string
 }) => {
   const { handleNavOpen } = props
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
   const isNoteSaving = useSelector(selectIsSaving)
   const note = useSelector(selectCurrentNote)
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
-  useAutoPostNote(note)
+  useEffect(() => {
+    if (note) {
+      !selectIsSaving(store.getState()) && appDispatch(setIsSaving(true))
+      delayedPostNote(note)
+    }
+  }, [note])
 
   useEffect(() => {
     const unloadHandler = (event: BeforeUnloadEvent) => {
@@ -93,7 +78,10 @@ const CurrentNoteScene = (props: {
 
     window.addEventListener('beforeunload', unloadHandler)
 
-    return () => window.removeEventListener('beforeunload', unloadHandler)
+    return () => {
+      window.removeEventListener('beforeunload', unloadHandler)
+      delayedPostNote.flush()
+    }
   }, [])
 
   return (
@@ -199,7 +187,9 @@ const CurrentNoteScene = (props: {
         <VStack gap="s">
           <Container pad="horizontal">
             <NoteTitle
-              onChange={(value) => handleNoteUpdate({ title: value }, note)}
+              onChange={(value) => {
+                handleNoteUpdate({ title: value }, note)
+              }}
               placeholder="Untitled Note"
               value={note.title}
             />

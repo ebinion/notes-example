@@ -52,6 +52,7 @@ const Motion = (props: {
       exit="exit"
       initial="exit"
       variants={motionVariants}
+      style={{ overflow: 'hidden' }}
     >
       {children}
     </motion.div>

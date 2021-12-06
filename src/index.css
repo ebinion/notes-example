@@ -7,6 +7,7 @@
   --c-red: #dc1919;
   --c-red-secondary: #dc1919cc;
   --c-red-tertiary: #dc191955;
+  --c-orange: #db781b;
   --c-bg: #fff;
   --c-bg-secondary: rgba(255, 255, 255, 0.85);
   --c-on-color: #fff;
@@ -80,6 +81,8 @@ body {
 
 code {
   background: var(--c-bg-secondary);
+  display: inline-block;
+  color: var(--c-orange);
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }

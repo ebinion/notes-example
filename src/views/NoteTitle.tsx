@@ -7,11 +7,10 @@ const NoteTitle = (props: {
   value: string
 }) => {
   const { onChange, placeholder, value } = props
-
   const [hasSpellcheck, setHasSpellcheck] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(event.target.value)
+    onChange(event.target.value || '')
   }
 
   const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
