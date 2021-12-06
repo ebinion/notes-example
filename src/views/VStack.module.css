@@ -1,6 +1,8 @@
 .wrapper {
   display: grid;
   gap: var(--pad);
+  overflow: hidden;
+  width: 100%;
 }
 
 .gapL {

@@ -99,11 +99,29 @@ const Editor = (props: {
       (event.metaKey && navigator.userAgent.indexOf('Mac OS X') !== -1) ||
       event.ctrlKey
     ) {
-      event.preventDefault()
-      if (event.key === 'b') toggleMark('bold', editor)
-      if (event.key === 'i') toggleMark('italic', editor)
-      if (event.key === 'u') toggleMark('underline', editor)
-      if (event.key === '`') toggleMark('code', editor)
+      switch (event.key) {
+        case 'b':
+          event.preventDefault()
+          toggleMark('bold', editor)
+          break
+
+        case 'i':
+          event.preventDefault()
+          toggleMark('italic', editor)
+          break
+
+        case 'u':
+          event.preventDefault()
+          toggleMark('underline', editor)
+          break
+
+        case '`':
+          event.preventDefault()
+          toggleMark('code', editor)
+          break
+        default:
+          break
+      }
     }
 
     updateScrollPosition()

@@ -1,6 +1,5 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { AnimatePresence } from 'framer-motion'
-import { debounce } from 'lodash'
 import {
   ReactEventHandler,
   SyntheticEvent,
@@ -19,10 +18,8 @@ import {
   selectCurrentNote,
   selectCurrentUser,
   selectError,
-  selectIsSaving,
   selectNotes,
   setCurrentNote,
-  setError,
   signOut,
 } from '../store'
 
@@ -71,7 +68,6 @@ const useNotesSubscription = (currentUserId: string) => {
 const NotesScene: VFC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false)
 
-  const isSaving = useSelector(selectIsSaving)
   const currentUser = useSelector(selectCurrentUser)
   const notes = useSelector(selectNotes)
   const note = useSelector(selectCurrentNote)
@@ -149,18 +145,6 @@ const NotesScene: VFC = () => {
           <VStack gap="xs">
             <AnimatePresence>
               {notes.map((note) => {
-                const debouncedSave = debounce((event: SyntheticEvent) => {
-                  if (isSaving) {
-                    appDispatch(
-                      setError(
-                        'Your note is saving, please try again after the note has been saved.'
-                      )
-                    )
-                  } else {
-                    handleSetCurrentNote(note, event)
-                  }
-                }, 500)
-
                 return (
                   <Motion kind="slideFromLeft" key={`motion${note.id}`}>
                     <Teaser
@@ -168,14 +152,7 @@ const NotesScene: VFC = () => {
                       title={note.title}
                       date={note.lastModifiedDate}
                       onClick={(event) => {
-                        appDispatch(destroyError())
-                        if (isSaving) {
-                          debouncedSave.cancel()
-                          debouncedSave(event)
-                        } else {
-                          debouncedSave.cancel()
-                          handleSetCurrentNote(note, event)
-                        }
+                        handleSetCurrentNote(note, event)
                       }}
                       key={note.id}
                     />
@@ -195,7 +172,10 @@ const NotesScene: VFC = () => {
 
       <AppLayout isNavOpen={isNavOpen} navChildren={renderNav()}>
         {currentNoteID && (
-          <CurrentNoteScene handleNavOpen={setIsNavOpen} key={currentNoteID} />
+          <CurrentNoteScene
+            handleNavOpen={setIsNavOpen}
+            key={`currentNote-${currentNoteID}`}
+          />
         )}
       </AppLayout>
     </Motion>
